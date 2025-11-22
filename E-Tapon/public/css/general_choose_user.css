@@ -3,7 +3,7 @@
     --color-dark-green: #1f4b2c;
     --color-orange: #ff9100;
     --color-light-olive: #d5ed9f;
-    --color-light-orange: #ffe9cc;
+    --color-light-orange: #FFD399;
 }
 
 h1 {
@@ -16,10 +16,9 @@ body {
     font-family: "Roboto", sans-serif;
 }
 
-.parent-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.top-bar,
+.bottom-card {
+  background-color: var(--color-cream);
 }
 
 .user-img {
