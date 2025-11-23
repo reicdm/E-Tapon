@@ -21,6 +21,8 @@
                     <input id="email" type="text" name="email" placeholder="Email">
                 </div>
 
+                <div class="my-4 border-t border-gray-400"></div>
+
                 <div class="mb-2 form-input-group">
                     <input id="newpassword" type="password" name="newpassword" placeholder="Enter New Password">
                 </div>
@@ -29,14 +31,15 @@
                     <input id="newpassword" type="password" name="newpassword" placeholder="Re-Enter New Password">
                 </div>
 
-                <button type="submit" class="w-full btn-orange-gradient text-lg shadow-xl my-8">
+                <button type="submit" class="w-full btn-orange-gradient text-lg shadow-xl mt-48">
                     SAVE
                 </button>
 
-                <div class="mb-16 try-link text-sm">
+                <div class="mt-8 try-link text-sm">
                     <a>Try another method</a>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
