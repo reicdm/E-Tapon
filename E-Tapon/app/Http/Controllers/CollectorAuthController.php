@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class CollectorAuthController extends Controller
 {
@@ -26,37 +27,15 @@ class CollectorAuthController extends Controller
             return redirect()->route('collector.dashboard');
         }
 
-        return back()->withErrors([
-            'email' => 'No matching email found.',
-            'password' => 'Incorrect password. Try again.',
+        throw ValidationException::withMessages([
+            'email'=>'No existing user in records.',
         ]);
     }
 
-    // REGISTER
-    public function showRegisterForm()
+    // FORGOT PASSWORD
+    public function showForgotForm()
     {
-        return view('auth.collector.register');
-    }
-
-    public function register(Request $request)
-    {
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        $fullName = trim($request->first_name . ' ' . $request->middle_name . ' ' . $request->last_name);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-
-        Auth::login($user);
-        return redirect()->route('collector.dashboard');
+        return view('auth.collector.forgot');
     }
 
     // LOGOUT

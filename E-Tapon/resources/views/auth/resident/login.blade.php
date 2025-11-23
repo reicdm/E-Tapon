@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+@extends('layouts.resident_auth')
 @section('title', 'Resident Login')
 
 @section('content')
@@ -8,7 +8,7 @@
   <div class="bottom-card w-full flex-grow p-8">
     <div class="max-w-md mx-auto">
 
-      <h1 class="text-4xl font-extrabold mb-10 mt-4">LOGIN</h1>
+      <h1 class="text-4xl font-extrabold mb-10 mt-4">RESIDENT LOGIN</h1>
 
       <form method="POST" action="{{ route('resident.login.submit') }}">
         @csrf
@@ -23,8 +23,8 @@
         </div>
 
         <!-- FORGOT PASSWORD -->
-        <div class="mb-16 signin-link text-sm">
-          <a>Forgot Password?</a>
+        <div class="mb-16 signin-link text-sm text-right">
+          <a href="{{ route('resident.forgot') }}">Forgot Password?</a>
         </div>
 
         <!-- LOGIN BUTTON -->
