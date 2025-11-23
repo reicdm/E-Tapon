@@ -25,11 +25,20 @@ Route::prefix('resident')->group(function () {
     Route::get('greet', function () {
         return view('auth.resident.greet');
     });
+    // LOGIN
     Route::get('/login', [ResidentAuthController::class, 'showLoginForm'])->name('resident.login');
     Route::post('/login', [ResidentAuthController::class, 'login'])->name('resident.login.submit');
+    // REGISTER
     Route::get('/register', [ResidentAuthController::class, 'showRegisterForm'])->name('resident.register');
     Route::post('/register', [ResidentAuthController::class, 'register'])->name('resident.register.submit');
+    // FORGOT
     Route::get('/forgot', [ResidentAuthController::class, 'showForgotForm'])->name('resident.forgot');
+    Route::post('/forgot', [ResidentAuthController::class, 'forgot'])->name('resident.forgot.submit');
+    Route::get('/forgot-success', function () {
+        return view('auth.resident.forgotsuccess');
+    })->name('resident.success');
+
+    // LOGOUT
     Route::post('/logout', [ResidentAuthController::class, 'logout'])->name('resident.logout');
 
     // DASHBOARD WITH VERIFICATION
@@ -44,9 +53,13 @@ Route::prefix('collector')->group(function () {
     Route::get('/greet', function () {
         return view('auth.collector.greet');
     });
+    // LOGIN
     Route::get('/login', [CollectorAuthController::class, 'showLoginForm'])->name('collector.login');
     Route::post('/login', [CollectorAuthController::class, 'login'])->name('collector.login.submit');
+    // FORGOT
     Route::get('/forgot', [CollectorAuthController::class, 'showForgotForm'])->name('collector.forgot');
+    Route::post('/forgot', [CollectorAuthController::class, 'forgot'])->name('collector.forgot.submit');
+    // LOGOUT
     Route::post('/logout', [CollectorAuthController::class, 'logout'])->name('collector.logout');
 
     // DASHBOARD WITH VERIFICATION

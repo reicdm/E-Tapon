@@ -70,6 +70,12 @@ class ResidentAuthController extends Controller
         return view('auth.resident.forgot');
     }
 
+    public function forgot(Request $request)
+    {
+        return redirect()->route('resident.success')->with('success', true);
+    }
+
+
     // LOGOUT
     public function logout(Request $request)
     {

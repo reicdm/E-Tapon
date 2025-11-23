@@ -1,4 +1,4 @@
-@extends('layouts.selectrole')
+@extends('layouts.lo_selectrole')
 
 @section('title', 'Choose User')
 

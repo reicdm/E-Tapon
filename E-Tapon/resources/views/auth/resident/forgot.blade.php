@@ -14,7 +14,7 @@
                 Forgot Password?
             </h1>
 
-            <form method="POST" action="">
+            <form method="POST" action="{{ route('resident.forgot.submit') }}">
                 @csrf
 
                 <div class="mb-4 form-input-group">
