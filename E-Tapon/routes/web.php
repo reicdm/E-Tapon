@@ -59,6 +59,9 @@ Route::prefix('collector')->group(function () {
     // FORGOT
     Route::get('/forgot', [CollectorAuthController::class, 'showForgotForm'])->name('collector.forgot');
     Route::post('/forgot', [CollectorAuthController::class, 'forgot'])->name('collector.forgot.submit');
+    Route::get('/forgot-success', function () {
+        return view('auth.collector.forgotsuccess');
+    })->name('collector.success');
     // LOGOUT
     Route::post('/logout', [CollectorAuthController::class, 'logout'])->name('collector.logout');
 

@@ -1,0 +1,38 @@
+:root {
+  --color-button-start: #1F4B2C;
+  --color-button-end: #4D7111;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: #FF9100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.popup {
+    background: #fffbe6;
+    padding: 40px;
+    width: 280px;
+    border-radius: 30px;
+    text-align: center;
+}
+
+.popup-box {
+    width: 160px;
+    height: 100px;
+    background: #FFD399;
+    margin: 0 auto 25px;
+    border-radius: 30px;
+}
+
+.ok-btn {
+    background: linear-gradient(180deg, var(--color-button-start) 0%, var(--color-button-end) 100%);
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+}

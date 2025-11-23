@@ -38,6 +38,11 @@ class CollectorAuthController extends Controller
         return view('auth.collector.forgot');
     }
 
+    public function forgot(Request $request)
+    {
+        return redirect()->route('collector.success')->with('success', true);
+    }
+
     // LOGOUT
     public function logout(Request $request)
     {
