@@ -15,9 +15,10 @@ class CollectorAuthController extends Controller
         return view('auth.collector.login');
     }
 
-    public function login(Request $request)
+    public function login()
     {
-        $credentials = $request->validate([
+        // Request $request
+        /*$credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
@@ -29,7 +30,8 @@ class CollectorAuthController extends Controller
 
         throw ValidationException::withMessages([
             'email'=>'No existing user in records.',
-        ]);
+        ]);*/
+        return view('collector.dashboard');
     }
 
     // FORGOT PASSWORD

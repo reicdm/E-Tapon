@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\CollectorAuthController;
 use App\Http\Controllers\CollectorDashboardController;
+use App\Http\Controllers\CollectorScheduleController;
+use App\Http\Controllers\CollectorRequestController;
+
 use App\Http\Controllers\ResidentAuthController;
 use App\Http\Controllers\ResidentDashboardController;
 use Illuminate\Support\Facades\Route;
@@ -66,7 +69,12 @@ Route::prefix('collector')->group(function () {
     Route::post('/logout', [CollectorAuthController::class, 'logout'])->name('collector.logout');
 
     // DASHBOARD WITH VERIFICATION
-    Route::middleware('auth')->group(function () {
+    /*Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [CollectorDashboardController::class, 'dashboard'])->name('collector.dashboard');
-    });
+    });*/
+
+    Route::get('/dashboard', [CollectorDashboardController::class, 'showOverview'])->name('collector.dashboard');
+    Route::get('/schedule', [CollectorScheduleController::class, 'showSchedule'])->name('collector.schedule');
+    Route::get('/request', [CollectorRequestController::class, 'showRequest'])->name('collector.request');
+
 });
