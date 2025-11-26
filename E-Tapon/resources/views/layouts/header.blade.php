@@ -22,8 +22,6 @@
         background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%231f4b2c' stroke-width='3.5' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
     }
 
-
-
     .nav-item {
         color: var(--color-dark-green);
         font-size: 14px;
@@ -54,7 +52,7 @@
     </div>
 </nav>
 
-<nav class="navbar navbar-expand-lg justify-content-center">
+<nav class="navbar navbar-expand-lg justify-content-center mt-0">
     <ul class="nav">
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('collector.dashboard') ? 'active' : '' }}"

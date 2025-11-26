@@ -1,0 +1,48 @@
+:root {
+    --color-dark-green: #1f4b2c;
+    --color-mid-green: #4D7111;
+    --color-orange: #ff9100;
+    --color-light-olive: #d5ed9f;
+    --color-cream: #fffbe6;
+    --color-link: #e68200;
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 150px;
+    min-width: 170px;
+    background: linear-gradient(to bottom, var(--color-mid-green), var(--color-orange));
+    color: white;
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: auto;
+    padding: 0;
+}
+
+.card-data-box-area,
+.card-data-box-truck {
+    margin-top: 56px;
+    background-color: var(--color-cream);
+    color: var(--color-dark-green);
+    text-align: center;
+    font-size:  0.75rem;
+    border-radius: 0.5rem;
+}
+
+.card-data-box-area {
+    padding: 1rem;
+}
+
+.card-data-box-truck {
+    padding: 0.50rem;
+}
+

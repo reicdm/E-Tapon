@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@yield('title', 'E-Tapon')</title>
   @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('collector_dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/collector_dashboard.css') }}">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
