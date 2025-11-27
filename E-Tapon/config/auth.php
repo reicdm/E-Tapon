@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        // added for collector
+        'collector' => [
+            'driver' => 'session',
+            'provider' => 'collectors',
+        ],
     ],
 
     /*
@@ -69,6 +74,11 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+        // added for collector
+        'collectors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\CollectorAuth::class,
+        ],
     ],
 
     /*

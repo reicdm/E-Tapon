@@ -9,7 +9,19 @@
 
       <h1 class="text-4xl font-extrabold mb-10 mt-4">COLLECTOR LOGIN</h1>
 
-      <form method="POST" action="{{ route('collector.login.submit') }}">
+      <!-- DISPLAY ERRORS -->
+      @if ($errors->any())
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <ul class="mb-0">
+          @foreach ($errors->all() as $error)
+          <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      @endif
+
+      <form method="POST" action="{{ route('collector.login') }}">
         @csrf
         <!-- EMAIL -->
         <div class="mb-4 form-input-group">

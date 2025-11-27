@@ -55,7 +55,7 @@ Route::prefix('collector')->group(function () {
     });
     // LOGIN
     Route::get('/login', [CollectorAuthController::class, 'showLoginForm'])->name('collector.login');
-    Route::post('/login', [CollectorAuthController::class, 'login'])->name('collector.login.submit');
+    Route::post('/login', [CollectorAuthController::class, 'login'])->name('login');
     // FORGOT
     Route::get('/forgot', [CollectorAuthController::class, 'showForgotForm'])->name('collector.forgot');
     Route::post('/forgot', [CollectorAuthController::class, 'forgot'])->name('collector.forgot.submit');
@@ -66,7 +66,7 @@ Route::prefix('collector')->group(function () {
     Route::post('/logout', [CollectorAuthController::class, 'logout'])->name('collector.logout');
 
     // DASHBOARD WITH VERIFICATION
-    Route::middleware('auth')->group(function () {
+    Route::middleware('auth:collector')->group(function () {
         Route::get('/dashboard', [CollectorDashboardController::class, 'dashboard'])->name('collector.dashboard');
     });
 });

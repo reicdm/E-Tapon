@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CollectorAuth;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -18,18 +19,28 @@ class CollectorAuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
         ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->route('collector.dashboard');
+        $collector = CollectorAuth::where('email', $credentials['email'])->first();
+
+        if (!$collector) {
+            return back()->withErrors([
+                'email' => 'No existing user in records.',
+            ])->withInput($request->except('password'));
         }
 
-        throw ValidationException::withMessages([
-            'email'=>'No existing user in records.',
-        ]);
+        if ($collector->password !== $request->password) {
+            return back()->withErrors([
+                'password' => 'Incorrect password.',
+            ])->withInput($request->except('password'));
+        }
+
+        // Login successful
+        Auth::guard('collector')->login($collector);
+        $request->session()->regenerate();
+        return redirect()->route('collector.dashboard');
     }
 
     // FORGOT PASSWORD
