@@ -16,7 +16,6 @@ body{
     flex-direction: column;
     justify-content: space-between;
     min-height: 150px;
-    min-width: 170px;
     background: linear-gradient(to bottom, var(--color-mid-green), var(--color-orange));
     color: white;
 }
