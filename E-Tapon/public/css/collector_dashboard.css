@@ -5,22 +5,56 @@
     --color-light-olive: #d5ed9f;
     --color-cream: #fffbe6;
     --color-link: #e68200;
+
+    --color-bg-completed: #F2F9E1;
+    --color-bg-inprogress: #FFE9CC;
+    --color-bg-pending: #FFECCC;
+    --color-bg-cancelled: #F7DDD9;
+
+    --color-completed:#4D7111;
+    --color-inprogress: #ff7b00;
+    --color-pending: #ffa813;
+    --color-cancelled: #C2402A;
 }
 
 body{
     font-family: 'Roboto', sans-serif;
 }
 
-.card {
+.row {
+    margin-top: 4px;
+}
+
+.card-top,
+.card-mid,
+.card-bot {
+    height: 150px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 150px;
-    background: linear-gradient(to bottom, var(--color-mid-green), var(--color-orange));
+    border-radius: 10px;
     color: white;
+    padding: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.card-title {
+.card-top {
+    height: 150px;
+    background: linear-gradient(to bottom, var(--color-mid-green), var(--color-orange));
+}
+
+.card-mid {
+    height: 178px;
+    background-color: var(--color-light-olive);
+}
+
+.card-bot {
+    height: 240px;
+    background-color: var(--color-dark-green);
+}
+
+.card-top-title,
+.card-sched-text-date {
     font-size: 1rem;
     font-weight: bold;
     margin-bottom: auto;
@@ -45,3 +79,61 @@ body{
     padding: 0.50rem;
 }
 
+.card-data-box-sched {
+    height: 120px;
+    width: 110px;
+    background-color: var(--color-mid-green);
+    color: var(--color-light-olive);
+    text-align: center;
+    font-size:  0.75rem;
+    border-radius: 0.5rem;
+    display: flex;                
+    flex-direction: column;       
+    justify-content: center;     
+    align-items: center; 
+}
+
+
+.card-sched-text-ba,
+.card-sched-text-status {
+    font-size: 0.75rem;
+    font-weight: 400;
+    margin-bottom: auto;
+    padding: 0;
+    text-align: center;
+}
+
+.sched-status-completed {
+    background-color: var(--color-bg-completed);
+    color: var(--color-completed);
+    font-weight: 400;
+}
+
+.sched-status-inprogress {
+    background-color: var(--color-bg-inprogress);
+    color: var(--color-inprogress);
+    font-weight: 400;
+}
+
+.sched-status-pending {
+    width: 85px;
+    background-color: var(--color-bg-pending);
+    color: var(--color-pending);
+    border-radius: 10px;
+    font-weight: 400;
+}
+
+.sched-status-cancelled {
+    background-color: var(--color-bg-cancelled);
+    color: var(--color-cancelled);
+    font-weight: 400;
+}
+
+
+.card-sched-status {
+    display: block;
+    padding: 0.25rem 1rem;
+    text-align: center;
+    border-radius: 50px;
+    margin-bottom: 4px;
+}
