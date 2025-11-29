@@ -36,6 +36,7 @@ body {
     padding-right: 16px;
 }
 
+/* MAIN CONTAINERS */
 .card-top,
 .card-mid,
 .card-bot {
@@ -43,9 +44,10 @@ body {
     flex-direction: column;
     justify-content: space-between;
     border-radius: 10px;
-    padding: 0.75rem;
+    padding: 0.6rem;
 }
 
+/* TOP CONTAINER */
 .card-top {
     height: 150px;
     color: white;
@@ -54,19 +56,42 @@ body {
         var(--color-mid-green),
         var(--color-orange)
     );
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 }
 
+/* MID CONTAINER */
 .card-mid {
     height: 178px;
 }
 
+/* BOT CONTAINER */
 .card-bot {
     height: 240px;
     background-color: var(--color-dark-green);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 }
 
+/* VIEW ALL LINK */
+.card-header-with-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.view-all-link {
+    color: var(--color-orange);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: opacity 0.2s;
+}
+
+/* ================================================================== */
+
+/* ASSIGNED AREA/TRUCK AND SCHED DATE TEXT */
 .card-top-title,
 .card-sched-text-date {
     align-self: flex-start;
@@ -77,11 +102,13 @@ body {
     padding: 0px;
 }
 
+/* SCHED DATE TEXT */
 .card-sched-text-date {
     margin-top: 8px;
     margin-left: 8px;
 }
 
+/* ASSIGNED AREA/TRUCK CONTAINER */
 .card-data-box-area,
 .card-data-box-truck {
     margin-top: 56px;
@@ -90,20 +117,27 @@ body {
     text-align: center;
     font-size: 0.75rem;
     border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 }
 
+/* ASSIGNED AREA CONTAINER */
 .card-data-box-area {
     padding: 1rem;
 }
 
+/* ASSIGNED TRUCK CONTAINER */
 .card-data-box-truck {
     padding: 0.5rem;
 }
 
-.card-data-box-sched {
+/* ================================================================== */
+
+/* INDIVIDUAL (MAIN) CONTAINER: SCHED STATUS BG */
+.card-status-bg-completed,
+.card-status-bg-inprogress,
+.card-status-bg-pending,
+.card-status-bg-cancelled {
     height: 125px;
-    background-color: var(--color-mid-green);
-    color: var(--color-light-olive);
     text-align: center;
     font-size: 0.75rem;
     border-radius: 0.5rem;
@@ -112,47 +146,30 @@ body {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    border-top: 15px;
+    border-style: solid;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 }
 
+/* SCHED TEXT: BRGY AND AREA */
 .card-sched-text-ba,
 .card-sched-text-status {
-    font-size: 0.75rem;
+    font-size: 0.6rem;
     font-weight: 400;
     margin-bottom: auto;
     padding: 0;
     text-align: center;
 }
 
-.sched-status-completed {
-    width: 90px;
-    background-color: var(--color-bg-completed);
-    color: var(--color-pending);
-    border-radius: 10px;
-    font-weight: 400;
-}
-
-.sched-status-inprogress {
-    width: 90px;
-    background-color: var(--color-bg-inprogress);
-    color: var(--color-pending);
-    border-radius: 10px;
-    font-weight: 400;
-}
-
-.sched-status-pending {
-    width: 90px;
-    background-color: var(--color-bg-pending);
-    color: var(--color-pending);
-    border-radius: 10px;
-    font-weight: 400;
-}
-
+/* INDIVIDUAL (SMALL) CONTAINER: SCHED STATUS */
+.sched-status-completed,
+.sched-status-inprogress,
+.sched-status-pending,
 .sched-status-cancelled {
     width: 90px;
-    background-color: var(--color-bg-cancelled);
-    color: var(--color-pending);
     border-radius: 10px;
     font-weight: 400;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 }
 
 .card-sched-status {
@@ -163,26 +180,126 @@ body {
     margin-bottom: 4px;
 }
 
+/* COMPLETED CONTAINER */
+.sched-status-completed {
+    background-color: var(--color-completed);
+    color: white;
+}
+
+.card-status-bg-completed {
+    background-color: var(--color-bg-completed);
+    border-color: var(--color-completed);
+}
+
+/* IN PROGRESS CONTAINER */
+.sched-status-inprogress {
+    background-color: var(--color-inprogress);
+}
+.card-status-bg-inprogress {
+    background-color: var(--color-bg-inprogress);
+    border-color: var(--color-inprogress);
+}
+
+/* PENDING CONTAINER */
+.sched-status-pending {
+    background-color: var(--color-pending);
+}
+.card-status-bg-pending {
+    background-color: var(--color-bg-pending);
+    border-color: var(--color-pending);
+}
+
+/* CANCELLED CONTAINER */
+.sched-status-cancelled {
+    background-color: var(--color-cancelled);
+    color: white;
+}
+.card-status-bg-cancelled {
+    background-color: var(--color-bg-cancelled);
+    border-color: var(--color-cancelled);
+}
+
+/* ================================================================== */
+
+/* INDIVIDUAL REQUEST CONTAINER */
 .card-data-box-req {
-    height: 70px;
+    height: 60px;
     background-color: var(--color-cream);
-    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+    padding: 0.75rem;
     border-radius: 0.5rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
     box-sizing: border-box;
 }
 
+/* CIRCLE IMAGE CONTAINER */
+.circle {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background-color: var(--color-mid-green);
+    border-radius: 50%;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* WASTE IMAGE */
+.waste-img {
+    width: 32px;
+    height: 32px;
+    filter: brightness(0) invert(1);
+}
+
+/* REQUEST INFO CONTAINER */
+.card-req-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+/* NAME TEXT */
+.card-req-text-name {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* WASTE TYPE/KILO TEXT */
+.card-req-text-wk {
+    font-size: 0.6rem;
+    margin: 0;
+    line-height: 1;
+}
+
+/* REQUEST INFO RIGHT CONTAINER */
+.card-req-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+/* REQUEST DATE CONTAINER */
+.card-req-text-date {
+    font-size: 0.6rem;
+    margin: 0;
+}
+
+/* DETAILS BUTTON */
 .btn-details {
     width: 100px;
     height: 20px;
     background: var(--color-orange);
     color: white;
-    font-weight: bold;
-    border-radius: 8px;
-}
-
-.btn-details,
-.card-req-text-date{
-    align-self: flex-end;
+    font-weight: 400;
+    font-size: 0.875rem;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 }
