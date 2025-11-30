@@ -1,0 +1,48 @@
+:root {
+    --color-dark-green: #1f4b2c;
+    --color-mid-green: #4d7111;
+    --color-orange: #ff9100;
+    --color-light-olive: #d5ed9f;
+    --color-cream: #fffbe6;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+}
+
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgb(255, 145, 0, 0.50);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* REQUEST DETAILS POPUP*/
+.popup {
+    width: 360px;
+    height: 710px;
+    background: var(--color-cream);
+    padding: 32px;
+    border-radius: 30px;
+    text-align: center;
+
+    font-size: 20px;
+}
+
+/* CIRCLE IMAGE CONTAINER */
+.circle {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    background-color: var(--color-orange);
+    border-radius: 50%;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
