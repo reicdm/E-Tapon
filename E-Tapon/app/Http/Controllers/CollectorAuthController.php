@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\CollectorAuth;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
+use App\Http\Requests\CollectorLoginRequest;
 
 class CollectorAuthController extends Controller
 {
@@ -16,14 +15,9 @@ class CollectorAuthController extends Controller
         return view('auth.collector.login');
     }
 
-    public function login(Request $request)
+    public function login(CollectorLoginRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string'],
-        ]);
-
-        $collector = CollectorAuth::where('email', $credentials['email'])->first();
+        $collector = CollectorAuth::where('email', $request['email'])->first();
 
         if (!$collector) {
             return back()->withErrors([
