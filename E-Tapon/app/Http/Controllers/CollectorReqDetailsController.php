@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class CollectorDashboardController extends Controller
+class CollectorReqDetailsController extends Controller
 {
     // LOGIN
-    public function showOverview()
+    public function showRequestDetails()
     {
-        return view('collector.dashboard');
+        return view('collector.reqdetails');
     }
  
 }
