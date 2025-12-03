@@ -3,9 +3,10 @@
 @section('content')
 <div class="overlay">
     <div class="popup">
-        <div class="row justify-content-center mb-8">
-            <div class="circle">
+        <button class="close-btn">&times;</button>
 
+        <div class="row justify-content-center mb-8 mt-2">
+            <div class="circle">
             </div>
             <h2 class="font-extrabold" style="color: var(--color-dark-green)">Request Details</h2>
         </div>
@@ -53,7 +54,7 @@
             </select>
         </div>
 
-        <div class="action-buttons mt-20">
+        <div class="action-buttons mt-16">
             <button class="btn-accept">Accept</button>
             <button class="btn-decline">Decline</button>
         </div>
