@@ -9,5 +9,5 @@ class CollectorScheduleController extends Controller
     {
         return view('collector.schedule');
     }
- 
+    
 }

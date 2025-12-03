@@ -8,11 +8,7 @@
         <div class="row row-wel justify-content-center">
             <h1 class="font-extrabold" style="color: var(--color-dark-green) ">Collector Schedule</h1>
         </div>
-
-        
     </div>
 </div>
-</div>
-
 
 @endsection
