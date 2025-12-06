@@ -61,7 +61,7 @@
                             <div class="col">
                                 <div class="card-status-bg-{{ strtolower(str_replace(' ', '', $schedule->status)) }}">
                                     <h2 class="card-sched-text-date">
-                                        {{ strtoupper(\Carbon\Carbon::parse($schedule->collection_date)->format('M d')) }}
+                                        {{ strtoupper(\Carbon\Carbon::parse($schedule->date)->format('M d')) }}
                                     </h2>
                                     <div>
                                         <p class="card-sched-text-ba">{{ $schedule->brgy_name }}</p>

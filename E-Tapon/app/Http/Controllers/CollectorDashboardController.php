@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 
 class CollectorDashboardController extends Controller
 {
@@ -15,19 +12,45 @@ class CollectorDashboardController extends Controller
     {
         $collector = Auth::guard('collector')->user();
 
-        $recentSchedules = DB::table('record_tbl as r')
+        // Get recent scheduled collections
+        $scheduledCollections = DB::table('record_tbl as r')
             ->join('collectorsched_tbl as cs', 'r.sched_id', '=', 'cs.sched_id')
             ->join('area_tbl as a', 'r.brgy_id', '=', 'a.brgy_id')
             ->join('truck_tbl as t', 'cs.license_plate', '=', 't.license_plate')
             ->where('cs.collector_id', $collector->collector_id)
+            ->whereNot('r.status', 'Pending')
             ->select(
-                'r.collection_date',
+                'r.collection_date as date',
                 'r.status',
                 'a.brgy_name',
                 'cs.license_plate',
-                'cs.collection_day'
-            )
-            ->orderBy('r.collection_date', 'desc')
+                'cs.collection_day',
+                DB::raw("'Scheduled' as type"),
+                DB::raw('NULL as waste_type'),
+                DB::raw('NULL as quantity')
+            );
+
+        // Get recent requests
+        $requests = DB::table('request_tbl as req')
+            ->join('user_tbl as u', 'req.user_id', '=', 'u.user_id')
+            ->join('area_tbl as a', 'u.brgy_id', '=', 'a.brgy_id')
+            ->where('req.collector_id', $collector->collector_id)
+            ->whereNot('req.status', 'Pending')
+            ->select(
+                'req.preferred_date as date',
+                'req.status',
+                'a.brgy_name',
+                'req.license_plate',
+                DB::raw('NULL as collection_day'),
+                DB::raw("'Request' as type"),
+                'req.waste_type',
+                'req.quantity'
+            );
+
+        // Union and get top 3 most recent
+        $recentSchedules = $scheduledCollections
+            ->union($requests)
+            ->orderBy('date', 'desc')
             ->limit(3)
             ->get();
 
