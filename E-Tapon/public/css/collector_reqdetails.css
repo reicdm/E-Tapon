@@ -10,11 +10,26 @@ body {
     font-family: "Roboto", sans-serif;
 }
 
+label {
+    font-size: 16px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 32px;
+    cursor: pointer;
+    color: var(--color-orange);
+}
 
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgb(255, 145, 0, 0.50);
+    background: rgb(31, 75, 44, 0.7);
+    backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,11 +41,16 @@ body {
     width: 360px;
     height: 710px;
     background: var(--color-cream);
-    padding: 32px;
+    padding: 24px;
     border-radius: 30px;
-    text-align: center;
-
     font-size: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    justify-content: center;
+    position: relative;
+}
+
+.popup h2 {
+    text-align: center;
 }
 
 /* CIRCLE IMAGE CONTAINER */
@@ -45,4 +65,79 @@ body {
     justify-content: center;
     align-items: center;
     margin-bottom: 0.75rem;
+}
+
+/* FORM INPUT CONTAINER*/
+.form-row-container {
+    display: flex;
+    gap: 24px;
+    margin-top: 8px;
+}
+
+.card-field-nr,
+.card-field-wq,
+.card-field-dt,
+.card-field-t {
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.card-field-nr,
+.card-field-dt,
+.card-field-t {
+    gap: 24px;
+    align-items: center;
+}
+
+.card-field-wq {
+    flex-direction: column;
+}
+
+.card-field-nr label,
+.card-field-wq label,
+.card-field-dt label,
+.card-field-t label {
+    min-width: 80px;
+    font-size: 14px;
+}
+
+/* Inputs and selects */
+.card-field-nr input,
+.card-field-wq input,
+.card-field-dt input,
+.card-field-t select {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 12px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.btn-accept,
+.btn-decline {
+    width: 100px;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.btn-accept {
+    background: var(--color-cream);
+    color: var(--color-orange);
+    border: 2px solid;
+    border-color: var(--color-orange);
+}
+
+.btn-decline {
+    background: var(--color-orange);
+    color: white;
 }
