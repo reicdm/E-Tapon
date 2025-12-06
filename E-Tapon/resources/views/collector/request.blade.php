@@ -36,7 +36,7 @@
                     </div>
                 </div>
 
-                <div class="carousel-item active">
+                <div class="carousel-item">
                     <div class="row g-3">
 
                         <div class="col-6 col-md-6">
@@ -61,8 +61,6 @@
                     </div>
                 </div>
 
-
-
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
@@ -72,6 +70,48 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
+
+            <div class="row row-con justify-content-center g-2">
+                <div class="col">
+                    <div class="card-mid">
+                        <div class="card-header-with-link">
+                            <h2 class="font-extrabold" style="color: var(--color-dark-green) ">Collection Schedule</h2>
+                        </div>
+                        <div class="row-sched row-cols-3">
+                            <a href="{{ route('collector.schedule') }}" class="card-link">
+                                <div class="col">
+                                    <div class="card-status-bg-pending">
+                                        <h2 class="card-sched-text-date">JAN 01</h2>
+                                        <div>
+                                            <p class="card-sched-text-ba">Brgy. 123</p>
+                                            <p class="card-sched-text-ba">ABC 1234</p>
+                                        </div>
+                                        <div class="card-sched-status">
+                                            <p class="sched-status-pending">Pending</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="{{ route('collector.schedule') }}" class="card-link">
+                                <div class="col">
+                                    <div class="card-status-bg-inprogress">
+                                        <h2 class="card-sched-text-date">JAN 01</h2>
+                                        <div>
+                                            <p class="card-sched-text-ba">Brgy. 123</p>
+                                            <p class="card-sched-text-ba">ABC 1234</p>
+                                        </div>
+                                        <div class="card-sched-status">
+                                            <p class="sched-status-inprogress">In progress</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
     @endsection

@@ -20,25 +20,25 @@ body {
     margin: 4px;
 }
 
-@media (min-width: 768px) {
-  .carousel-inner {
-    display: block;
-  }
-  .carousel-item {
-    margin-right: 0;
-    flex: 0 0 auto;;
-    display: block;
-  }
+.card-mid {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 0.6rem;
+}
+
+
+/* MID CONTAINER */
+.card-mid {
+    height: 178px;
 }
 
 .carousel-inner{
-    padding: 0;
+    padding: 0.75rem;
 }
 
 .card{
-    margin: .5em;
-    box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
-    border: none;
     width: 180px;
     height: 200px;
 }
