@@ -110,7 +110,7 @@
                                     <p class="card-req-text-date">
                                         {{ \Carbon\Carbon::parse($request->request_date)->format('m/d/y') }}
                                     </p>
-                                    <button class="btn-details"><a href="{{ route('collector.requestdetails', $request->request_id) }}">
+                                    <button class="btn-details"><a href="{{ route('collector.reqdetails.showRequestDetails', $request->request_id) }}">
                                             Details
                                         </a></button>
                                 </div>

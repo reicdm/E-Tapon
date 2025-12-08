@@ -72,8 +72,14 @@ Route::prefix('collector')->group(function () {
     // DASHBOARD WITH VERIFICATION
     Route::middleware('auth:collector')->group(function () {
         Route::get('/dashboard', [CollectorDashboardController::class, 'showOverview'])->name('collector.dashboard');
-        Route::get('/requestdetails', [CollectorReqDetailsController::class, 'showRequestDetails'])->name('collector.requestdetails');
         Route::get('/schedule', [CollectorScheduleController::class, 'showSchedule'])->name('collector.schedule');
         Route::get('/request', [CollectorRequestController::class, 'showRequest'])->name('collector.request');
+
+        // request details
+        Route::prefix('requestdetails')->group(function () {
+            Route::get('/{requestId}', [CollectorReqDetailsController::class, 'showRequestDetails'])->name('collector.reqdetails.showRequestDetails');
+            Route::post('/{requestId}/accept', [CollectorReqDetailsController::class, 'accept'])->name('collector.reqdetails.accept');
+            Route::post('/{requestId}/decline', [CollectorReqDetailsController::class, 'decline'])->name('collector.reqdetails.decline');
+        });
     });
 });

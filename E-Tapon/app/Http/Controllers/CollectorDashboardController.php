@@ -56,16 +56,17 @@ class CollectorDashboardController extends Controller
 
         $pendingRequests = DB::table('request_tbl as req')
             ->join('user_tbl as u', 'req.user_id', '=', 'u.user_id')
-            ->where('req.collector_id', $collector->collector_id)
+            ->whereNull('req.collector_id')  // Unassigned
             ->where('req.status', 'Pending')
             ->select(
                 'req.request_id',
                 'req.quantity',
                 'req.waste_type',
                 'req.request_date',
+                'req.preferred_date',
                 DB::raw("CONCAT(u.firstname, ' ', u.lastname) as resident_name")
             )
-            ->orderBy('req.request_date', 'desc')
+            ->orderBy('req.preferred_date', 'desc')
             ->limit(3)
             ->get();
 
