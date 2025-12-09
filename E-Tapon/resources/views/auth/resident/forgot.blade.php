@@ -31,11 +31,9 @@
                     <input id="newpassword" type="password" name="newpassword" placeholder="Re-Enter New Password">
                 </div>
 
-                <a href="{{ route('resident.success')}}">
-                    <button type="submit" class="w-full btn-orange-gradient text-lg shadow-xl mt-48">
-                        SAVE
-                    </button>
-                </a>
+                <button type="submit" class="w-full btn-orange-gradient text-lg shadow-xl mt-48">
+                    SAVE
+                </button>
 
                 <div class="mt-8 try-link text-sm">
                     <a>Try another method</a>

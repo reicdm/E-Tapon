@@ -10,4 +10,14 @@ class ResidentDashboardController extends Controller
     {
         return view('resident.dashboard');
     }
+
+    public function schedule()
+    {
+        return view('resident.schedule');
+    }
+
+    public function request()
+    {
+        return view('resident.request');
+    }
 }

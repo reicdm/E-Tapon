@@ -28,12 +28,12 @@ Route::prefix('resident')->group(function () {
     Route::get('greet', function () {
         return view('auth.resident.greet');
     });
-    // LOGIN
-    Route::get('/login', [ResidentAuthController::class, 'showLoginForm'])->name('resident.login');
-    Route::post('/login', [ResidentAuthController::class, 'login'])->name('resident.login.submit');
     // REGISTER
     Route::get('/register', [ResidentAuthController::class, 'showRegisterForm'])->name('resident.register');
     Route::post('/register', [ResidentAuthController::class, 'register'])->name('resident.register.submit');
+    // LOGIN
+    Route::get('/login', [ResidentAuthController::class, 'showLoginForm'])->name('resident.login');
+    Route::post('/login', [ResidentAuthController::class, 'login'])->name('resident.login.submit');
     // FORGOT
     Route::get('/forgot', [ResidentAuthController::class, 'showForgotForm'])->name('resident.forgot');
     Route::post('/forgot', [ResidentAuthController::class, 'forgot'])->name('resident.forgot.submit');
@@ -45,9 +45,13 @@ Route::prefix('resident')->group(function () {
     Route::post('/logout', [ResidentAuthController::class, 'logout'])->name('resident.logout');
 
     // DASHBOARD WITH VERIFICATION
-    Route::middleware('auth')->group(function () {
-        Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
-    });
+    // Route::middleware('auth')->group(function () {
+    //     Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
+    // });
+
+    Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
+    Route::get('/schedule', [ResidentDashboardController::class, 'schedule'])->name('resident.schedule');
+    Route::get('/request', [ResidentDashboardController::class, 'request'])->name('resident.request');
 });
 
 // COLLECTOR ROUTES

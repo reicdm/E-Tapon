@@ -11,6 +11,18 @@
 
       <form method="POST" action="{{ route('resident.register.submit') }}">
         @csrf
+
+        @if ($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <strong>Oops! Please fix the following:</strong>
+          <ul class="mt-2 list-disc pl-5">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
+        @endif
+
         <!-- FNAME -->
         <div class="mb-4 form-input-group">
           <input type="text" name="first_name" placeholder="First Name" required>
@@ -48,7 +60,12 @@
 
         <!-- AREA / BARANGAY -->
         <div class="mb-4 form-input-group">
-          <input type="text" name="area_barangay" placeholder="Area / Barangay" required>
+          <select name="area_barangay" required style="background: none; border: none; outline: none; color: var(--color-dark-green); padding-left: 0.75rem; width: 100%;">
+            <option value="">Select Barangay</option>
+            @foreach($barangays as $brgy)
+            <option value="{{ $brgy->brgy_id }}">{{ $brgy->brgy_name }}</option>
+            @endforeach
+          </select>
         </div>
 
         <!-- ZIP CODE -->
