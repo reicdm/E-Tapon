@@ -38,7 +38,7 @@ class ResidentDashboardController extends Controller
 
     public function showRequestForm()
     {
-        return view('resident.request-create');
+        return view('resident.request_create');
     }
 
     public function create(Request $request)
