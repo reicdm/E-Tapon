@@ -46,9 +46,16 @@ Route::prefix('resident')->group(function () {
     Route::post('/logout', [ResidentAuthController::class, 'logout'])->name('resident.logout');
 
     // DASHBOARD WITH VERIFICATION
-    Route::middleware('auth')->group(function () {
-        Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
-    });
+    // Route::middleware('auth')->group(function () {
+    //     Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
+    // });
+
+    Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
+    Route::get('/schedule', [ResidentDashboardController::class, 'schedule'])->name('resident.schedule');
+    Route::get('/request', [ResidentDashboardController::class, 'request'])->name('resident.request');
+    Route::get('/request/create', [ResidentDashboardController::class, 'showRequestForm'])->name('resident.request.create');
+    Route::post('/request/create', [ResidentDashboardController::class, 'create'])->name('resident.request.submit');
+    Route::get('/profile', [ResidentDashboardController::class, 'profile'])->name('resident.profile');
 });
 
 // COLLECTOR ROUTES
@@ -78,5 +85,4 @@ Route::prefix('collector')->group(function () {
     Route::get('/requestdetails', [CollectorReqDetailsController::class, 'showRequestDetails'])->name('collector.requestdetails');
     Route::get('/schedule', [CollectorScheduleController::class, 'showSchedule'])->name('collector.schedule');
     Route::get('/request', [CollectorRequestController::class, 'showRequest'])->name('collector.request');
-
 });
