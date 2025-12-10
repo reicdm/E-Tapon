@@ -13,38 +13,36 @@
         @csrf
         <!-- NAME -->
         <div class="mb-4 form-input-group">
-          <input id="name" type="text" name="name" placeholder="Resident Name">
+          <input id="name" type="text" name="name" placeholder="Resident Name" required>
         </div>
 
         <!-- ADDRESS -->
         <div class="mb-4 form-input-group">
-          <input id="address" type="text" name="address" placeholder="Address">
+          <input id="address" type="text" name="address" placeholder="Address" required>
         </div>
 
         <!-- AREA/BRGY. -->
-        <div class="mb-4 form-input-group">
-          <input id="area_brgy" type="text" name="area_brgy" placeholder="Area/Brgy.">
+        <div class=" form-input-group">
+          <input id="area_brgy" type="text" name="area_brgy" placeholder="Area/Brgy." required>
         </div>
 
         <!-- PREFERRED DATE -->
-        <h3 class="waste-type-heading">Preferred Date & Time</h3>
-        <!-- <div class="mb-4 form-input-group">
-          <input id="pref_date" type="date" name="pref_date" placeholder="Preferred Date">
-        </div> -->
-        <div class="mb-4 form-input-group">
-          <input type="date" name="pref_date" required>
+        <!-- <h3 class="waste-type-heading">Preferred Date & Time</h3> -->
+        <div class="line-divider"></div>
+        <div class="mb-4 form-input-group horizontal-input">
+          <label for="pref_date" class="input-label-side">Date</label>
+          <input id="pref_date" type="date" name="pref_date" placeholder="Preferred Date" required>
         </div>
 
         <!-- PREFERRED TIME -->
-        <div class="mb-4 form-input-group">
-          <input id="pref_time" type="time" name="pref_time" placeholder="Preferred Time">
+        <div class=" form-input-group horizontal-input">
+          <label for="pref_date" class="input-label-side">Time</label>
+          <input id="pref_time" type="time" name="pref_time" placeholder="Preferred Time" required>
         </div>
 
-        <!-- <div class="line-divider"></div> -->
+        <div class="line-divider"></div>
 
-        <h3 class="waste-type-heading">Select Waste Type</h3>
-
-
+        <!-- <h3 class="waste-type-heading">Select Waste Type</h3> -->
 
         <!-- TRASH TYPE CARDS -->
         <div class="metric-grid trash-type-selection">
@@ -84,6 +82,11 @@
             </div>
             <p class="trash-type-name">Non-Bio</p>
           </label>
+        </div>
+
+        <!-- QUANTITY -->
+        <div class="mt-4 form-input-group">
+          <input id="qty" type="number" name="qty" placeholder="Quantity (kg)">
         </div>
     </div>
 

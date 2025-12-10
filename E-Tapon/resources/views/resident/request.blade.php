@@ -3,6 +3,45 @@
 @section('body-class', 'is-static-page')
 @section('content')
 <div class="dashboard-mobile-container mt-0">
+  <div>
+    @if (session('popup_message'))
+    <div id="toast-backdrop" class="toast-backdrop">
+      <div id="toast-message" class="custom-toast">
+        <div class="toast-content">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check-circle-fill toast-icon" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022l-3.477 4.426-2.094-2.094a.75.75 0 1 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+          </svg>
+
+          <p class="toast-message">
+            {{ session('popup_message') }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const toast = document.getElementById('toast-message');
+        const backdrop = document.getElementById('toast-backdrop');
+
+        // Show pop-up
+        if (toast) {
+          toast.classList.add('active');
+          backdrop.classList.add('active');
+        }
+
+        // Hide pop-up after 5 seconds
+        setTimeout(function() {
+          if (toast) {
+            toast.classList.remove('active');
+            backdrop.classList.remove('active');
+          }
+        }, 5000); // 5 seconds
+      });
+    </script>
+    @endif
+  </div>
+
+
   <div class="content-wrapper">
     <h2 class="title-heading">
       My Special Requests

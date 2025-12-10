@@ -45,7 +45,7 @@ class ResidentDashboardController extends Controller
     {
         // POST logic
 
-        return redirect()->route('resident.request')->with('success', 'Request created successfully!');
+        return redirect()->route('resident.request')->with('popup_message', 'Request successful! Please wait for the approval.');
     }
 
     public function profile()
