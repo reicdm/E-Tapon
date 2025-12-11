@@ -262,7 +262,7 @@
                         <div class="col">
                             <div class="card-data-box-req">
                                 <div class="circle">
-                                    <img src="{{ asset('icons/C_recycle.png') }}">
+                                    <img src="{{ asset('icons/C_recycle.png') }}" class="waste-img-bot">
                                 </div>
                                 <div class="card-req-info">
                                     <h2 class="card-req-text-name">John Doe</h2>
@@ -275,7 +275,7 @@
                             </div>
                             <div class="card-data-box-req">
                                 <div class="circle">
-                                    <img src="{{ asset('icons/C_bio.png') }}">
+                                    <img src="{{ asset('icons/C_bio.png') }}" class="waste-img-bot">
                                 </div>
                                 <div class="card-req-info">
                                     <h2 class="card-req-text-name">John Doe</h2>
@@ -288,7 +288,7 @@
                             </div>
                             <div class="card-data-box-req">
                                 <div class="circle">
-                                    <img src="{{ asset('icons/C_nonbio.png') }}">
+                                    <img src="{{ asset('icons/C_nonbio.png') }}" class="waste-img-bot">
                                 </div>
                                 <div class="card-req-info">
                                     <h2 class="card-req-text-name">John Doe</h2>

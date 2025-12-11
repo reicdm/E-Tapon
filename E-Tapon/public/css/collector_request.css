@@ -258,7 +258,9 @@ body {
 
 /* WASTE IMAGE */
 .waste-img-bot {
-    width: 56px;
+    width: 120%;
+    height: 120%;
+    object-fit: contain;
 }
 
 /* REQUEST INFO CONTAINER */
