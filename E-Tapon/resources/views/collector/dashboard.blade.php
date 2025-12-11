@@ -5,13 +5,16 @@
 @section('content')
 <div class="min-h-screen flex flex-col p-2">
     <div class="mx-auto max-w-4xl w-full p-2">
+        <!-- GREETINGS -->
         <div class="row row-wel justify-content-center">
             <h2 class="font-extrabold" style="color: var(--color-dark-green) ">Welcome, Sample Name!</h2>
             <p style="color: var(--color-dark-green) ">ID: 123-456-789</p>
         </div>
 
+        <!-- TOP CONTAINER -->
         <div class="row row-con row-cols-2 row-cols-md-2 justify-content-center g-2">
             <div class="col">
+                <!-- ASSIGNED AREA -->
                 <div class="card-top">
                     <div class="card-body">
                         <h6 class="card-top-title">Assigned Area</h6>
@@ -22,6 +25,7 @@
                 </div>
             </div>
             <div class="col">
+                <!-- ASSIGNED TRUCK -->
                 <div class="card-top">
                     <div class="card-body">
                         <h5 class="card-top-title">Assigned Truck</h5>
@@ -34,6 +38,7 @@
             </div>
         </div>
 
+        <!-- MID CONTAINER -->
         <div class="row row-con justify-content-center g-2">
             <div class="col">
                 <div class="card-mid">
@@ -43,6 +48,7 @@
                             View all →
                         </a>
                     </div>
+                    <!-- CARDS -->
                     <div class="row-sched row-cols-3">
                         <a href="{{ route('collector.schedule') }}" class="card-link">
                             <div class="col">
@@ -92,6 +98,7 @@
             </div>
         </div>
 
+        <!-- BOTTOM CONTAINER -->
         <div class="row row-con justify-content-center g-2">
             <div class="col">
                 <div class="card-bot">
@@ -101,11 +108,12 @@
                             View all →
                         </a>
                     </div>
+                    <!-- CARDS -->
                     <div class="card-req">
                         <div class="col">
                             <div class="card-data-box-req">
                                 <div class="circle">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Recycling_symbol.svg" class="wastes-img">
+                                    <img src="{{ asset('icons/C_recycle.png') }}" class="waste-img">
                                 </div>
                                 <div class="card-req-info">
                                     <h2 class="card-req-text-name">John Doe</h2>
@@ -117,13 +125,14 @@
                                     <button type="button" class="btn-details">Details</button>
                                 </div>
                             </div>
+                            
                             <div class="card-data-box-req">
                                 <div class="circle">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Recycling_symbol.svg" class="wastes-img">
+                                    <img src="{{ asset('icons/C_bio.png') }}" class="waste-img">
                                 </div>
                                 <div class="card-req-info">
                                     <h2 class="card-req-text-name">John Doe</h2>
-                                    <p class="card-req-text-wk">Recyclable</p>
+                                    <p class="card-req-text-wk">Biodegradable</p>
                                     <p class="card-req-text-wk">1kg</p>
                                 </div>
                                 <div class="card-req-right">
@@ -131,13 +140,14 @@
                                     <button type="button" class="btn-details">Details</button>
                                 </div>
                             </div>
+
                             <div class="card-data-box-req">
                                 <div class="circle">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Recycling_symbol.svg" class="wastes-img">
+                                    <img src="{{ asset('icons/C_nonbio.png') }}" class="waste-img">
                                 </div>
                                 <div class="card-req-info">
                                     <h2 class="card-req-text-name">John Doe</h2>
-                                    <p class="card-req-text-wk">Recyclable</p>
+                                    <p class="card-req-text-wk">Non-Biodegradable</p>
                                     <p class="card-req-text-wk">1kg</p>
                                 </div>
                                 <div class="card-req-right">
