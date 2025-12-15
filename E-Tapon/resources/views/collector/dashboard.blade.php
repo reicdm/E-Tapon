@@ -107,7 +107,15 @@
                             @forelse($pendingRequests as $request)
                             <div class="card-data-box-req">
                                 <div class="circle">
-                                    <img src="{{ asset('icons/C_recycle.png') }}" class="waste-img">
+                                    @php
+                                    $wasteTypeMap = [
+                                    'Recyclable' => 'recycle',
+                                    'Biodegradable' => 'bio',
+                                    'Non-Biodegradable' => 'nonbio',
+                                    ];
+                                    $iconName = $wasteTypeMap[$request->waste_type] ?? 'recycle';
+                                    @endphp
+                                    <img src="{{ asset('icons/C_' . $iconName . '.png') }}" class="waste-img" alt="{{ $request->waste_type }}">
                                 </div>
                                 <div class="card-req-info">
                                     <h2 class="card-req-text-name">{{ $request->resident_name }}</h2>
