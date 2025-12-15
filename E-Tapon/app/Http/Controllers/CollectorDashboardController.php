@@ -66,12 +66,10 @@ class CollectorDashboardController extends Controller
                 'req.preferred_date',
                 DB::raw("CONCAT(u.firstname, ' ', u.lastname) as resident_name")
             )
-            ->orderBy('req.preferred_date', 'desc')
+            ->orderBy('req.preferred_date', 'asc')
             ->limit(3)
             ->get();
 
-
-        $today = now()->format('l');
 
         $today = now()->format('l');
 
