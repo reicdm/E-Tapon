@@ -219,6 +219,13 @@ body {
 }
 
 /* ================================================================== */
+/* CARD REQ CONTAINER*/
+.card-req {
+    flex: 1;                  
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5rem;
+}
 
 /* INDIVIDUAL REQUEST CONTAINER */
 .card-data-box-req {
@@ -251,7 +258,6 @@ body {
 .waste-img {
     width: 32px;
     height: 32px;
-    filter: brightness(0) invert(1);
 }
 
 /* REQUEST INFO CONTAINER */
