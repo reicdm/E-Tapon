@@ -43,6 +43,8 @@
             <input id="time" type="text" class="form-control" placeholder="10:00 AM" readonly>
         </div>
 
+        <hr class="my-2">
+
         <label class="font-extrabold" style="color: var(--color-dark-green)">Assigned Truck</label>
 
         <div class="card-field-t">

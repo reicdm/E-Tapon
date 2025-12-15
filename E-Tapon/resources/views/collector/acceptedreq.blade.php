@@ -38,15 +38,13 @@
             <input id="date" type="text" class="form-control" value="January 1, 2025" readonly>
         </div>
 
-        <div class="card-field-dt mb-2">
+        <div class="card-field-dt">
             <label>Preferred Time</label>
             <input id="time" type="text" class="form-control" placeholder="10:00 AM" readonly>
         </div>
 
-        <label class="font-extrabold" style="color: var(--color-dark-green)">Assigned Truck</label>
-
-        <div class="card-field-t mb-4">
-            <label>Select Truck</label>
+        <div class="card-field-t">
+            <label>Assigned Truck</label>
             <select disabled>
                 <option>ABC 1234 (5-ton capacity)</option>
                 <option>DEF 9981 (10-ton capacity)</option>
@@ -54,12 +52,55 @@
             </select>
         </div>
 
-        <label class="font-extrabold" style="color: var(--color-dark-green)">Select Status</label>
-        <div class="card-sched-status">
-            <p class="sched-status-pending">Pending</p>
+        <hr class="my-3">
+        <div class="update-status-card">
+            <h4 class="update-title">Update Status</h4>
+            <!-- STATUS OPTIONS -->
+            <div class="status-options mb-4">
+                <button type="button" class="sched-status-assigned" data-status="assigned">
+                    Assigned
+                </button>
+
+                <button type="button" class="sched-status-cancelled" data-status="cancelled">
+                    Cancelled
+                </button>
+
+                <button type="button" class="sched-status-inprogress" data-status="in_progress">
+                    In Progress
+                </button>
+
+                <button type="button" class="sched-status-completed" data-status="completed">
+                    Completed
+                </button>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="status-actions">
+                <button class="btn-update push">Update</button>
+                <button class="btn-cancel push">Cancel</button>
+            </div>
+
         </div>
 
     </div>
 </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const statusButtons = document.querySelectorAll(
+        '.sched-status-completed, .sched-status-inprogress, .sched-status-assigned, .sched-status-cancelled'
+    );
+
+    statusButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            statusButtons.forEach(btn => btn.classList.remove('active'));
+
+            button.classList.add('active');
+        });
+    });
+});
+</script>
+@endpush

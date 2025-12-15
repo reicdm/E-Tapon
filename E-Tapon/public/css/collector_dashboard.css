@@ -7,12 +7,12 @@
 
     --color-bg-completed: #f2f9e1;
     --color-bg-inprogress: #ffe9cc;
-    --color-bg-pending: #ffeccc;
+    --color-bg-assigned: #ffeccc;
     --color-bg-cancelled: #f7ddd9;
 
     --color-completed: #4d7111;
     --color-inprogress: #ff7b00;
-    --color-pending: #ffa813;
+    --color-assigned: #ffa813;
     --color-cancelled: #c2402a;
 }
 
@@ -134,7 +134,7 @@ body {
 /* INDIVIDUAL (MAIN) CONTAINER: SCHED STATUS BG */
 .card-status-bg-completed,
 .card-status-bg-inprogress,
-.card-status-bg-pending,
+.card-status-bg-assigned,
 .card-status-bg-cancelled {
     height: 125px;
     text-align: center;
@@ -163,7 +163,7 @@ body {
 /* INDIVIDUAL (SMALL) CONTAINER: SCHED STATUS */
 .sched-status-completed,
 .sched-status-inprogress,
-.sched-status-pending,
+.sched-status-assigned,
 .sched-status-cancelled {
     width: 90px;
     border-radius: 10px;
@@ -199,13 +199,13 @@ body {
     border-color: var(--color-inprogress);
 }
 
-/* PENDING CONTAINER */
-.sched-status-pending {
-    background-color: var(--color-pending);
+/* ASSIGNED CONTAINER */
+.sched-status-assigned {
+    background-color: var(--color-assigned);
 }
-.card-status-bg-pending {
-    background-color: var(--color-bg-pending);
-    border-color: var(--color-pending);
+.card-status-bg-assigned {
+    background-color: var(--color-bg-assigned);
+    border-color: var(--color-assigned);
 }
 
 /* CANCELLED CONTAINER */

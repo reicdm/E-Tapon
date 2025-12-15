@@ -52,14 +52,14 @@
                     <div class="row-sched row-cols-3">
                         <a href="{{ route('collector.schedule') }}" class="card-link">
                             <div class="col">
-                                <div class="card-status-bg-pending">
+                                <div class="card-status-bg-assigned">
                                     <h2 class="card-sched-text-date">JAN 01</h2>
                                     <div>
                                         <p class="card-sched-text-ba">Brgy. 123</p>
                                         <p class="card-sched-text-ba">ABC 1234</p>
                                     </div>
                                     <div class="card-sched-status">
-                                        <p class="sched-status-pending">Pending</p>
+                                        <p class="sched-status-assigned">Assigned</p>
                                     </div>
                                 </div>
                             </div>
