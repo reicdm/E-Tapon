@@ -30,4 +30,166 @@ body {
     margin: 4px;
 }
 
+.row-sched {
+    display: flex;
+    gap: 8px;
+    padding-right: 16px;
+}
+
+/* MAIN CONTAINERS */
+.card-mid {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 0.6rem;
+}
 /*===================================================*/
+
+.schedule-wrapper {
+    max-width: 800px;
+}
+
+.sched-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 5px;
+    position: relative;
+}
+
+.schedule-day {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+
+
+/* DATE COLUMN */
+.date-col {
+    width: 50px;
+    text-align: center;
+}
+
+.date-col .day {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ff8c00;
+}
+
+.date-col .dow {
+    font-size: 12px;
+    color: #ff8c00;
+}
+
+.timeline {
+    width: 3px;
+    background: #9ca3af;
+    margin: 0 12px;
+    border-radius: 5px;
+}
+
+.bar {
+    width: 6px;
+    height: 100%;
+    border-radius: 6px;
+    margin-right: 12px;
+}
+
+.card-sched-status span {
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 500;
+}
+
+/* INDIVIDUAL (MAIN) CONTAINER: SCHED STATUS BG */
+.card-status-bg-completed,
+.card-status-bg-inprogress,
+.card-status-bg-pending,
+.card-status-bg-cancelled {
+    height: 70px;
+    text-align: left;
+    font-size: 0.75rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-sizing: border-box;
+    border-left: 15px;
+    border-style: solid;
+    flex-direction: row;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+/* SCHED TEXT: BRGY AND AREA */
+.card-sched-text-ba,
+.card-sched-text-status {
+    font-size: 0.6rem;
+    font-weight: 400;
+    margin-bottom: auto;
+    padding: 0;
+    text-align: center;
+}
+
+/* INDIVIDUAL (SMALL) CONTAINER: SCHED STATUS */
+.sched-status-completed,
+.sched-status-inprogress,
+.sched-status-pending,
+.sched-status-cancelled {
+    width: 90px;
+    border-radius: 10px;
+    font-weight: 400;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+.card-sched-status {
+    display: block;
+    padding: 0.25rem 1rem;
+    text-align: center;
+    border-radius: 50px;
+    margin-bottom: 4px;
+    margin-left: auto;
+}
+
+/* COMPLETED CONTAINER */
+.sched-status-completed {
+    background-color: var(--color-completed);
+    color: white;
+}
+
+.card-status-bg-completed {
+    background-color: var(--color-bg-completed);
+    border-color: var(--color-completed);
+}
+
+/* IN PROGRESS CONTAINER */
+.sched-status-inprogress {
+    background-color: var(--color-inprogress);
+}
+.card-status-bg-inprogress {
+    background-color: var(--color-bg-inprogress);
+    border-color: var(--color-inprogress);
+}
+
+/* PENDING CONTAINER */
+.sched-status-pending {
+    background-color: var(--color-pending);
+}
+.card-status-bg-pending {
+    background-color: var(--color-bg-pending);
+    border-color: var(--color-pending);
+}
+
+/* CANCELLED CONTAINER */
+.sched-status-cancelled {
+    background-color: var(--color-cancelled);
+    color: white;
+}
+.card-status-bg-cancelled {
+    background-color: var(--color-bg-cancelled);
+    border-color: var(--color-cancelled);
+}

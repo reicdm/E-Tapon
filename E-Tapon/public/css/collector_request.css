@@ -161,6 +161,8 @@ body {
     color: white;
     background: var(--color-mid-green);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+     position: relative;
+    pointer-events: auto;
 }
 
 /* MID BUTTON */
@@ -203,11 +205,33 @@ body {
 
 #topCarousel:hover .top-carousel-control-prev,
 #topCarousel:hover .top-carousel-control-next {
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.5s;
 }
 
-/* MIX CAROUSEL BUTTON - PREV/NEXT */
+#topCarousel {
+    height: 100%;
+    position: relative;
+    padding-bottom: 22px;
+}
+
+#topCarousel .carousel-indicators {
+    position: absolute;
+    bottom: 6px;
+    margin-bottom: 0;
+}
+
+#topCarousel .carousel-indicators [data-bs-target] {
+    background-color:  #FFB24D;
+    opacity: 0.3;
+}
+
+#topCarousel .carousel-indicators .active {
+    background-color: var(--color-orange);
+    opacity: 1;
+}
+
+/* MID CAROUSEL BUTTON - PREV/NEXT */
 .mid-carousel-control-prev,
 .mid-carousel-control-next {
     opacity: 0;
@@ -216,8 +240,30 @@ body {
 
 #midCarousel:hover .mid-carousel-control-prev,
 #midCarousel:hover .mid-carousel-control-next {
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.5s;
+}
+
+#midCarousel {
+    height: 100%;
+    position: relative;
+    padding-bottom: 22px;
+}
+
+#midCarousel .carousel-indicators {
+    position: absolute;
+    bottom: 6px;
+    margin-bottom: 0;
+}
+
+#midCarousel .carousel-indicators [data-bs-target] {
+    background-color: var(--color-light-olive);
+    opacity: 0.3;
+}
+
+#midCarousel .carousel-indicators .active {
+    background-color: var(--color-mid-green);
+    opacity: 1;
 }
 
 /* ================================================================== */
