@@ -23,30 +23,70 @@
 
                     <div class="schedule-day">
                         <!-- DATE -->
-                        <div class="date-col">
-                            <span class="day">19</span>
-                            <span class="dow">Thu</span>
+                        <div class="date-col mr-6">
+                            <div class="day">19</div>
+                            <div class="week">Thu</div>
                         </div>
 
-                        <!-- TIMELINE -->
-                        <div class="timeline"></div>
-
                         <!-- CARDS -->
-                        <div class="cards">
-                            <div class="card-status-bg-pending sched-card">
-                                <div class="bar"></div>
-
+                        <div class="task-card">
+                            <div class="card-status-bg-completed sched-card">
                                 <div class="sched-info">
                                     <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
                                     <p class="card-sched-text-ba">Truck: ABC 1234</p>
                                 </div>
 
                                 <div class="card-sched-status">
-                                    <span class="sched-status-pending">Pending</span>
+                                    <p class="sched-status-completed">Completed</span>
+                                </div>
+                            </div>
+
+                            <div class="card-status-bg-inprogress sched-card">
+                                <div class="sched-info">
+                                    <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
+                                    <p class="card-sched-text-ba">Truck: ABC 1234</p>
+                                </div>
+
+                                <div class="card-sched-status">
+                                    <p class="sched-status-inprogress">In Progress</span>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="schedule-day">
+                        <!-- DATE -->
+                        <div class="date-col mr-6">
+                            <div class="day">20</div>
+                            <div class="week">Fri</div>
+                        </div>
+
+                        <!-- CARDS -->
+                        <div class="task-card">
+                            <div class="card-status-bg-assigned sched-card">
+                                <div class="sched-info">
+                                    <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
+                                    <p class="card-sched-text-ba">Truck: ABC 1234</p>
+                                </div>
+
+                                <div class="card-sched-status">
+                                    <p class="sched-status-assigned">Assigned</span>
+                                </div>
+                            </div>
+
+                            <div class="card-status-bg-cancelled sched-card">
+                                <div class="sched-info">
+                                    <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
+                                    <p class="card-sched-text-ba">Truck: ABC 1234</p>
+                                </div>
+
+                                <div class="card-sched-status">
+                                    <p class="sched-status-cancelled">Cancelled</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -81,12 +121,13 @@
 <style>
     /* Calendar Container */
     #calendar {
-        max-width: 380px;
+        width: 380px;
+        height: 290px;
         margin: 0 auto;
         background: #FAF8F3;
         padding: 20px;
         border-radius: 16px;
-        border: none !important;
+        border: 1px solid #ff9100!important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
@@ -102,14 +143,14 @@
 
     /* Header styling */
     .fc-header-toolbar {
-        margin-bottom: 15px !important;
-        padding-bottom: 10px;
+        margin-bottom: 6px !important;
+        padding-bottom: 4px;
     }
 
     .fc-toolbar-title {
         font-size: 16px !important;
         font-weight: 600 !important;
-        color: #333 !important;
+        color: #1f4b2c !important;
     }
 
     /* Navigation buttons */
@@ -162,14 +203,14 @@
     .fc-daygrid-day {
         background: transparent !important;
         border: none !important;
-        padding: 3px !important;
+        padding: 1px !important;
     }
 
     .fc-daygrid-day-frame {
         display: flex;
         align-items: center;
         justify-content: center;
-        min-height: 35px;
+        min-height: 28px;
         height: 100%;
         border: none !important;
     }
@@ -224,6 +265,7 @@
 
     /* Ensure weeks display properly */
     .fc-daygrid-body {
+        height: 100% !important;
         width: 100% !important;
     }
 

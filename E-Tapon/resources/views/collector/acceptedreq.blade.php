@@ -5,7 +5,7 @@
     <div class="popup">
         <button class="close-btn">&times;</button>
 
-        <div class="row justify-content-center mb-8 mt-2">
+        <div class="row justify-content-center mb-4 mt-2">
             <div class="circle">
             </div>
             <h2 class="font-extrabold" style="color: var(--color-dark-green)">Request Details</h2>
