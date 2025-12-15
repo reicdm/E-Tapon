@@ -24,7 +24,7 @@ class CollectorReqDetailsController extends Controller
                 $query->whereNull('req.collector_id')  // pending - anyone can see
                     ->orWhere('req.collector_id', $collector->collector_id); // accepted alr
             })
-            ->where('req.status', 'Pending')
+            ->whereIn('req.status', ['Pending', 'Assigned', 'In Progress'])
             ->select(
                 'req.request_id',
                 'req.quantity',
@@ -34,7 +34,7 @@ class CollectorReqDetailsController extends Controller
                 'req.status',
                 'req.license_plate',
                 'req.collector_id',
-                DB::raw("CONCAT(u.firstname, ' ', COALESCE(CONCAT(u.middlename, ' '), ''), u.lastname) as resident_name"),
+                DB::raw("CONCAT_WS(' ', u.firstname, COALESCE(u.middlename, ''), u.lastname) as resident_name"),
                 'a.brgy_name',
                 'u.street_address'
             )
@@ -48,25 +48,25 @@ class CollectorReqDetailsController extends Controller
         $preferredDate = $requestData->preferred_date;
         $preferredDay = Carbon::parse($preferredDate)->format('l');
 
-        $availableTrucks = DB::table('truck_tbl as t')
-            ->whereNotExists(function ($query) use ($preferredDay) {
-                $query->select(DB::raw(1))
-                    ->from('collectorsched_tbl as cs')
-                    ->whereColumn('cs.license_plate', '=', 't.license_plate')
-                    ->where('cs.collection_day', $preferredDay);
-            })
-            ->whereNotExists(function ($query) use ($preferredDate) {
-                $query->select(DB::raw(1))
-                    ->from('request_tbl as req')
-                    ->whereColumn('req.license_plate', '=', 't.license_plate')
-                    ->whereDate('req.preferred_date', $preferredDate)
-                    ->whereIn('req.status', ['Assigned', 'In Progress']);
-            })
-            ->select('t.license_plate', 't.capacity')
-            ->get();
-
-        // Debug
-        // dd($requestData, $availableTrucks);
+        $availableTrucks = collect([]);
+        if ($requestData->status === 'Pending') {
+            $availableTrucks = DB::table('truck_tbl as t')
+                ->whereNotExists(function ($query) use ($preferredDay) {
+                    $query->select(DB::raw(1))
+                        ->from('collectorsched_tbl as cs')
+                        ->whereColumn('cs.license_plate', '=', 't.license_plate')
+                        ->where('cs.collection_day', $preferredDay);
+                })
+                ->whereNotExists(function ($query) use ($preferredDate) {
+                    $query->select(DB::raw(1))
+                        ->from('request_tbl as req')
+                        ->whereColumn('req.license_plate', '=', 't.license_plate')
+                        ->whereDate('req.preferred_date', $preferredDate)
+                        ->whereIn('req.status', ['Assigned', 'In Progress']);
+                })
+                ->select('t.license_plate', 't.capacity')
+                ->get();
+        }
 
         return view('collector.reqdetails', [
             'requestData' => $requestData,
@@ -93,8 +93,7 @@ class CollectorReqDetailsController extends Controller
             ->first();
 
         if (!$requestData) {
-            return redirect()->route('collector.dashboard')
-                ->with('error', 'Request not found, already taken by another collector, or already processed');
+            return redirect()->route('collector.dashboard');
         }
 
         $preferredDate = $requestData->preferred_date;
@@ -135,17 +134,12 @@ class CollectorReqDetailsController extends Controller
             ]);
 
         if ($updated) {
-            return redirect()->route('collector.dashboard')
-                ->with('success', 'Request accepted successfully');
+            return redirect()->route('collector.dashboard');
         }
-
-        return back()->with('error', 'Failed to accept request. It may have been taken by another collector.');
     }
 
     public function decline($requestId)
     {
-        // Simply redirect back to dashboard without any changes
-        // The request remains unassigned and available for other collectors
         return redirect()->route('collector.dashboard')
             ->with('info', 'Request skipped');
     }

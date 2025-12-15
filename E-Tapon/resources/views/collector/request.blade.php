@@ -13,106 +13,46 @@
         <!-- REQUEST TO APPROVE -->
         <div id="topCarousel" class="carousel slide" data-bs-wrap="false">
             <div class="carousel-inner">
-                <!-- 1ST SLIDE -->
+                @forelse($pendingRequests->chunk(2) as $index => $chunk)
+                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                    <div class="row g-3">
+                        @foreach($chunk as $request)
+                        <!-- CARDS -->
+                        <div class="col-6 col-md-6">
+                            <div class="card card-top h-100">
+                                <div class="card-top-details">
+                                    <div class="card-top-circle-date">
+                                        <div class="circle-top">
+                                            <img src="{{ asset('icons/O_' . strtolower(str_replace('-', '', $request->waste_type === 'Recyclable' ? 'recycle' : ($request->waste_type === 'Biodegradable' ? 'bio' : 'nonbio'))) . '.png') }}" class="wastes-img-top">
+                                        </div>
+                                        <h2 class="card-top-text-date">{{ $request->formatted_date }}</h2>
+                                    </div>
+                                    <div class="card-top-data">
+                                        <h5 class="card-top-title">{{ $request->user_name }}</h5>
+                                        <p class="card-top-text"><b>Waste Type:</b> {{ $request->waste_type }}</p>
+                                        <p class="card-top-text"><b>Qty:</b> {{ $request->quantity }}kg</p>
+                                    </div>
+                                </div>
+                                <div class="card-top-button mt-3">
+                                    <a href="{{ route('collector.reqdetails.showRequestDetails', $request->request_id) }}">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @empty
                 <div class="carousel-item active">
                     <div class="row g-3">
-
-                        <!-- CARDS -->
-                        <div class="col-6 col-md-6">
-                            <div class="card card-top h-100">
-                                <div class="card-top-details">
-                                    <div class="card-top-circle-date">
-                                        <div class="circle-top">
-                                            <img src="{{ asset('icons/O_recycle.png') }}" class="wastes-img-top">
-                                        </div>
-                                        <h2 class="card-top-text-date">JAN 01</h2>
-                                    </div>
-                                    <div class="card-top-data">
-                                        <h5 class="card-top-title">John Doe</h5>
-                                        <p class="card-top-text"><b>Waste Type:</b> Recyclable</p>
-                                        <p class="card-top-text"><b>Qty:</b> {1kg}</p>
-                                    </div>
-                                </div>
-                                <div class="card-top-button mt-3">
-                                    <a href="#">View Details</a>
-                                </div>
-                            </div>
+                        <div class="col-12 text-center py-5">
+                            <p class="text-muted">No pending requests at the moment</p>
                         </div>
-
-                        <div class="col-6 col-md-6">
-                            <div class="card card-top h-100">
-                                <div class="card-top-details">
-                                    <div class="card-top-circle-date">
-                                        <div class="circle-top">
-                                            <img src="{{ asset('icons/O_bio.png') }}" class="wastes-img-top">
-                                        </div>
-                                        <h2 class="card-top-text-date">JAN 01</h2>
-                                    </div>
-                                    <div class="card-top-data">
-                                        <h5 class="card-top-title">John Doe</h5>
-                                        <p class="card-top-text"><b>Waste Type:</b> Biodegradable</p>
-                                        <p class="card-top-text"><b>Qty:</b> {1kg}</p>
-                                    </div>
-                                </div>
-                                <div class="card-top-button mt-3">
-                                    <a href="#">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
-
-                <!-- 2ND SLIDE -->
-                <div class="carousel-item">
-                    <div class="row g-3">
-                        <!-- CARDS -->
-                        <div class="col-6 col-md-6">
-                            <div class="card card-top h-100">
-                                <div class="card-top-details">
-                                    <div class="card-top-circle-date">
-                                        <div class="circle-top">
-                                            <img src="{{ asset('icons/O_nonbio.png') }}" class="wastes-img-top">
-                                        </div>
-                                        <h2 class="card-top-text-date">JAN 01</h2>
-                                    </div>
-                                    <div class="card-top-data">
-                                        <h5 class="card-top-title">John Doe</h5>
-                                        <p class="card-top-text"><b>Waste Type:</b> Non-Biodegradable</p>
-                                        <p class="card-top-text"><b>Qty:</b> {1kg}</p>
-                                    </div>
-                                </div>
-                                <div class="card-top-button mt-3">
-                                    <a href="#">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-6 col-md-6">
-                            <div class="card card-top h-100">
-                                <div class="card-top-details">
-                                    <div class="card-top-circle-date">
-                                        <div class="circle-top">
-                                            <img src="{{ asset('icons/O_recycle.png') }}" class="wastes-img-top">
-                                        </div>
-                                        <h2 class="card-top-text-date">JAN 01</h2>
-                                    </div>
-                                    <div class="card-top-data">
-                                        <h5 class="card-top-title">John Doe</h5>
-                                        <p class="card-top-text"><b>Waste Type:</b> Recyclable</p>
-                                        <p class="card-top-text">Qty: {1kg}</p>
-                                    </div>
-                                </div>
-                                <div class="card-top-button mt-3">
-                                    <a href="#">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+                @endforelse
             </div>
             <!-- BUTTONS -->
+            @if($pendingRequests->count() > 2)
             <button class="top-carousel-control-prev" type="button" data-bs-target="#topCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
@@ -121,6 +61,7 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
+            @endif
         </div>
 
         <!-- MID CONTAINER -->
@@ -128,113 +69,52 @@
             <div class="col">
                 <div class="mid-card">
                     <div class="row-mid justify-content-center">
-                        <h2 class="font-extrabold" style="color: var(--color-dark-green) ">Collection Schedule</h2>
+                        <h2 class="font-extrabold" style="color: var(--color-dark-green) ">Accepted Request</h2>
                     </div>
 
-                    <!-- COLLECTION SCHEDULE -->
+                    <!-- ACCEPTED REQUEST -->
                     <div id="midCarousel" class="carousel slide" data-bs-wrap="false">
                         <div class="carousel-inner">
-                            <!-- 1ST SLIDE -->
+                            @forelse($acceptedRequests->chunk(2) as $index => $chunk)
+                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                <div class="row g-3">
+                                    @foreach($chunk as $request)
+                                    <!-- CARDS -->
+                                    <div class="col-6 col-md-6">
+                                        <div class="card card-mid h-100">
+                                            <div class="card-mid-details">
+                                                <div class="card-mid-circle-date">
+                                                    <div class="circle-mid">
+                                                        <img src="{{ asset('icons/DG_' . strtolower(str_replace('-', '', $request->waste_type === 'Recyclable' ? 'recycle' : ($request->waste_type === 'Biodegradable' ? 'bio' : 'nonbio'))) . '.png') }}" class="wastes-img-mid">
+                                                    </div>
+                                                    <h2 class="card-mid-text-date">{{ $request->formatted_date }}</h2>
+                                                </div>
+                                                <div class="card-mid-data">
+                                                    <h5 class="card-mid-title">{{ $request->user_name }}</h5>
+                                                    <p class="card-mid-text"><b>Waste Type:</b> {{ $request->waste_type }}</p>
+                                                    <p class="card-mid-text"><b>Qty:</b> {{ $request->quantity }}kg</p>
+                                                </div>
+                                            </div>
+                                            <div class="card-mid-button mt-3">
+                                                <a href="{{ route('collector.reqdetails.showRequestDetails', $request->request_id) }}">View Details</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @empty
                             <div class="carousel-item active">
                                 <div class="row g-3">
-
-                                    <!-- CARDS -->
-                                    <div class="col-6 col-md-6">
-                                        <div class="card card-mid h-100">
-                                            <div class="card-mid-details">
-                                                <div class="card-mid-circle-date">
-                                                    <div class="circle-mid">
-                                                        <img src="{{ asset('icons/DG_recycle.png') }}" class="wastes-img-mid">
-                                                    </div>
-                                                    <h2 class="card-mid-text-date">JAN 01</h2>
-                                                </div>
-                                                <div class="card-mid-data">
-                                                    <h5 class="card-mid-title">John Doe</h5>
-                                                    <p class="card-mid-text"><b>Waste Type:</b> Recyclable</p>
-                                                    <p class="card-mid-text"><b>Qty:</b> {1kg}</p>
-                                                </div>
-                                            </div>
-                                            <div class="card-mid-button mt-3">
-                                                <a href="#">View Details</a>
-                                            </div>
-                                        </div>
+                                    <div class="col-12 text-center py-5">
+                                        <p class="text-muted">No accepted requests at the moment</p>
                                     </div>
-
-                                    <div class="col-6 col-md-6">
-                                        <div class="card card-mid h-100">
-                                            <div class="card-mid-details">
-                                                <div class="card-mid-circle-date">
-                                                    <div class="circle-mid">
-                                                        <img src="{{ asset('icons/DG_bio.png') }}" class="wastes-img-mid">
-                                                    </div>
-                                                    <h2 class="card-mid-text-date">JAN 01</h2>
-                                                </div>
-                                                <div class="card-mid-data">
-                                                    <h5 class="card-mid-title">John Doe</h5>
-                                                    <p class="card-mid-text"><b>Waste Type:</b> Biodegradable</p>
-                                                    <p class="card-mid-text"><b>Qty:</b> {1kg}</p>
-                                                </div>
-                                            </div>
-                                            <div class="card-mid-button mt-3">
-                                                <a href="#">View Details</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
-
-                            <!-- 2ND SLIDE -->
-                            <div class="carousel-item">
-                                <div class="row g-3">
-
-                                    <!-- CARDS -->
-                                    <div class="col-6 col-md-6">
-                                        <div class="card card-mid h-100">
-                                            <div class="card-mid-details">
-                                                <div class="card-mid-circle-date">
-                                                    <div class="circle-mid">
-                                                        <img src="{{ asset('icons/DG_nonbio.png') }}" class="wastes-img-mid">
-                                                    </div>
-                                                    <h2 class="card-mid-text-date">JAN 01</h2>
-                                                </div>
-                                                <div class="card-mid-data">
-                                                    <h5 class="card-mid-title">John Doe</h5>
-                                                    <p class="card-mid-text"><b>Waste Type:</b> Non-Biodegradable</p>
-                                                    <p class="card-mid-text"><b>Qty:</b> {1kg}</p>
-                                                </div>
-                                            </div>
-                                            <div class="card-mid-button mt-3">
-                                                <a href="#">View Details</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-6 col-md-6">
-                                        <div class="card card-mid h-100">
-                                            <div class="card-mid-details">
-                                                <div class="card-mid-circle-date">
-                                                    <div class="circle-mid">
-                                                        <img src="{{ asset('icons/DG_recycle.png') }}" class="wastes-img-mid">
-                                                    </div>
-                                                    <h2 class="card-mid-text-date">JAN 01</h2>
-                                                </div>
-                                                <div class="card-mid-data">
-                                                    <h5 class="card-mid-title">John Doe</h5>
-                                                    <p class="card-mid-text"><b>Waste Type:</b> Recyclable</p>
-                                                    <p class="card-mid-text"><b>Qty:</b> {1kg}</p>
-                                                </div>
-                                            </div>
-                                            <div class="card-mid-button mt-3">
-                                                <a href="#">View Details</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
+                            @endforelse
                         </div>
                         <!-- BUTTONS -->
+                        @if($acceptedRequests->count() > 2)
                         <button class="mid-carousel-control-prev" type="button" data-bs-target="#midCarousel" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
@@ -243,6 +123,7 @@
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -260,45 +141,25 @@
                     <!-- CARDS -->
                     <div class="card-req">
                         <div class="col">
+                            @forelse($completedRequests as $request)
                             <div class="card-data-box-req">
                                 <div class="circle">
-                                    <img src="{{ asset('icons/C_recycle.png') }}" class="waste-img-bot">
+                                    <img src="{{ asset('icons/C_' . strtolower(str_replace('-', '', $request->waste_type === 'Recyclable' ? 'recycle' : ($request->waste_type === 'Biodegradable' ? 'bio' : 'nonbio'))) . '.png') }}" class="waste-img-bot">
                                 </div>
                                 <div class="card-req-info">
-                                    <h2 class="card-req-text-name">John Doe</h2>
-                                    <p class="card-req-text-wk">Recyclable, 1kg</p>
+                                    <h2 class="card-req-text-name">{{ $request->user_name }}</h2>
+                                    <p class="card-req-text-wk">{{ $request->waste_type }}, {{ $request->quantity }}kg</p>
                                 </div>
                                 <div class="card-req-right">
-                                    <p class="card-req-text-date">01/01/25</p>
+                                    <p class="card-req-text-date">{{ $request->formatted_date }}</p>
                                     <button type="button" class="btn-completed">Completed</button>
                                 </div>
                             </div>
-                            <div class="card-data-box-req">
-                                <div class="circle">
-                                    <img src="{{ asset('icons/C_bio.png') }}" class="waste-img-bot">
-                                </div>
-                                <div class="card-req-info">
-                                    <h2 class="card-req-text-name">John Doe</h2>
-                                    <p class="card-req-text-wk">Biodegradable, 1kg</p>
-                                </div>
-                                <div class="card-req-right">
-                                    <p class="card-req-text-date">01/01/25</p>
-                                    <button type="button" class="btn-completed">Completed</button>
-                                </div>
+                            @empty
+                            <div class="text-center py-4">
+                                <p class="text-muted">No completed requests yet</p>
                             </div>
-                            <div class="card-data-box-req">
-                                <div class="circle">
-                                    <img src="{{ asset('icons/C_nonbio.png') }}" class="waste-img-bot">
-                                </div>
-                                <div class="card-req-info">
-                                    <h2 class="card-req-text-name">John Doe</h2>
-                                    <p class="card-req-text-wk">Non-Biodegradable, 1kg</p>
-                                </div>
-                                <div class="card-req-right">
-                                    <p class="card-req-text-date">01/01/25</p>
-                                    <button type="button" class="btn-completed">Completed</button>
-                                </div>
-                            </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>
