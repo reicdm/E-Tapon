@@ -61,15 +61,32 @@ body {
     align-items: center;
     gap: 4px;
     position: relative;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.50rem;
 }
 
 .schedule-day {
     display: flex;
     align-items: flex-start;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 4px;
 }
+
+.schedule-day:not(:last-child) {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.schedule-day.is-current .date-col .day {
+    color: var(--color-orange);
+    font-weight: 700;
+}
+
+/* Highlight weekday */
+.schedule-day.is-current .date-col .week {
+    color: var(--color-orange);
+    font-weight: 700;
+}
+
 
 /* DATE COLUMN */
 .date-col {
@@ -78,14 +95,15 @@ body {
 }
 
 .date-col .day {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
-    color: var(--color-orange);
+    color: #898989;
 }
 
 .date-col .week {
     font-size: 12px;
-    color: var(--color-orange);
+    font-weight: 700;
+    color: #898989;
 }
 
 .card-sched-status {
@@ -115,7 +133,7 @@ body {
     border-left: 10px solid;
     box-sizing: border-box;
 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.10);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.10);
 }
 
 /* INDIVIDUAL (SMALL) CONTAINER: SCHED STATUS */

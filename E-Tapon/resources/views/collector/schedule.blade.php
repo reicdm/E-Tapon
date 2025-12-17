@@ -21,7 +21,7 @@
             <div class="card-mid">
                 <div class="schedule-wrapper">
 
-                    <div class="schedule-day">
+                    <div class="schedule-day is-current">
                         <!-- DATE -->
                         <div class="date-col mr-6">
                             <div class="day">19</div>
@@ -54,7 +54,7 @@
                         </div>
                     </div>
 
-                    <div class="schedule-day">
+                    <div class="schedule-day mt-3">
                         <!-- DATE -->
                         <div class="date-col mr-6">
                             <div class="day">20</div>
