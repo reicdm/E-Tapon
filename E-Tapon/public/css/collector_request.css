@@ -12,7 +12,7 @@ body {
 
 .row-top,
 .row-mid {
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     margin-left: 8px;
 }
 
@@ -21,7 +21,7 @@ body {
 }
 
 .row-con {
-    margin: 4px;
+    margin: 2px 0;
 }
 
 /* MAIN CONTAINERS */
@@ -32,6 +32,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     border-radius: 10px;
+    padding: 0.6rem;
 }
 
 /* TOP CONTAINER */
@@ -63,7 +64,7 @@ body {
 
 /* MAIN CONTAINERS */
 .carousel-item {
-    padding: 0.5rem 0;
+    padding: 0.2rem 0;
 }
 
 .carousel-item .row {
@@ -155,17 +156,19 @@ body {
 
 /* TOP BUTTON */
 .card-top-button a {
-    font-size: 12px;
+    font-size: 14px;
     padding: 6px 12px;
     border-radius: 5px;
     color: white;
     background: var(--color-mid-green);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+     position: relative;
+    pointer-events: auto;
 }
 
 /* MID BUTTON */
 .card-mid-button a {
-    font-size: 10px;
+    font-size: 12px;
     padding: 4px 10px;
     border-radius: 5px;
     background: var(--color-orange);
@@ -203,11 +206,33 @@ body {
 
 #topCarousel:hover .top-carousel-control-prev,
 #topCarousel:hover .top-carousel-control-next {
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.5s;
 }
 
-/* MIX CAROUSEL BUTTON - PREV/NEXT */
+#topCarousel {
+    height: 100%;
+    position: relative;
+    padding-bottom: 22px;
+}
+
+#topCarousel .carousel-indicators {
+    position: absolute;
+    bottom: 6px;
+    margin-bottom: 0;
+}
+
+#topCarousel .carousel-indicators [data-bs-target] {
+    background-color:  #FFB24D;
+    opacity: 0.3;
+}
+
+#topCarousel .carousel-indicators .active {
+    background-color: var(--color-orange);
+    opacity: 1;
+}
+
+/* MID CAROUSEL BUTTON - PREV/NEXT */
 .mid-carousel-control-prev,
 .mid-carousel-control-next {
     opacity: 0;
@@ -216,8 +241,30 @@ body {
 
 #midCarousel:hover .mid-carousel-control-prev,
 #midCarousel:hover .mid-carousel-control-next {
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.5s;
+}
+
+#midCarousel {
+    height: 100%;
+    position: relative;
+    padding-bottom: 22px;
+}
+
+#midCarousel .carousel-indicators {
+    position: absolute;
+    bottom: 6px;
+    margin-bottom: 0;
+}
+
+#midCarousel .carousel-indicators [data-bs-target] {
+    background-color: var(--color-light-olive);
+    opacity: 0.3;
+}
+
+#midCarousel .carousel-indicators .active {
+    background-color: var(--color-mid-green);
+    opacity: 1;
 }
 
 /* ================================================================== */
@@ -273,13 +320,13 @@ body {
 
 /* NAME TEXT */
 .card-req-text-name {
-    font-size: 0.75rem;
+    font-size: 16px;
     font-weight: bold;
 }
 
 /* WASTE TYPE/KILO TEXT */
 .card-req-text-wk {
-    font-size: 0.6rem;
+    font-size: 12px;
     line-height: 1;
 }
 
@@ -294,7 +341,7 @@ body {
 
 /* REQUEST DATE CONTAINER */
 .card-req-text-date {
-    font-size: 0.6rem;
+    font-size: 12px;
     margin: 0;
 }
 
@@ -305,7 +352,7 @@ body {
     background: var(--color-mid-green);
     color: white;
     font-weight: 400;
-    font-size: 0.60rem;
+    font-size: 10px;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 }

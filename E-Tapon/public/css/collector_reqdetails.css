@@ -4,6 +4,16 @@
     --color-orange: #ff9100;
     --color-light-olive: #d5ed9f;
     --color-cream: #fffbe6;
+
+    --color-bg-completed: #f2f9e1;
+    --color-bg-inprogress: #ffe9cc;
+    --color-bg-assigned: #ffeccc;
+    --color-bg-cancelled: #f7ddd9;
+
+    --color-completed: #4d7111;
+    --color-inprogress: #ff7b00;
+    --color-assigned: #ffa813;
+    --color-cancelled: #c2402a;
 }
 
 body {
@@ -100,7 +110,7 @@ label {
 .card-field-dt label,
 .card-field-t label {
     min-width: 80px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 /* Inputs and selects */
@@ -128,16 +138,152 @@ label {
     border-radius: 10px;
     font-size: 14px;
     font-weight: bold;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 }
 
 .btn-accept {
+    background-image: linear-gradient(to top, #ff9100, #FFA733);
+    color: white;
+}
+
+.btn-decline {
     background: var(--color-cream);
     color: var(--color-orange);
     border: 2px solid;
     border-color: var(--color-orange);
 }
 
-.btn-decline {
-    background: var(--color-orange);
+.btn-accept:active,
+.btn-decline:active {
+    animation: push 0.2s ease-in-out;
+}
+
+.update-status-card {
+    text-align: flex-start;
+}
+
+.update-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--color-dark-green);
+    margin-bottom: 12px;
+}
+
+.status-options {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+/* INDIVIDUAL (SMALL) CONTAINER: SCHED STATUS */
+.sched-status-completed,
+.sched-status-inprogress,
+.sched-status-assigned,
+.sched-status-cancelled {
+    width: 150px;
+    font-size: 12px;
+    border-radius: 10px;
+    font-weight: 400;
+    padding: 0.15rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+.card-sched-status {
+    display: block;
+    padding: 0.25rem 1rem;
+    text-align: center;
+    border-radius: 50px;
+    margin-bottom: 4px;
+}
+
+/* COMPLETED CONTAINER */
+.sched-status-completed {
+    background-color: var(--color-completed);
     color: white;
+}
+.sched-status-completed.active {
+    border: 2px solid;
+    color: black;
+    background-color: var(--color-bg-completed);
+    border-color: var(--color-completed);
+}
+
+/* IN PROGRESS CONTAINER */
+.sched-status-inprogress {
+    background-color: var(--color-inprogress);
+}
+.sched-status-inprogress.active {
+    border: 2px solid;
+    background-color: var(--color-bg-inprogress);
+    border-color: var(--color-inprogress);
+}
+
+/* ASSIGNED CONTAINER */
+.sched-status-assigned {
+    background-color: var(--color-assigned);
+}
+.sched-status-assigned.active {
+    border: 2px solid;
+    background-color: var(--color-bg-assigned);
+    border-color: var(--color-assigned);
+}
+
+/* CANCELLED CONTAINER */
+.sched-status-cancelled {
+    background-color: var(--color-cancelled);
+    color: white;
+}
+.sched-status-cancelled.active {
+    border: 2px solid;
+    color: black;
+    background-color: var(--color-bg-cancelled);
+    border-color: var(--color-cancelled);
+}
+
+.status-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.btn-update {
+    background-image: linear-gradient(to top, #ff9100, #FFA733);
+    color: white;
+}
+
+.btn-cancel {
+    background: var(--color-cream);
+    color: var(--color-orange);
+    border: 2px solid;
+    border-color: var(--color-orange);
+}
+
+.btn-accept,
+.btn-decline,
+.btn-update,
+.btn-cancel {
+    width: 100px;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+
+    position: relative;
+    top: 0;
+    display: inline-block;
+
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    transition: all 0.2s ease;
+}
+
+.btn-accept:active,
+.btn-decline:active,
+.btn-update:active,
+.btn-cancel:active {
+    top: 3px;
+    box-shadow: 0 2px 0px var(--color-orange);
+    transition: all 0.2s;
 }

@@ -1,11 +1,13 @@
 @extends('layouts.collector_reqdetails')
-@section('title', 'Collector Request')
+
+@section('title', 'Collector Request to Approve')
+
 @section('content')
 <div class="overlay">
     <div class="popup">
         <a href="{{ route('collector.dashboard') }}" class="close-btn" style="text-decoration: none;">&times;</a>
 
-        <div class="row justify-content-center mb-8 mt-2">
+        <div class="row justify-content-center mb-4 mt-2">
             <div class="circle">
             </div>
             <h2 class="font-extrabold" style="color: var(--color-dark-green)">Request Details</h2>
@@ -42,6 +44,8 @@
             <label>Preferred Time</label>
             <input id="time" type="text" class="form-control" placeholder="{{ \Carbon\Carbon::parse($requestData->preferred_time)->format('h:i A') }}" readonly>
         </div>
+
+        <hr class="my-2">
 
         <label class="font-extrabold" style="color: var(--color-dark-green)">Assigned Truck</label>
 

@@ -51,6 +51,7 @@
                 </div>
                 @endforelse
             </div>
+
             <!-- BUTTONS -->
             @if($pendingRequests->count() > 2)
             <button class="top-carousel-control-prev" type="button" data-bs-target="#topCarousel" data-bs-slide="prev">
@@ -62,6 +63,11 @@
                 <span class="visually-hidden">Next</span>
             </button>
             @endif
+
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#topCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#topCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            </div>
         </div>
 
         <!-- MID CONTAINER -->
@@ -124,6 +130,11 @@
                             <span class="visually-hidden">Next</span>
                         </button>
                         @endif
+
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#midCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#midCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -5,6 +5,9 @@ use App\Http\Controllers\CollectorDashboardController;
 use App\Http\Controllers\CollectorScheduleController;
 use App\Http\Controllers\CollectorRequestController;
 use App\Http\Controllers\CollectorReqDetailsController;
+use App\Http\Controllers\CollectorAcceptedReqController;
+use App\Http\Controllers\CollectorProfileController;
+use App\Http\Controllers\CollectorProfileEditController;
 
 use App\Http\Controllers\ResidentAuthController;
 use App\Http\Controllers\ResidentDashboardController;
