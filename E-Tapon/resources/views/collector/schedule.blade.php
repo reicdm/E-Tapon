@@ -30,27 +30,65 @@
 
                         <!-- CARDS -->
                         <div class="task-card">
-                            <div class="card-status-bg-completed sched-card">
-                                <div class="sched-info">
-                                    <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
-                                    <p class="card-sched-text-ba">Truck: ABC 1234</p>
+                            <button class="collapsible">
+                                <div class="card-status-bg-completed sched-card">
+                                    <div class="sched-info">
+                                        <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
+                                        <p class="card-sched-text-ba">Truck: ABC 1234</p>
+                                    </div>
+
+                                    <div class="card-sched-status">
+                                        <p class="sched-status-completed">Completed</span>
+                                    </div>
+                                </div>
+                            </button>
+
+                            <div class="clicked-status-completed">
+                                <hr class="mb-2">
+                                <h4 class="update-title">Update Status</h4>
+
+                                <!-- STATUS OPTIONS -->
+                                <div class="status-options mb-4">
+                                    <button type="button" class="upd-status-assigned" data-status="assigned">
+                                        Assigned
+                                    </button>
+
+                                    <button type="button" class="upd-status-cancelled" data-status="cancelled">
+                                        Cancelled
+                                    </button>
+
+                                    <button type="button" class="upd-status-inprogress" data-status="in_progress">
+                                        In Progress
+                                    </button>
+
+                                    <button type="button" class="upd-status-completed" data-status="completed">
+                                        Completed
+                                    </button>
                                 </div>
 
-                                <div class="card-sched-status">
-                                    <p class="sched-status-completed">Completed</span>
+                                <!-- ACTION BUTTONS -->
+                                <div class="status-actions">
+                                    <button class="btn-update push">Update</button>
+                                    <button class="btn-cancel push">Cancel</button>
                                 </div>
                             </div>
 
-                            <div class="card-status-bg-inprogress sched-card">
-                                <div class="sched-info">
-                                    <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
-                                    <p class="card-sched-text-ba">Truck: ABC 1234</p>
-                                </div>
+                            <button class="collapsible">
+                                <div class="card-status-bg-inprogress sched-card">
+                                    <div class="sched-info">
+                                        <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
+                                        <p class="card-sched-text-ba">Truck: ABC 1234</p>
+                                    </div>
 
-                                <div class="card-sched-status">
-                                    <p class="sched-status-inprogress">In Progress</span>
+                                    <div class="card-sched-status">
+                                        <p class="sched-status-inprogress">In Progress</span>
+                                    </div>
                                 </div>
+                            </button>
+                            <div class="clicked-status-inprogress">
+                                <h1>hai</h1>
                             </div>
+
                         </div>
                     </div>
 
@@ -114,6 +152,35 @@
         });
         calendar.render();
     });
+
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const statusButtons = document.querySelectorAll(
+            '.upd-status-completed, .upd-status-inprogress, .upd-status-assigned, .upd-status-cancelled'
+        );
+
+        statusButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                statusButtons.forEach(btn => btn.classList.remove('active'));
+
+                button.classList.add('active');
+            });
+        });
+    });
 </script>
 @endpush
 
@@ -127,7 +194,7 @@
         background: #FAF8F3;
         padding: 20px;
         border-radius: 16px;
-        border: 1px solid #ff9100!important;
+        border: 1px solid #ff9100 !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 

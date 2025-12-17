@@ -156,7 +156,7 @@ body {
 
 /* TOP BUTTON */
 .card-top-button a {
-    font-size: 12px;
+    font-size: 14px;
     padding: 6px 12px;
     border-radius: 5px;
     color: white;
@@ -168,7 +168,7 @@ body {
 
 /* MID BUTTON */
 .card-mid-button a {
-    font-size: 10px;
+    font-size: 12px;
     padding: 4px 10px;
     border-radius: 5px;
     background: var(--color-orange);
@@ -320,13 +320,13 @@ body {
 
 /* NAME TEXT */
 .card-req-text-name {
-    font-size: 0.75rem;
+    font-size: 16px;
     font-weight: bold;
 }
 
 /* WASTE TYPE/KILO TEXT */
 .card-req-text-wk {
-    font-size: 0.6rem;
+    font-size: 12px;
     line-height: 1;
 }
 
@@ -341,7 +341,7 @@ body {
 
 /* REQUEST DATE CONTAINER */
 .card-req-text-date {
-    font-size: 0.6rem;
+    font-size: 12px;
     margin: 0;
 }
 
@@ -352,7 +352,7 @@ body {
     background: var(--color-mid-green);
     color: white;
     font-weight: 400;
-    font-size: 0.60rem;
+    font-size: 10px;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 }
