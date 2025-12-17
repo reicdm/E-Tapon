@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                                 <div class="card-top-button mt-3">
-                                    <a href="{{ route('collector.reqdetails.showRequestDetails', $request->request_id) }}">View Details</a>
+                                    <a href="{{ route('collector.reqreqdetails.showRequestDetails', $request->request_id) }}">View Details</a>
                                 </div>
                             </div>
                         </div>

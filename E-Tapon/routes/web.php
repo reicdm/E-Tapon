@@ -8,6 +8,7 @@ use App\Http\Controllers\CollectorReqDetailsController;
 use App\Http\Controllers\CollectorAcceptedReqController;
 use App\Http\Controllers\CollectorProfileController;
 use App\Http\Controllers\CollectorProfileEditController;
+use App\Http\Controllers\CollectorReqReqDetailsController;
 
 use App\Http\Controllers\ResidentAuthController;
 use App\Http\Controllers\ResidentDashboardController;
@@ -91,6 +92,13 @@ Route::prefix('collector')->group(function () {
             Route::get('/{requestId}', [CollectorReqDetailsController::class, 'showRequestDetails'])->name('collector.reqdetails.showRequestDetails');
             Route::post('/{requestId}/accept', [CollectorReqDetailsController::class, 'accept'])->name('collector.reqdetails.accept');
             Route::post('/{requestId}/decline', [CollectorReqDetailsController::class, 'decline'])->name('collector.reqdetails.decline');
+        });
+
+        // request details
+        Route::prefix('reqreqdetails')->group(function () {
+            Route::get('/{requestId}', [CollectorReqReqDetailsController::class, 'showRequestDetails'])->name('collector.reqreqdetails.showRequestDetails');
+            Route::post('/{requestId}/accept', [CollectorReqReqDetailsController::class, 'accept'])->name('collector.reqreqdetails.accept');
+            Route::post('/{requestId}/decline', [CollectorReqReqDetailsController::class, 'decline'])->name('collector.reqreqdetails.decline');
         });
     });
 });
