@@ -1,0 +1,151 @@
+:root {
+    --color-dark-green: #1f4b2c;
+    --color-mid-green: #4d7111;
+    --color-orange: #ff9100;
+    --color-light-olive: #d5ed9f;
+    --color-cream: #fffbe6;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+}
+
+.row-wel {
+    margin-bottom: 4px;
+    margin-left: 4px;
+}
+
+.row-con {
+    margin: 4px;
+}
+
+/* PROFILE HEADER ICONS */
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0px;
+}
+
+.profile-header img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+/* Optional touch area */
+.profile-header a {
+    padding: 6px;
+}
+
+
+/* CIRCLE IMAGE CONTAINER */
+.circle {
+    flex-shrink: 0;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.row h2 {
+    text-align: center;
+    font-size: 24px;
+}
+
+.card-con {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-radius: 10px;
+    padding: 0.6re;
+}
+
+/* BOT CONTAINER */
+.card-con {
+    height: 540px;
+    padding: 0.5rem 1rem;
+    background-image: linear-gradient(to top, #ff9100, #FFA733);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+.card-field,
+.card-field-edit {
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+
+    gap: 24px;
+    align-items: center;
+}
+
+.card-field input,
+.card-field-edit input {
+    height: 56px;
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 15px;
+    border: 0px;
+    color: var(--color-dark-green);
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.card-field input {
+    background-color: #FFC880;
+}
+
+.card-field-edit input {
+    background-color: var(--color-cream);
+}
+
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.btn-save {
+    background-image: linear-gradient(to top, #ff9100, #FFA733);
+    color: white;
+}
+
+.btn-cancel {
+    background: var(--color-cream);
+    color: var(--color-orange);
+    border: 2px solid;
+    border-color: var(--color-orange);
+}
+
+.btn-save:active,
+.btn-cancel:active {
+    animation: push 0.2s ease-in-out;
+}
+
+.btn-save,
+.btn-cancel {
+    width: 180px;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+
+    position: relative;
+    top: 0;
+    display: inline-block;
+
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    transition: all 0.2s ease;
+}
+
+.btn-save:active,
+.btn-cancel:active {
+    top: 3px;
+    box-shadow: 0 2px 0px var(--color-orange);
+    transition: all 0.2s;
+}

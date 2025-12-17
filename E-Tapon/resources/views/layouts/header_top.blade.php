@@ -1,9 +1,3 @@
-@php
-// Define the current route to determine active links
-$currentRoute = request()->route() ? request()->route()->getName() : '';
-use Illuminate\Support\Str;
-@endphp
-
 <style>
     /* ------------------------------------- */
     /* --- COLOR VARIABLES (Unchanged) --- */
@@ -22,6 +16,7 @@ use Illuminate\Support\Str;
     /* ------------------------------------- */
     /* --------- TOP NAVBAR STYLES --------- */
     /* ------------------------------------- */
+
     .navbar {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
@@ -42,6 +37,7 @@ use Illuminate\Support\Str;
         font-size: 24px;
     }
 
+
     .navbar-title:hover,
     .profile-icon-link:hover {
         color: var(--color-dark-green) !important;
@@ -58,29 +54,6 @@ use Illuminate\Support\Str;
         display: flex;
         align-items: center;
     }
-
-    /* ------------------------------------- */
-    /* ------- BOTTOM NAVBAR STYLES  ------- */
-    /* ------------------------------------- */
-    .nav-item {
-        margin: 0 10px;
-    }
-
-    .nav-link {
-        color: rgba(0, 0, 0, .55);
-        padding-bottom: 5px;
-    }
-
-    .nav-link:hover,
-    .nav-link:focus {
-        color: var(--color-dark-green);
-    }
-
-    .nav-link.active {
-        color: var(--color-dark-green);
-        font-weight: bold;
-        border-bottom: 3px solid var(--color-dark-green);
-    }
 </style>
 
 <nav class="navbar">
@@ -90,27 +63,4 @@ use Illuminate\Support\Str;
             <img src="{{ asset('icons/C_profile.png') }}" class="profile-img-top">
         </a>
     </div>
-</nav>
-
-<nav class="navbar navbar-expand-lg justify-content-center mt-0">
-    <ul class="nav">
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('collector.dashboard') ? 'active' : '' }}"
-                href="{{ route('collector.dashboard') }}">
-                Overview
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('collector.schedule') ? 'active' : '' }}"
-                href="{{ route('collector.schedule') }}">
-                Schedule
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('collector.request') ? 'active' : '' }}"
-                href="{{ route('collector.request') }}">
-                Request
-            </a>
-        </li>
-    </ul>
 </nav>

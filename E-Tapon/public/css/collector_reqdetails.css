@@ -142,15 +142,15 @@ label {
 }
 
 .btn-accept {
+    background-image: linear-gradient(to top, #ff9100, #FFA733);
+    color: white;
+}
+
+.btn-decline {
     background: var(--color-cream);
     color: var(--color-orange);
     border: 2px solid;
     border-color: var(--color-orange);
-}
-
-.btn-decline {
-    background: var(--color-orange);
-    color: white;
 }
 
 .btn-accept:active,
@@ -249,15 +249,15 @@ label {
 }
 
 .btn-update {
+    background-image: linear-gradient(to top, #ff9100, #FFA733);
+    color: white;
+}
+
+.btn-cancel {
     background: var(--color-cream);
     color: var(--color-orange);
     border: 2px solid;
     border-color: var(--color-orange);
-}
-
-.btn-cancel {
-    background: var(--color-orange);
-    color: white;
 }
 
 .btn-accept,

@@ -1,5 +1,7 @@
 @extends('layouts.collector_reqdetails')
+
 @section('title', 'Collector Request to Approve')
+
 @section('content')
 <div class="overlay">
     <div class="popup">

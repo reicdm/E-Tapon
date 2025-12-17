@@ -6,6 +6,8 @@ use App\Http\Controllers\CollectorScheduleController;
 use App\Http\Controllers\CollectorRequestController;
 use App\Http\Controllers\CollectorReqDetailsController;
 use App\Http\Controllers\CollectorAcceptedReqController;
+use App\Http\Controllers\CollectorProfileController;
+use App\Http\Controllers\CollectorProfileEditController;
 
 use App\Http\Controllers\ResidentAuthController;
 use App\Http\Controllers\ResidentDashboardController;
@@ -80,5 +82,7 @@ Route::prefix('collector')->group(function () {
     Route::get('/request', [CollectorRequestController::class, 'showRequest'])->name('collector.request');
     Route::get('/requestdetails', [CollectorReqDetailsController::class, 'showRequestDetails'])->name('collector.requestdetails');
     Route::get('/acceptedrequest', [CollectorAcceptedReqController::class, 'showAcceptedRequest'])->name('collector.accepetedrequest');
+    Route::get('/profile', [CollectorProfileController::class, 'showProfile'])->name('collector.profile');
+    Route::get('/profileedit', [CollectorProfileEditController::class, 'showProfileEdit'])->name('collector.profileedit');
 
 });
