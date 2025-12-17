@@ -109,7 +109,7 @@
                                                 </div>
                                             </div>
                                             <div class="card-mid-button mt-3">
-                                                <a href="{{ route('collector.reqdetails.showRequestDetails', $request->request_id) }}">View Details</a>
+                                                <a href="{{ route('collector.acceptedrequest', $request->request_id) }}">View Details</a>
                                             </div>
                                         </div>
                                     </div>
