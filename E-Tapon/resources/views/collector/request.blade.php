@@ -5,14 +5,14 @@
 <div class="min-h-screen flex flex-col p-2">
 
     <!-- TOP CONTAINER -->
-    <div class="mx-auto max-w-4xl w-full px-2">
-        <div class="row-top row-top justify-content-center mb-2">
+    <div class="mx-auto max-w-4xl w-full p-2">
+        <div class="row-top row-top justify-content-center">
             <h1 class="font-extrabold" style="color: var(--color-dark-green) ">Request to Approve</h1>
         </div>
 
         <!-- REQUEST TO APPROVE -->
         <div id="topCarousel" class="carousel slide" data-bs-wrap="false">
-            <div class="carousel-inner mb-2">
+            <div class="carousel-inner">
                 @forelse($pendingRequests->chunk(2) as $index => $chunk)
                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                     <div class="row g-3">
@@ -78,236 +78,118 @@
         </div>
 
         <!-- MID CONTAINER -->
-        <div class="mx-auto max-w-4xl w-full px-2">
-            <div class="row-mid justify-content-center">
-                <h2 class="font-extrabold" style="color: var(--color-dark-green) ">Accepted Request</h2>
-            </div>
-
-            <!-- COLLECTION SCHEDULE -->
-            <div id="midCarousel" class="carousel slide" data-bs-wrap="false">
-                <div class="carousel-inner mb-2">
-                    <!-- 1ST SLIDE -->
-                    <div class="carousel-item active">
-                        <div class="row g-3">
-
-                            <!-- CARDS -->
-                            <div class="col-6 col-md-6">
-                                <div class="card card-mid h-100">
-                                    <div class="card-mid-details">
-                                        <div class="card-mid-circle-date">
-                                            <div class="circle-mid">
-                                                <img src="{{ asset('icons/DG_recycle.png') }}" class="wastes-img-mid">
-                                            </div>
-                                            <h2 class="card-mid-text-date">JAN 01</h2>
-                                        </div>
-                                        <div class="card-mid-data">
-                                            <h5 class="card-mid-title">John Doe</h5>
-                                            <p class="card-mid-text"><b>Waste Type:</b> Recyclable</p>
-                                            <p class="card-mid-text"><b>Qty:</b> {1kg}</p>
-                                        </div>
-                                    </div>
-                                    <div class="card-mid-button mt-3">
-                                        <a href="#">View Details</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-6 col-md-6">
-                                <div class="card card-mid h-100">
-                                    <div class="card-mid-details">
-                                        <div class="card-mid-circle-date">
-                                            <div class="circle-mid">
-                                                <img src="{{ asset('icons/DG_bio.png') }}" class="wastes-img-mid">
-                                            </div>
-                                            <h2 class="card-mid-text-date">JAN 01</h2>
-                                        </div>
-                                        <div class="card-mid-data">
-                                            <h5 class="card-mid-title">John Doe</h5>
-                                            <p class="card-mid-text"><b>Waste Type:</b> Biodegradable</p>
-                                            <p class="card-mid-text"><b>Qty:</b> {1kg}</p>
-                                        </div>
-                                    </div>
-                                    <div class="card-mid-button mt-3">
-                                        <a href="#">View Details</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
+        <div class="row row-con justify-content-center g-2">
+            <div class="col">
+                <div class="mid-card">
+                    <div class="row-mid justify-content-center">
+                        <h2 class="font-extrabold" style="color: var(--color-dark-green) ">Accepted Request</h2>
                     </div>
 
-                    <<<<<<< HEAD
-                        <!-- ACCEPTED REQUEST -->
-                        <div id="midCarousel" class="carousel slide" data-bs-wrap="false">
-                            <div class="carousel-inner">
-                                @forelse($acceptedRequests->chunk(2) as $index => $chunk)
-                                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                    <div class="row g-3">
-                                        @foreach($chunk as $request)
-                                        <!-- CARDS -->
-                                        <div class="col-6 col-md-6">
-                                            <div class="card card-mid h-100">
-                                                <div class="card-mid-details">
-                                                    <div class="card-mid-circle-date">
-                                                        <div class="circle-mid">
-                                                            <img src="{{ asset('icons/DG_' . strtolower(str_replace('-', '', $request->waste_type === 'Recyclable' ? 'recycle' : ($request->waste_type === 'Biodegradable' ? 'bio' : 'nonbio'))) . '.png') }}" class="wastes-img-mid">
-                                                        </div>
-                                                        <h2 class="card-mid-text-date">{{ $request->formatted_date }}</h2>
+                    <!-- ACCEPTED REQUEST -->
+                    <div id="midCarousel" class="carousel slide" data-bs-wrap="false">
+                        <div class="carousel-inner">
+                            @forelse($acceptedRequests->chunk(2) as $index => $chunk)
+                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                <div class="row g-3">
+                                    @foreach($chunk as $request)
+                                    <!-- CARDS -->
+                                    <div class="col-6 col-md-6">
+                                        <div class="card card-mid h-100">
+                                            <div class="card-mid-details">
+                                                <div class="card-mid-circle-date">
+                                                    <div class="circle-mid">
+                                                        <img src="{{ asset('icons/DG_' . strtolower(str_replace('-', '', $request->waste_type === 'Recyclable' ? 'recycle' : ($request->waste_type === 'Biodegradable' ? 'bio' : 'nonbio'))) . '.png') }}" class="wastes-img-mid">
                                                     </div>
-                                                    <div class="card-mid-data">
-                                                        <h5 class="card-mid-title">{{ $request->user_name }}</h5>
-                                                        <p class="card-mid-text"><b>Waste Type:</b> {{ $request->waste_type }}</p>
-                                                        <p class="card-mid-text"><b>Qty:</b> {{ $request->quantity }}kg</p>
-                                                    </div>
+                                                    <h2 class="card-mid-text-date">{{ $request->formatted_date }}</h2>
                                                 </div>
-                                                <div class="card-mid-button mt-3">
-                                                    <a href="{{ route('collector.acceptedrequest', $request->request_id) }}">View Details</a>
+                                                <div class="card-mid-data">
+                                                    <h5 class="card-mid-title">{{ $request->user_name }}</h5>
+                                                    <p class="card-mid-text"><b>Waste Type:</b> {{ $request->waste_type }}</p>
+                                                    <p class="card-mid-text"><b>Qty:</b> {{ $request->quantity }}kg</p>
                                                 </div>
                                             </div>
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                                @empty
-                                <div class="carousel-item active">
-                                    <div class="row g-3">
-                                        <div class="col-12 text-center py-5">
-                                            <p class="text-muted">No accepted requests at the moment</p>
+                                            <div class="card-mid-button mt-3">
+                                                <a href="{{ route('collector.acceptedrequest', $request->request_id) }}">View Details</a>
+                                            </div>
                                         </div>
                                     </div>
+                                    @endforeach
                                 </div>
-                                @endforelse
                             </div>
-                            <!-- BUTTONS -->
-                            @if($acceptedRequests->count() > 2)
-                            <button class="mid-carousel-control-prev" type="button" data-bs-target="#midCarousel" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="mid-carousel-control-next" type="button" data-bs-target="#midCarousel" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                            @endif
-
-                            <div class="carousel-indicators">
-                                @foreach($acceptedRequests->chunk(2) as $index => $chunk)
-                                <button type="button"
-                                    data-bs-target="#midCarousel"
-                                    data-bs-slide-to="{{ $index }}"
-                                    class="{{ $index === 0 ? 'active' : '' }}"
-                                    aria-current="{{ $index === 0 ? 'true' : 'false' }}"
-                                    aria-label="Slide {{ $index + 1 }}">
-                                </button>
-                                @endforeach
-                                =======
-                                <!-- 2ND SLIDE -->
-                                <div class="carousel-item">
-                                    <div class="row g-3">
-
-                                        <!-- CARDS -->
-                                        <div class="col-6 col-md-6">
-                                            <div class="card card-mid h-100">
-                                                <div class="card-mid-details">
-                                                    <div class="card-mid-circle-date">
-                                                        <div class="circle-mid">
-                                                            <img src="{{ asset('icons/DG_nonbio.png') }}" class="wastes-img-mid">
-                                                        </div>
-                                                        <h2 class="card-mid-text-date">JAN 01</h2>
-                                                    </div>
-                                                    <div class="card-mid-data">
-                                                        <h5 class="card-mid-title">John Doe</h5>
-                                                        <p class="card-mid-text"><b>Waste Type:</b> Non-Biodegradable</p>
-                                                        <p class="card-mid-text"><b>Qty:</b> {1kg}</p>
-                                                    </div>
-                                                </div>
-                                                <div class="card-mid-button mt-3">
-                                                    <a href="#">View Details</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6 col-md-6">
-                                            <div class="card card-mid h-100">
-                                                <div class="card-mid-details">
-                                                    <div class="card-mid-circle-date">
-                                                        <div class="circle-mid">
-                                                            <img src="{{ asset('icons/DG_recycle.png') }}" class="wastes-img-mid">
-                                                        </div>
-                                                        <h2 class="card-mid-text-date">JAN 01</h2>
-                                                    </div>
-                                                    <div class="card-mid-data">
-                                                        <h5 class="card-mid-title">John Doe</h5>
-                                                        <p class="card-mid-text"><b>Waste Type:</b> Recyclable</p>
-                                                        <p class="card-mid-text"><b>Qty:</b> {1kg}</p>
-                                                    </div>
-                                                </div>
-                                                <div class="card-mid-button mt-3">
-                                                    <a href="#">View Details</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        >>>>>>> Sarah-Code
+                            @empty
+                            <div class="carousel-item active">
+                                <div class="row g-3">
+                                    <div class="col-12 text-center py-5">
+                                        <p class="text-muted">No accepted requests at the moment</p>
                                     </div>
                                 </div>
                             </div>
-                            <!-- BUTTONS -->
-                            <button class="mid-carousel-control-prev" type="button" data-bs-target="#midCarousel" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="mid-carousel-control-next" type="button" data-bs-target="#midCarousel" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-
-                            <div class="carousel-indicators">
-                                <button type="button" data-bs-target="#midCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                <button type="button" data-bs-target="#midCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                            </div>
+                            @endforelse
                         </div>
+                        <!-- BUTTONS -->
+                        @if($acceptedRequests->count() > 2)
+                        <button class="mid-carousel-control-prev" type="button" data-bs-target="#midCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="mid-carousel-control-next" type="button" data-bs-target="#midCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                        @endif
+
+                        <div class="carousel-indicators">
+                            @foreach($acceptedRequests->chunk(2) as $index => $chunk)
+                            <button type="button"
+                                data-bs-target="#midCarousel"
+                                data-bs-slide-to="{{ $index }}"
+                                class="{{ $index === 0 ? 'active' : '' }}"
+                                aria-current="{{ $index === 0 ? 'true' : 'false' }}"
+                                aria-label="Slide {{ $index + 1 }}">
+                            </button>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- BOTTOM CONTAINER -->
-            <div class="mx-auto max-w-4xl w-full px-2">
-                <div class="row-mid justify-content-center">
-                    <div class="col">
-                        <!-- COMPLETED REQUEST -->
-                        <div class="card-bot">
-                            <div class="card-header-with-link">
-                                <h2 class="font-extrabold" style="color: var(--color-light-olive) ">Completed Request</h2>
-                            </div>
+        <!-- BOTTOM CONTAINER -->
+        <div class="row row-con justify-content-center g-2">
+            <div class="col">
+                <!-- COMPLETED REQUEST -->
+                <div class="card-bot">
+                    <div class="card-header-with-link">
+                        <h2 class="font-extrabold" style="color: var(--color-light-olive) ">Completed Request</h2>
+                    </div>
 
-                            <!-- CARDS -->
-                            <div class="card-req">
-                                <div class="col">
-                                    @forelse($completedRequests as $request)
-                                    <div class="card-data-box-req">
-                                        <div class="circle">
-                                            <img src="{{ asset('icons/C_' . strtolower(str_replace('-', '', $request->waste_type === 'Recyclable' ? 'recycle' : ($request->waste_type === 'Biodegradable' ? 'bio' : 'nonbio'))) . '.png') }}" class="waste-img-bot">
-                                        </div>
-                                        <div class="card-req-info">
-                                            <h2 class="card-req-text-name">{{ $request->user_name }}</h2>
-                                            <p class="card-req-text-wk">{{ $request->waste_type }}, {{ $request->quantity }}kg</p>
-                                        </div>
-                                        <div class="card-req-right">
-                                            <p class="card-req-text-date">{{ $request->formatted_date }}</p>
-                                            <button type="button" class="btn-completed">Completed</button>
-                                        </div>
-                                    </div>
-                                    @empty
-                                    <div class="text-center py-4">
-                                        <p class="text-muted">No completed requests yet</p>
-                                    </div>
-                                    @endforelse
+                    <!-- CARDS -->
+                    <div class="card-req">
+                        <div class="col">
+                            @forelse($completedRequests as $request)
+                            <div class="card-data-box-req">
+                                <div class="circle">
+                                    <img src="{{ asset('icons/C_' . strtolower(str_replace('-', '', $request->waste_type === 'Recyclable' ? 'recycle' : ($request->waste_type === 'Biodegradable' ? 'bio' : 'nonbio'))) . '.png') }}" class="waste-img-bot">
+                                </div>
+                                <div class="card-req-info">
+                                    <h2 class="card-req-text-name">{{ $request->user_name }}</h2>
+                                    <p class="card-req-text-wk">{{ $request->waste_type }}, {{ $request->quantity }}kg</p>
+                                </div>
+                                <div class="card-req-right">
+                                    <p class="card-req-text-date">{{ $request->formatted_date }}</p>
+                                    <button type="button" class="btn-completed">Completed</button>
                                 </div>
                             </div>
+                            @empty
+                            <div class="text-center py-4">
+                                <p class="text-muted">No completed requests yet</p>
+                            </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @endsection
+</div>
+@endsection
