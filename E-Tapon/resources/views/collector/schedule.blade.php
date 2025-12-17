@@ -7,14 +7,14 @@
     <div class="mx-auto max-w-4xl w-full p-2">
 
         <!-- HEADER -->
-        <div class="row row-wel justify-content-center mb-3">
+        <div class="row row-wel justify-content-center px-2 mb-3">
             <h1 class="font-extrabold" style="color: var(--color-dark-green)">
                 Collector Schedule
             </h1>
         </div>
 
         <!-- CALENDAR CARD -->
-        <div id='calendar'></div>
+        <div id='calendar' class="px-2"></div>
 
         <!-- STATUS TASK -->
         <div class="row row-con justify-content-center g-2">
@@ -38,11 +38,10 @@
                                     </div>
 
                                     <div class="card-sched-status">
-                                        <p class="sched-status-completed">Completed</span>
+                                        <p class="sched-status-completed">Completed</p>
                                     </div>
                                 </div>
                             </button>
-
                             <div class="clicked-status-completed">
                                 <hr class="mb-2">
                                 <h4 class="update-title">Update Status</h4>
@@ -81,12 +80,38 @@
                                     </div>
 
                                     <div class="card-sched-status">
-                                        <p class="sched-status-inprogress">In Progress</span>
+                                        <p class="sched-status-inprogress">In Progress</p>
                                     </div>
                                 </div>
                             </button>
                             <div class="clicked-status-inprogress">
-                                <h1>hai</h1>
+                                <hr class="mb-2">
+                                <h4 class="update-title">Update Status</h4>
+
+                                <!-- STATUS OPTIONS -->
+                                <div class="status-options mb-4">
+                                    <button type="button" class="upd-status-assigned" data-status="assigned">
+                                        Assigned
+                                    </button>
+
+                                    <button type="button" class="upd-status-cancelled" data-status="cancelled">
+                                        Cancelled
+                                    </button>
+
+                                    <button type="button" class="upd-status-inprogress" data-status="in_progress">
+                                        In Progress
+                                    </button>
+
+                                    <button type="button" class="upd-status-completed" data-status="completed">
+                                        Completed
+                                    </button>
+                                </div>
+
+                                <!-- ACTION BUTTONS -->
+                                <div class="status-actions">
+                                    <button class="btn-update push">Update</button>
+                                    <button class="btn-cancel push">Cancel</button>
+                                </div>
                             </div>
 
                         </div>
@@ -101,25 +126,87 @@
 
                         <!-- CARDS -->
                         <div class="task-card">
-                            <div class="card-status-bg-assigned sched-card">
-                                <div class="sched-info">
-                                    <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
-                                    <p class="card-sched-text-ba">Truck: ABC 1234</p>
+                            <div class="collapsible">
+                                <div class="card-status-bg-assigned sched-card">
+                                    <div class="sched-info">
+                                        <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
+                                        <p class="card-sched-text-ba">Truck: ABC 1234</p>
+                                    </div>
+
+                                    <div class="card-sched-status">
+                                        <p class="sched-status-assigned">Assigned</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clicked-status-assigned">
+                                <hr class="mb-2">
+                                <h4 class="update-title">Update Status</h4>
+
+                                <!-- STATUS OPTIONS -->
+                                <div class="status-options mb-4">
+                                    <button type="button" class="upd-status-assigned" data-status="assigned">
+                                        Assigned
+                                    </button>
+
+                                    <button type="button" class="upd-status-cancelled" data-status="cancelled">
+                                        Cancelled
+                                    </button>
+
+                                    <button type="button" class="upd-status-inprogress" data-status="in_progress">
+                                        In Progress
+                                    </button>
+
+                                    <button type="button" class="upd-status-completed" data-status="completed">
+                                        Completed
+                                    </button>
                                 </div>
 
-                                <div class="card-sched-status">
-                                    <p class="sched-status-assigned">Assigned</span>
+                                <!-- ACTION BUTTONS -->
+                                <div class="status-actions">
+                                    <button class="btn-update push">Update</button>
+                                    <button class="btn-cancel push">Cancel</button>
                                 </div>
                             </div>
 
-                            <div class="card-status-bg-cancelled sched-card">
-                                <div class="sched-info">
-                                    <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
-                                    <p class="card-sched-text-ba">Truck: ABC 1234</p>
+                            <div class="collapsible">
+                                <div class="card-status-bg-cancelled sched-card">
+                                    <div class="sched-info">
+                                        <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
+                                        <p class="card-sched-text-ba">Truck: ABC 1234</p>
+                                    </div>
+
+                                    <div class="card-sched-status">
+                                        <p class="sched-status-cancelled">Cancelled</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clicked-status-cancelled">
+                                <hr class="mb-2">
+                                <h4 class="update-title">Update Status</h4>
+
+                                <!-- STATUS OPTIONS -->
+                                <div class="status-options mb-4">
+                                    <button type="button" class="upd-status-assigned" data-status="assigned">
+                                        Assigned
+                                    </button>
+
+                                    <button type="button" class="upd-status-cancelled" data-status="cancelled">
+                                        Cancelled
+                                    </button>
+
+                                    <button type="button" class="upd-status-inprogress" data-status="in_progress">
+                                        In Progress
+                                    </button>
+
+                                    <button type="button" class="upd-status-completed" data-status="completed">
+                                        Completed
+                                    </button>
                                 </div>
 
-                                <div class="card-sched-status">
-                                    <p class="sched-status-cancelled">Cancelled</span>
+                                <!-- ACTION BUTTONS -->
+                                <div class="status-actions">
+                                    <button class="btn-update push">Update</button>
+                                    <button class="btn-cancel push">Cancel</button>
                                 </div>
                             </div>
                         </div>
@@ -179,6 +266,20 @@
 
                 button.classList.add('active');
             });
+        });
+    });
+
+    document.querySelectorAll('.collapsible').forEach(button => {
+        button.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+
+            if (content.classList.contains('clicked-status-open')) {
+                content.style.maxHeight = null;
+                content.classList.remove('clicked-status-open');
+            } else {
+                content.classList.add('clicked-status-open');
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
         });
     });
 </script>
