@@ -77,6 +77,9 @@ Route::prefix('collector')->group(function () {
         Route::get('/dashboard', [CollectorDashboardController::class, 'showOverview'])->name('collector.dashboard');
         Route::get('/schedule', [CollectorScheduleController::class, 'showSchedule'])->name('collector.schedule');
         Route::get('/request', [CollectorRequestController::class, 'showRequest'])->name('collector.request');
+        Route::get('/acceptedrequest', [CollectorAcceptedReqController::class, 'showAcceptedRequest'])->name('collector.accepetedrequest');
+        Route::get('/profile', [CollectorProfileController::class, 'showProfile'])->name('collector.profile');
+        Route::get('/profileedit', [CollectorProfileEditController::class, 'showProfileEdit'])->name('collector.profileedit');
 
         // request details
         Route::prefix('requestdetails')->group(function () {

@@ -65,8 +65,15 @@
             @endif
 
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#topCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#topCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                @foreach($pendingRequests->chunk(2) as $index => $chunk)
+                <button type="button"
+                    data-bs-target="#topCarousel"
+                    data-bs-slide-to="{{ $index }}"
+                    class="{{ $index === 0 ? 'active' : '' }}"
+                    aria-current="{{ $index === 0 ? 'true' : 'false' }}"
+                    aria-label="Slide {{ $index + 1 }}">
+                </button>
+                @endforeach
             </div>
         </div>
 
@@ -132,8 +139,15 @@
                         @endif
 
                         <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#midCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                            <button type="button" data-bs-target="#midCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            @foreach($acceptedRequests->chunk(2) as $index => $chunk)
+                            <button type="button"
+                                data-bs-target="#midCarousel"
+                                data-bs-slide-to="{{ $index }}"
+                                class="{{ $index === 0 ? 'active' : '' }}"
+                                aria-current="{{ $index === 0 ? 'true' : 'false' }}"
+                                aria-label="Slide {{ $index + 1 }}">
+                            </button>
+                            @endforeach
                         </div>
                     </div>
                 </div>
