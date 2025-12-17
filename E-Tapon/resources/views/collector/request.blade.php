@@ -12,7 +12,7 @@
 
         <!-- REQUEST TO APPROVE -->
         <div id="topCarousel" class="carousel slide" data-bs-wrap="false">
-            <div class="carousel-inner">
+            <div class="carousel-inner mb-3">
                 @forelse($pendingRequests->chunk(2) as $index => $chunk)
                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                     <div class="row g-3">
@@ -87,7 +87,7 @@
 
                     <!-- ACCEPTED REQUEST -->
                     <div id="midCarousel" class="carousel slide" data-bs-wrap="false">
-                        <div class="carousel-inner">
+                        <div class="carousel-inner mb-3">
                             @forelse($acceptedRequests->chunk(2) as $index => $chunk)
                             <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                                 <div class="row g-3">
