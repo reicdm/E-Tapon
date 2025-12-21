@@ -20,7 +20,18 @@ class ResidentDashboardController extends Controller
 
     public function schedule()
     {
-        return view('resident.schedule');
+        $rawSchedules = collect([
+            ['barangay' => 'Barangay 123', 'truck' => 'ABC 1234', 'date' => '2025-09-21', 'status' => 'In Progress'],
+            ['barangay' => 'Barangay 123', 'truck' => 'ABC 1234', 'date' => '2025-09-21', 'status' => 'Completed'],
+            ['barangay' => 'Barangay 123', 'truck' => 'ABC 1234', 'date' => '2025-09-21', 'status' => 'Pending'],
+            ['barangay' => 'Barangay 123', 'truck' => 'ABC 1234', 'date' => '2025-09-22', 'status' => 'In Progress'],
+            ['barangay' => 'Barangay 123', 'truck' => 'ABC 1234', 'date' => '2025-09-23', 'status' => 'Completed'],
+            ['barangay' => 'Barangay 123', 'truck' => 'ABC 1234', 'date' => '2025-09-23', 'status' => 'Cancelled'],
+        ]);
+
+        $schedules = $rawSchedules->groupBy('date');
+
+        return view('resident.schedule', compact('schedules'));
     }
 
     public function request()

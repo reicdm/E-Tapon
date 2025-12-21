@@ -7,12 +7,12 @@
 
     --color-bg-completed: #f2f9e1;
     --color-bg-inprogress: #ffe9cc;
-    --color-bg-pending: #ffeccc;
+    --color-bg-assigned: #ffeccc;
     --color-bg-cancelled: #f7ddd9;
 
     --color-completed: #4d7111;
     --color-inprogress: #ff7b00;
-    --color-pending: #ffa813;
+    --color-assigned: #ffa813;
     --color-cancelled: #c2402a;
 }
 
@@ -30,74 +30,340 @@ body {
     margin: 4px;
 }
 
-/*===================================================*/
-/* Calendar Styling 
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
+.row-sched {
+    display: flex;
     gap: 8px;
+    padding-right: 16px;
 }
 
-.calendar-day-header {
-    text-align: center;
-    font-weight: 600;
-    color: #999;
-    font-size: 0.85rem;
-    padding: 10px 0;
-    text-transform: uppercase;
+/* MAIN CONTAINERS */
+.card-mid {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-radius: 10px;
+    padding: 0.6rem;
 }
 
-.calendar-day {
-    aspect-ratio: 1;
+/*===================================================*/
+
+.schedule-wrapper {
+    max-width: 800px;
+}
+
+.task-card {
+    flex: 1;
+    width: 100%;
+}
+
+.sched-card {
     display: flex;
     align-items: center;
-    justify-content: center;
-    border-radius: 8px;
+    position: relative;
+}
+
+.schedule-day {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+.schedule-day:not(:last-child) {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.schedule-day.is-current .date-col .day {
+    color: var(--color-orange);
+    font-weight: 700;
+}
+
+/* Highlight weekday */
+.schedule-day.is-current .date-col .week {
+    color: var(--color-orange);
+    font-weight: 700;
+}
+
+/* DATE COLUMN */
+.date-col {
+    width: 50px;
+    text-align: center;
+}
+
+.date-col .day {
+    font-size: 20px;
+    font-weight: 700;
+    color: #898989;
+}
+
+.date-col .week {
+    font-size: 14px;
+    font-weight: 700;
+    color: #898989;
+}
+
+.card-sched-status {
+    padding: 0.1rem;
+    border-radius: 20px;
+    font-size: 0.65rem;
     font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
 }
 
-.calendar-day:hover:not(.empty) {
-    background-color: #f5f5f5;
-    transform: scale(1.05);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+/*===================================================*/
+/* INDIVIDUAL (MAIN) CONTAINER: SCHED STATUS BG */
+.card-status-bg-completed,
+.card-status-bg-inprogress,
+.card-status-bg-assigned,
+.card-status-bg-cancelled {
+    width: 100%;
+    min-height: 64px;
+    padding: 10px;
+    font-size: 14px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    border-left: 10px solid;
+    box-sizing: border-box;
 }
 
-.calendar-day.today {
-    background-color: #ff8c00;
+/* INDIVIDUAL (SMALL) CONTAINER: SCHED STATUS */
+.sched-status-completed,
+.sched-status-inprogress,
+.sched-status-assigned,
+.sched-status-cancelled {
+    width: 100px;
+    font-size: 12px;
+    border-radius: 10px;
+    font-weight: 400;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    align-items: flex-end;
+}
+
+/* SCHED TEXT: BRGY AND AREA */
+.card-sched-text-ba {
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.card-sched-status {
+    margin-left: auto;
+    display: flex;
+    align-self: baseline;
+    text-align: center;
+}
+
+/* COMPLETED CONTAINER */
+.sched-status-completed {
+    background-color: var(--color-completed);
     color: white;
+}
+
+.card-status-bg-completed {
+    background-color: var(--color-bg-completed);
+    border-color: var(--color-completed);
+}
+
+/* IN PROGRESS CONTAINER */
+.sched-status-inprogress {
+    background-color: var(--color-inprogress);
+}
+
+.card-status-bg-inprogress {
+    background-color: var(--color-bg-inprogress);
+    border-color: var(--color-inprogress);
+}
+
+/* ASSIGNED CONTAINER */
+.sched-status-assigned {
+    background-color: var(--color-assigned);
+}
+
+.card-status-bg-assigned {
+    background-color: var(--color-bg-assigned);
+    border-color: var(--color-assigned);
+}
+
+/* CANCELLED CONTAINER */
+.sched-status-cancelled {
+    background-color: var(--color-cancelled);
+    color: white;
+}
+
+.card-status-bg-cancelled {
+    background-color: var(--color-bg-cancelled);
+    border-color: var(--color-cancelled);
+}
+
+.update-title {
+    font-size: 14px;
     font-weight: bold;
+    color: var(--color-dark-green);
+    margin-bottom: 14px;
+}
+
+.status-options {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.status-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.collapsible {
+    cursor: pointer;
+    width: 100%;
     border: none;
+    background: none;
+    padding: 0;
 }
 
-.calendar-day.has-collection {
-    background-color: #fff3cd;
-    border-color: #ffc107;
+.clicked-status-completed,
+.clicked-status-inprogress,
+.clicked-status-assigned,
+.clicked-status-cancelled {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: 0px 10px;
+    border-left: 10px solid;
+    margin-bottom: 12px;
 }
 
-.calendar-day.empty {
-    cursor: default;
-    background-color: transparent;
-    border: none;
+.clicked-status-completed {
+    background-color: var(--color-bg-completed);
+    border-color: var(--color-completed);
 }
 
-/* Date Badge Styling 
-.date-badge {
-    width: 60px;
+.clicked-status-inprogress {
+    background-color: var(--color-bg-inprogress);
+    border-color: var(--color-inprogress);
 }
 
-.date-number {
-    font-size: 2rem;
+.clicked-status-assigned {
+    background-color: var(--color-bg-assigned);
+    border-color: var(--color-assigned);
+}
+
+.clicked-status-cancelled {
+    background-color: var(--color-bg-cancelled);
+    border-color: var(--color-cancelled);
+}
+
+/* INDIVIDUAL (SMALL) CONTAINER: SCHED STATUS */
+.upd-status-completed,
+.upd-status-inprogress,
+.upd-status-assigned,
+.upd-status-cancelled {
+    width: 100px;
+    font-size: 14px;
+    border-radius: 10px;
+    font-weight: 400;
+    padding: 0.15rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+.upd-sched-status {
+    display: block;
+    padding: 0.25rem 1rem;
+    text-align: center;
+    border-radius: 50px;
+    margin-bottom: 4px;
+}
+
+/* COMPLETED CONTAINER */
+.upd-status-completed {
+    background-color: var(--color-completed);
+    color: white;
+}
+
+.upd-status-completed.active {
+    border: 2px solid;
+    color: black;
+    background-color: var(--color-bg-completed);
+    border-color: var(--color-completed);
+}
+
+/* IN PROGRESS CONTAINER */
+.upd-status-inprogress {
+    background-color: var(--color-inprogress);
+}
+
+.upd-status-inprogress.active {
+    border: 2px solid;
+    background-color: var(--color-bg-inprogress);
+    border-color: var(--color-inprogress);
+}
+
+/* ASSIGNED CONTAINER */
+.upd-status-assigned {
+    background-color: var(--color-assigned);
+}
+
+.upd-status-assigned.active {
+    border: 2px solid;
+    background-color: var(--color-bg-assigned);
+    border-color: var(--color-assigned);
+}
+
+/* CANCELLED CONTAINER */
+.upd-status-cancelled {
+    background-color: var(--color-cancelled);
+    color: white;
+}
+
+.upd-status-cancelled.active {
+    border: 2px solid;
+    color: black;
+    background-color: var(--color-bg-cancelled);
+    border-color: var(--color-cancelled);
+}
+
+.btn-update {
+    background-image: linear-gradient(to top, #ff9100, #FFA733);
+    color: white;
+}
+
+.btn-cancel {
+    background: var(--color-cream);
+    color: var(--color-orange);
+    border: 2px solid;
+    border-color: var(--color-orange);
+}
+
+.btn-update,
+.btn-cancel {
+    width: 100px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 14px;
     font-weight: bold;
-    color: #ff8c00;
-    line-height: 1;
+    cursor: pointer;
+
+    position: relative;
+    top: 0;
+    display: inline-block;
+
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    transition: all 0.2s ease;
 }
 
-.date-day {
-    font-size: 0.85rem;
-    color: #666;
-    font-weight: 600;
-}*/
+
+.btn-update:active,
+.btn-cancel:active {
+    top: 3px;
+    box-shadow: 0 2px 0px var(--color-orange);
+    transition: all 0.2s;
+}
