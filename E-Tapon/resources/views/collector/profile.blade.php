@@ -20,7 +20,7 @@
             <div class="circle">
                 <img src="{{ asset('icons/O_profile.png') }}">
             </div>
-            <h2 class="font-extrabold">Sample Name</h2>
+            <h2 class="font-extrabold">{{ $profile['full_name'] }}</h2>
         </div>
 
         <!-- FIELD -->
@@ -29,35 +29,27 @@
                 <div class="card-con">
 
                     <div class="card-field">
-                        <input id="name" type="text" class="form-control" value="First Name" readonly>
+                        <input id="name" type="text" class="form-control" value="{{ $profile['firstname'] }}" readonly>
                     </div>
 
                     <div class="card-field">
-                        <input id="name" type="text" class="form-control" value="Middle Name" readonly>
+                        <input id="name" type="text" class="form-control" value="{{ $profile['middlename'] }}" readonly>
                     </div>
 
                     <div class="card-field">
-                        <input id="name" type="text" class="form-control" value="Last Name" readonly>
+                        <input id="name" type="text" class="form-control" value="{{ $profile['lastname'] }}" readonly>
                     </div>
 
                     <div class="card-field">
-                        <input id="name" type="text" class="form-control" value="Date of Birth" readonly>
+                        <input id="name" type="text" class="form-control" value="{{ $profile['contact_number'] }}" readonly>
                     </div>
 
                     <div class="card-field">
-                        <input id="name" type="text" class="form-control" value="Phone Number" readonly>
+                        <input id="name" type="text" class="form-control" value="{{ $profile['email'] }}" readonly>
                     </div>
 
                     <div class="card-field">
-                        <input id="name" type="text" class="form-control" value="Email Address" readonly>
-                    </div>
-
-                    <div class="card-field">
-                        <input id="name" type="text" class="form-control" value="Address | Area | Zip Code" readonly>
-                    </div>
-
-                    <div class="card-field">
-                        <input id="name" type="text" class="form-control" value="Password" readonly>
+                        <input id="name" type="password" class="form-control" value="{{ $profile['password_display'] }}" readonly>
                     </div>
                 </div>
             </div>
