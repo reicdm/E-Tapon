@@ -21,109 +21,84 @@
             <div class="card-mid">
                 <div class="schedule-wrapper">
 
-                    <div class="schedule-day is-current">
+                    @forelse($scheduleByDate as $dateKey => $dateData)
+                    <div class="schedule-day {{ \Carbon\Carbon::parse($dateData['date'])->isToday() ? 'is-current' : '' }} {{ !$loop->first ? 'mt-3' : '' }}">
                         <!-- DATE -->
                         <div class="date-col mr-6">
-                            <div class="day">19</div>
-                            <div class="week">Thu</div>
+                            <div class="day">{{ $dateData['day_number'] }}</div>
+                            <div class="week">{{ $dateData['day_name'] }}</div>
                         </div>
 
                         <!-- CARDS -->
                         <div class="task-card">
-                            <button class="collapsible">
-                                <div class="card-status-bg-completed sched-card">
-                                    <div class="sched-info">
-                                        <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
-                                        <p class="card-sched-text-ba">Truck: ABC 1234</p>
+                            @foreach($dateData['items'] as $item)
+                            <div class="{{ !$loop->first ? 'mt-3' : '' }}">
+                                <button class="collapsible"
+                                    data-type="{{ $item['type'] }}"
+                                    data-sched-id="{{ $item['sched_id'] ?? '' }}"
+                                    data-brgy-id="{{ $item['brgy_id'] ?? '' }}"
+                                    data-request-id="{{ $item['request_id'] ?? '' }}"
+                                    data-status="{{ $item['status'] }}">
+                                    <div class="card-status-bg-{{ strtolower(str_replace(' ', '', $item['status'])) }} sched-card">
+                                        <div class="sched-info">
+                                            <p class="card-sched-text-ba"><strong>{{ $item['brgy_name'] }}</strong></p>
+                                            <p class="card-sched-text-ba">Truck: {{ $item['license_plate'] }}</p>
+                                            @if($item['type'] === 'request' && isset($item['waste_type']))
+                                            <p class="card-sched-text-ba">Type: {{ $item['waste_type'] }}</p>
+                                            @endif
+                                            @if(isset($item['quantity']) && $item['quantity'] > 0)
+                                            <p class="card-sched-text-ba">Qty: {{ $item['quantity'] }} kg</p>
+                                            @endif
+                                        </div>
+
+                                        <div class="card-sched-status">
+                                            <p class="sched-status-{{ strtolower(str_replace(' ', '', $item['status'])) }}">
+                                                {{ $item['status'] }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </button>
+
+                                @if($item['status'] !== 'Completed' && $item['status'] !== 'Cancelled')
+                                <div class="clicked-status-{{ strtolower(str_replace(' ', '', $item['status'])) }}">
+                                    <hr class="mb-2">
+                                    <h4 class="update-title">Update Status</h4>
+
+                                    <!-- STATUS OPTIONS -->
+                                    <div class="status-options mb-4">
+                                        <button type="button" class="upd-status-assigned {{ $item['status'] === 'Assigned' ? 'active' : '' }}" data-status="Assigned">
+                                            Assigned
+                                        </button>
+
+                                        <button type="button" class="upd-status-cancelled {{ $item['status'] === 'Cancelled' ? 'active' : '' }}" data-status="Cancelled">
+                                            Cancelled
+                                        </button>
+
+                                        <button type="button" class="upd-status-inprogress {{ $item['status'] === 'In Progress' ? 'active' : '' }}" data-status="In Progress">
+                                            In Progress
+                                        </button>
+
+                                        <button type="button" class="upd-status-completed {{ $item['status'] === 'Completed' ? 'active' : '' }}" data-status="Completed">
+                                            Completed
+                                        </button>
                                     </div>
 
-                                    <div class="card-sched-status">
-                                        <p class="sched-status-completed">Completed</span>
+                                    <!-- ACTION BUTTONS -->
+                                    <div class="status-actions">
+                                        <button class="btn-update push">Update</button>
+                                        <button class="btn-cancel push">Cancel</button>
                                     </div>
                                 </div>
-                            </button>
-
-                            <div class="clicked-status-completed">
-                                <hr class="mb-2">
-                                <h4 class="update-title">Update Status</h4>
-
-                                <!-- STATUS OPTIONS -->
-                                <div class="status-options mb-4">
-                                    <button type="button" class="upd-status-assigned" data-status="assigned">
-                                        Assigned
-                                    </button>
-
-                                    <button type="button" class="upd-status-cancelled" data-status="cancelled">
-                                        Cancelled
-                                    </button>
-
-                                    <button type="button" class="upd-status-inprogress" data-status="in_progress">
-                                        In Progress
-                                    </button>
-
-                                    <button type="button" class="upd-status-completed" data-status="completed">
-                                        Completed
-                                    </button>
-                                </div>
-
-                                <!-- ACTION BUTTONS -->
-                                <div class="status-actions">
-                                    <button class="btn-update push">Update</button>
-                                    <button class="btn-cancel push">Cancel</button>
-                                </div>
+                                @endif
                             </div>
-
-                            <button class="collapsible">
-                                <div class="card-status-bg-inprogress sched-card">
-                                    <div class="sched-info">
-                                        <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
-                                        <p class="card-sched-text-ba">Truck: ABC 1234</p>
-                                    </div>
-
-                                    <div class="card-sched-status">
-                                        <p class="sched-status-inprogress">In Progress</span>
-                                    </div>
-                                </div>
-                            </button>
-                            <div class="clicked-status-inprogress">
-                                <h1>hai</h1>
-                            </div>
-
+                            @endforeach
                         </div>
                     </div>
-
-                    <div class="schedule-day mt-3">
-                        <!-- DATE -->
-                        <div class="date-col mr-6">
-                            <div class="day">20</div>
-                            <div class="week">Fri</div>
-                        </div>
-
-                        <!-- CARDS -->
-                        <div class="task-card">
-                            <div class="card-status-bg-assigned sched-card">
-                                <div class="sched-info">
-                                    <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
-                                    <p class="card-sched-text-ba">Truck: ABC 1234</p>
-                                </div>
-
-                                <div class="card-sched-status">
-                                    <p class="sched-status-assigned">Assigned</span>
-                                </div>
-                            </div>
-
-                            <div class="card-status-bg-cancelled sched-card">
-                                <div class="sched-info">
-                                    <p class="card-sched-text-ba"><strong>Barangay 123</strong></p>
-                                    <p class="card-sched-text-ba">Truck: ABC 1234</p>
-                                </div>
-
-                                <div class="card-sched-status">
-                                    <p class="sched-status-cancelled">Cancelled</span>
-                                </div>
-                            </div>
-                        </div>
+                    @empty
+                    <div class="text-center py-4">
+                        <p class="text-gray-500">No scheduled collections or requests found.</p>
                     </div>
+                    @endforelse
 
                 </div>
             </div>
@@ -136,6 +111,7 @@
 @push('scripts')
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
+        // FullCalendar initialization
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
@@ -151,33 +127,119 @@
             showNonCurrentDates: true
         });
         calendar.render();
-    });
 
-    var coll = document.getElementsByClassName("collapsible");
-    var i;
+        // Collapsible functionality
+        var coll = document.getElementsByClassName("collapsible");
+        for (var i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                // Don't allow expanding completed and cancelled tasks
+                if (this.dataset.status === 'Completed' || this.dataset.status === 'Cancelled') {
+                    return;
+                }
 
-    for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-            if (content.style.maxHeight) {
-                content.style.maxHeight = null;
-            } else {
-                content.style.maxHeight = content.scrollHeight + "px";
-            }
-        });
-    }
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        }
 
-    document.addEventListener('DOMContentLoaded', () => {
+        // Status button selection
         const statusButtons = document.querySelectorAll(
             '.upd-status-completed, .upd-status-inprogress, .upd-status-assigned, .upd-status-cancelled'
         );
 
         statusButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                statusButtons.forEach(btn => btn.classList.remove('active'));
+            button.addEventListener('click', function() {
+                const container = this.closest('.status-options');
+                const siblingButtons = container.querySelectorAll('.upd-status-completed, .upd-status-inprogress, .upd-status-assigned, .upd-status-cancelled');
+                siblingButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
 
-                button.classList.add('active');
+        // Update button functionality
+        const updateButtons = document.querySelectorAll('.btn-update');
+
+        updateButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const contentDiv = this.closest('[class^="clicked-status-"]');
+                const collapsibleButton = contentDiv.previousElementSibling;
+
+                // Get the selected status
+                const activeStatusBtn = contentDiv.querySelector('.upd-status-completed.active, .upd-status-inprogress.active, .upd-status-assigned.active, .upd-status-cancelled.active');
+
+                if (!activeStatusBtn) {
+                    alert('Please select a status');
+                    return;
+                }
+
+                const newStatus = activeStatusBtn.dataset.status;
+                const type = collapsibleButton.dataset.type;
+                const schedId = collapsibleButton.dataset.schedId;
+                const brgyId = collapsibleButton.dataset.brgyId;
+                const requestId = collapsibleButton.dataset.requestId;
+
+                // Disable button during request -- temporary (aalisin q pag may confirmation and popup na)
+                this.disabled = true;
+                this.textContent = 'Updating...';
+
+                // Prepare data based on type
+                const requestData = {
+                    type: type,
+                    status: newStatus
+                };
+
+                if (type === 'scheduled') {
+                    requestData.sched_id = schedId;
+                    requestData.brgy_id = brgyId;
+                } else {
+                    requestData.request_id = requestId;
+                }
+
+                // Send AJAX request
+                fetch('/collector/schedule/update', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify(requestData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message || 'Status updated successfully!');
+                            location.reload();
+                        } else {
+                            alert('Error: ' + (data.message || 'Failed to update status'));
+                            this.disabled = false;
+                            this.textContent = 'Update';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while updating status');
+                        this.disabled = false;
+                        this.textContent = 'Update';
+                    });
+            });
+        });
+
+        // Cancel button functionality
+        const cancelButtons = document.querySelectorAll('.btn-cancel');
+
+        cancelButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const content = this.closest('[class^="clicked-status-"]');
+                const collapsibleButton = content.previousElementSibling;
+
+                // Close the collapsible
+                collapsibleButton.classList.remove('active');
+                content.style.maxHeight = null;
             });
         });
     });

@@ -77,6 +77,7 @@ Route::prefix('collector')->group(function () {
     Route::middleware('auth:collector')->group(function () {
         Route::get('/dashboard', [CollectorDashboardController::class, 'showOverview'])->name('collector.dashboard');
         Route::get('/schedule', [CollectorScheduleController::class, 'showSchedule'])->name('collector.schedule');
+        Route::post('/schedule/update', [CollectorScheduleController::class, 'updateStatus'])->name('collector.schedule.update');
         Route::get('/profile', [CollectorProfileController::class, 'showProfile'])->name('collector.profile');
         Route::get('/profileedit', [CollectorProfileEditController::class, 'showProfileEdit'])->name('collector.profileedit');
 
