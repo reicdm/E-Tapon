@@ -52,6 +52,12 @@ Route::prefix('resident')->group(function () {
     Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
     Route::get('/schedule', [ResidentDashboardController::class, 'schedule'])->name('resident.schedule');
     Route::get('/request', [ResidentDashboardController::class, 'request'])->name('resident.request');
+    Route::get('/request/create', [ResidentDashboardController::class, 'showRequestForm'])->name('resident.request.create');
+    Route::post('/request/create', [ResidentDashboardController::class, 'create'])->name('resident.request.submit');
+    Route::get('/profile', [ResidentDashboardController::class, 'profile'])->name('resident.profile');
+
+    Route::put('/resident/request/{request_id}/cancel', [ResidentDashboardController::class, 'cancelRequest'])
+    ->name('resident.request.cancel');
 });
 
 // COLLECTOR ROUTES
