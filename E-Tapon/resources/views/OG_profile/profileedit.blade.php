@@ -6,12 +6,8 @@
 <div class="min-h-screen flex flex-col p-2">
     <div class="mx-auto max-w-4xl w-full p-2">
         <div class="profile-header">
-            <a href="{{ route('collector.dashboard') }}" class="icon-left">
+            <a href="{{ route('collector.profile') }}" class="icon-left">
                 <img src="{{ asset('icons/O_back.png') }}" alt="Back">
-            </a>
-
-            <a href="{{ route('collector.profileedit') }}" class="icon-right">
-                <img src="{{ asset('icons/O_edit.png') }}" alt="Edit">
             </a>
         </div>
 
@@ -41,18 +37,31 @@
                     </div>
 
                     <div class="card-field">
-                        <input id="name" type="text" class="form-control" value="Phone Number" readonly>
+                        <input id="name" type="text" class="form-control" value="Date of Birth" readonly>
+                    </div>
+
+                    <div class="card-field-edit">
+                        <input id="name" type="text" class="form-control" placeholder="Phone Number">
+                    </div>
+
+                    <div class="card-field-edit">
+                        <input id="name" type="text" class="form-control" placeholder="Email Address">
                     </div>
 
                     <div class="card-field">
-                        <input id="name" type="text" class="form-control" value="Email Address" readonly>
+                        <input id="name" type="text" class="form-control" value="Address | Area | Zip Code" readonly>
                     </div>
 
-                    <div class="card-field">
-                        <input id="name" type="text" class="form-control" value="Password" readonly>
+                    <div class="card-field-edit">
+                        <input id="name" type="text" class="form-control" placeholder="Password">
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="action-buttons mt-4">
+            <button class="btn-save">Save</button>
+            <button class="btn-cancel">Cancel</button>
         </div>
     </div>
 </div>

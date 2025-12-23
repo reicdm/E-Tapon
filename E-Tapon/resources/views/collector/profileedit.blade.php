@@ -36,20 +36,12 @@
                         <input id="name" type="text" class="form-control" value="Last Name" readonly>
                     </div>
 
-                    <div class="card-field">
-                        <input id="name" type="text" class="form-control" value="Date of Birth" readonly>
-                    </div>
-
                     <div class="card-field-edit">
                         <input id="name" type="text" class="form-control" placeholder="Phone Number">
                     </div>
 
                     <div class="card-field-edit">
                         <input id="name" type="text" class="form-control" placeholder="Email Address">
-                    </div>
-
-                    <div class="card-field">
-                        <input id="name" type="text" class="form-control" value="Address | Area | Zip Code" readonly>
                     </div>
 
                     <div class="card-field-edit">

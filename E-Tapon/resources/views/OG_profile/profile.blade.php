@@ -41,11 +41,19 @@
                     </div>
 
                     <div class="card-field">
+                        <input id="name" type="text" class="form-control" value="Date of Birth" readonly>
+                    </div>
+
+                    <div class="card-field">
                         <input id="name" type="text" class="form-control" value="Phone Number" readonly>
                     </div>
 
                     <div class="card-field">
                         <input id="name" type="text" class="form-control" value="Email Address" readonly>
+                    </div>
+
+                    <div class="card-field">
+                        <input id="name" type="text" class="form-control" value="Address | Area | Zip Code" readonly>
                     </div>
 
                     <div class="card-field">
