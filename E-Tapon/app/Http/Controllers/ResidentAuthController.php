@@ -75,7 +75,6 @@ class ResidentAuthController extends Controller
         return redirect()->route('resident.success')->with('success', true);
     }
 
-
     // LOGOUT
     public function logout(Request $request)
     {

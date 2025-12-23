@@ -61,6 +61,47 @@ class ResidentDashboardController extends Controller
 
     public function profile()
     {
-        return view('resident.profile');
+        $user = (object) [
+            'id' => 1,
+            'first_name' => 'Juan',
+            'last_name' => 'Dela Cruz',
+            'name' => 'Juan Dela Cruz',
+            'email' => 'juan@example.com',
+            'phone_number' => '09123456789',
+            'address' => '123 Street, Brgy. 456',
+            'area_barangay' => 'Barangay 456',
+            'zip_code' => '1000'
+        ];
+
+        return view('resident.profile', compact('user'));
     }
+
+    public function editProfile(Request $request)
+    {
+        $user = (object) [
+            'id' => 1,
+            'first_name' => 'Juan',
+            'last_name' => 'Dela Cruz',
+            'email' => 'juan@example.com',
+            'phone_number' => '09123456789',
+            'address' => '123 Street, Brgy. 456',
+            'area_barangay' => 'Barangay 456',
+            'zip_code' => '1000'
+        ];
+
+        return view('resident.profile-edit', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        return redirect()->route('resident.profile')->with('success', 'Profile updated successfully!');
+    }
+
+    // UPDATE PASSWORD
+    public function updatePassword() {
+        
+    }
+
+    // CHANGE ADDRESS
+    public function updateAddress() {}
 }

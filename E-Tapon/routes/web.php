@@ -14,6 +14,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('/resident/profile/edit', function () {
+//     return view('resident.profile-edit');
+// });
+
 Route::get('/test', function () {
     return "<h1>Successful!<h1>";
 });
@@ -50,12 +54,29 @@ Route::prefix('resident')->group(function () {
     //     Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
     // });
 
+    // OVERVIEW
     Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
+    
+    // SCHEDULE
     Route::get('/schedule', [ResidentDashboardController::class, 'schedule'])->name('resident.schedule');
+    
+    // REQUEST
     Route::get('/request', [ResidentDashboardController::class, 'request'])->name('resident.request');
     Route::get('/request/create', [ResidentDashboardController::class, 'showRequestForm'])->name('resident.request.create');
     Route::post('/request/create', [ResidentDashboardController::class, 'create'])->name('resident.request.submit');
+    
+    // PROFILE
     Route::get('/profile', [ResidentDashboardController::class, 'profile'])->name('resident.profile');
+    Route::get('/profile/edit', [ResidentDashboardController::class, 'editProfile'])->name('resident.profile.edit');
+    Route::post('/profile/update', [ResidentDashboardController::class, 'updateProfile'])->name('resident.profile.update');
+    
+    Route::get('/profile/change-password', function() {
+        return view('resident.change_password');
+    })->name('resident.profile.change_password');
+
+    Route::get('/profile/change-address', function() {
+        return view('resident.change_address');
+    })->name('resident.profile.change_address');
 });
 
 // COLLECTOR ROUTES
