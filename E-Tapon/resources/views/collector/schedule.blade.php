@@ -46,9 +46,6 @@
                                             @if($item['type'] === 'request' && isset($item['waste_type']))
                                             <p class="card-sched-text-ba">Type: {{ $item['waste_type'] }}</p>
                                             @endif
-                                            @if(isset($item['quantity']) && $item['quantity'] > 0)
-                                            <p class="card-sched-text-ba">Qty: {{ $item['quantity'] }} kg</p>
-                                            @endif
                                         </div>
 
                                         <div class="card-sched-status">
