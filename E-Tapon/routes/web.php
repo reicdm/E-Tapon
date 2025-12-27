@@ -10,6 +10,9 @@ use App\Http\Controllers\CollectorProfileController;
 use App\Http\Controllers\CollectorProfileEditController;
 use App\Http\Controllers\CollectorReqReqDetailsController;
 
+use App\Http\Controllers\CollectorSuccessController;
+use App\Http\Controllers\CollectorConfirmController;
+
 use App\Http\Controllers\ResidentAuthController;
 use App\Http\Controllers\ResidentDashboardController;
 use Illuminate\Support\Facades\Route;
@@ -67,9 +70,9 @@ Route::prefix('collector')->group(function () {
     // FORGOT
     Route::get('/forgot', [CollectorAuthController::class, 'showForgotForm'])->name('collector.forgot');
     Route::post('/forgot', [CollectorAuthController::class, 'forgot'])->name('collector.forgot.submit');
-    Route::get('/forgot-success', function () {
+    /*Route::get('/forgot-success', function () {
         return view('auth.collector.forgotsuccess');
-    })->name('collector.success');
+    })->name('collector.success');*/
     // LOGOUT
     Route::post('/logout', [CollectorAuthController::class, 'logout'])->name('collector.logout');
 
@@ -102,4 +105,6 @@ Route::prefix('collector')->group(function () {
             Route::post('/{requestId}/decline', [CollectorReqReqDetailsController::class, 'decline'])->name('collector.reqreqdetails.decline');
         });
     });
+    Route::get('/success', [CollectorSuccessController::class, 'showSuccess'])->name('collector.success');
+    Route::get('/confirm', [CollectorConfirmController::class, 'showConfirm'])->name('collector.confirm');
 });
