@@ -64,7 +64,7 @@ body {
 
 /* BOT CONTAINER */
 .card-con {
-    height: 540px;
+    height: 410px;
     padding: 0.5rem 1rem;
     background-image: linear-gradient(to top, #ff9100, #FFA733);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
