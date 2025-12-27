@@ -7,14 +7,14 @@
     <div class="mx-auto max-w-4xl w-full p-2">
 
         <!-- HEADER -->
-        <div class="row row-wel justify-content-center mb-3">
+        <div class="row row-wel justify-content-center px-2 mb-3">
             <h1 class="font-extrabold" style="color: var(--color-dark-green)">
                 Collector Schedule
             </h1>
         </div>
 
         <!-- CALENDAR CARD -->
-        <div id='calendar'></div>
+        <div id='calendar' class="px-2"></div>
 
         <!-- STATUS TASK -->
         <div class="row row-con justify-content-center g-2">
@@ -33,7 +33,7 @@
                         <div class="task-card">
                             @foreach($dateData['items'] as $item)
                             <div class="{{ !$loop->first ? 'mt-3' : '' }}">
-                                <button class="collapsible"
+                                <div class="collapsible"
                                     data-type="{{ $item['type'] }}"
                                     data-sched-id="{{ $item['sched_id'] ?? '' }}"
                                     data-brgy-id="{{ $item['brgy_id'] ?? '' }}"
@@ -54,7 +54,7 @@
                                             </p>
                                         </div>
                                     </div>
-                                </button>
+                                </div>
 
                                 @if($item['status'] !== 'Completed' && $item['status'] !== 'Cancelled')
                                 <div class="clicked-status-{{ strtolower(str_replace(' ', '', $item['status'])) }}">
@@ -180,7 +180,7 @@
                 const brgyId = collapsibleButton.dataset.brgyId;
                 const requestId = collapsibleButton.dataset.requestId;
 
-                // Disable button during request -- temporary (aalisin q pag may confirmation and popup na)
+                // Disable button during request
                 this.disabled = true;
                 this.textContent = 'Updating...';
 
