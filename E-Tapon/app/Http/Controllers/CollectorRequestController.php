@@ -59,7 +59,7 @@ class CollectorRequestController extends Controller
                 DB::raw("DATE_FORMAT(req.completion_date, '%m/%d/%y') as formatted_date")
             )
             ->orderBy('req.completion_date', 'desc')
-            ->limit(20)
+            ->limit(3)
             ->get();
 
         return view('collector.request', compact(
