@@ -19,10 +19,9 @@
 </head>
 
 <body class="flex flex-col @yield('body-class')">
-  @include('layouts.resident_header')
+  @include('layouts.resident_profile_header')
   <main class="flex-1">@yield('content')</main>
 
-  @stack('scripts')
 </body>
 
 </html>

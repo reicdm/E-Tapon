@@ -12,14 +12,45 @@ use Illuminate\Support\Facades\Log;
 
 class ResidentAuthController extends Controller
 {
-    // Show registration form
+
+    // LOGIN
+    public function showLoginForm()
+    {
+        return view('auth.resident.login');
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        $resident = User::where('email', $credentials['email'])->first();
+
+        if (!$resident) {
+            return back()->withErrors([
+                'email' => 'No account found with this email address.',
+            ])->withInput();
+        }
+
+        if (!Auth::attempt($credentials)) {
+            return back()->withErrors([
+                'password' => 'The password you entered is incorrect.',
+            ])->withInput();
+        }
+
+        $request->session()->regenerate();
+        return redirect()->route('resident.dashboard');
+    }
+
+    // REGISTER
     public function showRegisterForm()
     {
-        $barangays = DB::table('area_tbl')->get(); // or Area::all() if you have a model
+        $barangays = DB::table('area_tbl')->get();
         return view('auth.resident.register', compact('barangays'));
     }
 
-    // Handle registration
     public function register(Request $request)
     {
         Log::info('Registration triggered', $request->all()); // ← ADD THIS
@@ -37,14 +68,14 @@ class ResidentAuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        Log::info('Validation passed'); // ← ADD THIS
+        Log::info('Validation passed');
 
         $user = User::create([
             'registration_date' => now(),
             'firstname' => $request->first_name,
             'middlename' => $request->middle_name,
             'lastname' => $request->last_name,
-            'date_of_birth' => $request->date_of_birth, // Y-m-d from <input type="date">
+            'date_of_birth' => $request->date_of_birth,
             'contact_no' => $request->phone_number,
             'email' => $request->email,
             'brgy_id' => $request->area_barangay,
@@ -59,31 +90,18 @@ class ResidentAuthController extends Controller
         return redirect()->route('resident.dashboard');
     }
 
-    // Show login form
-    public function showLoginForm()
+    // FORGOT PASSWORD
+    public function showForgotForm()
     {
-        return view('auth.resident.login');
+        return view('auth.resident.forgot');
     }
 
-    // Handle login
-    public function login(Request $request)
+    public function forgot(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
-
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->route('resident.dashboard');
-        }
-
-        return back()->withErrors([
-            'email' => 'Invalid credentials or user not found.',
-        ]);
+        return redirect()->route('resident.success')->with('success', true);
     }
 
-    // Logout
+    // LOGOUT
     public function logout(Request $request)
     {
         Auth::logout();

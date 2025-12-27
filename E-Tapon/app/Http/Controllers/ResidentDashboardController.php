@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Request as UserRequest;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
 
 class ResidentDashboardController extends Controller
 {
@@ -256,6 +259,162 @@ class ResidentDashboardController extends Controller
 
     public function profile()
     {
-        return view('resident.profile');
+        $user = Auth::user();
+
+        // Fetch full user info with barangay name
+        $userData = DB::table('user_tbl')
+            ->join('area_tbl', 'user_tbl.brgy_id', '=', 'area_tbl.brgy_id')
+            ->where('user_tbl.user_id', $user->user_id)
+            ->select(
+                'user_tbl.firstname',
+                'user_tbl.middlename',
+                'user_tbl.lastname',
+                'user_tbl.date_of_birth',
+                'user_tbl.contact_no',
+                'user_tbl.email',
+                'user_tbl.street_address',
+                'area_tbl.brgy_name as area_barangay',
+                'user_tbl.zip_code'
+            )
+            ->first();
+
+        return view('resident.profile', compact('userData'));
+    }
+
+
+    public function editProfile()
+    {
+        $user = Auth::user();
+
+        // Fetch real user data + barangay name
+        $userData = DB::table('user_tbl')
+            ->join('area_tbl', 'user_tbl.brgy_id', '=', 'area_tbl.brgy_id')
+            ->where('user_tbl.user_id', $user->user_id)
+            ->select(
+                'user_tbl.user_id',
+                'user_tbl.firstname',
+                'user_tbl.middlename',
+                'user_tbl.lastname',
+                'user_tbl.date_of_birth',
+                'user_tbl.contact_no',
+                'user_tbl.email',
+                'user_tbl.street_address',
+                'area_tbl.brgy_id as area_barangay_id',   // needed for dropdown
+                'area_tbl.brgy_name as area_barangay',    // for display
+                'user_tbl.zip_code'
+            )
+            ->first();
+
+        // Also get all barangays for the dropdown
+        $barangays = DB::table('area_tbl')->get();
+
+        return view('resident.profile-edit', compact('userData', 'barangays'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'date_of_birth' => 'required|date|before:today',
+            'phone_number' => 'required|string',
+            'email' => 'required|email|unique:user_tbl,email,' . $user->user_id,
+            'updated_address' => 'required|string',
+            'updated_area' => 'required|exists:area_tbl,brgy_id',
+            'updated_zip' => 'nullable|string',
+        ]);
+
+        DB::table('user_tbl')
+            ->where('user_id', $user->user_id)
+            ->update([
+                'firstname' => $request->first_name,
+                'middlename' => $request->middle_name,
+                'lastname' => $request->last_name,
+                'date_of_birth' => $request->date_of_birth,
+                'contact_no' => $request->phone_number,
+                'email' => $request->email,
+                'street_address' => $request->updated_address,
+                'brgy_id' => $request->updated_area,
+                'zip_code' => $request->updated_zip,
+            ]);
+
+        return redirect()->route('resident.profile')->with('success', 'Profile updated successfully!');
+    }
+
+    // Show Change Password Form
+    public function showChangePasswordForm()
+    {
+        return view('resident.change_password');
+    }
+
+    // Handle Password Update
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'newpassword' => 'required|min:8|confirmed', // oldpassword removed
+        ]);
+
+        $user = Auth::user();
+
+        // ✅ Directly update password — NO old password check
+        DB::table('user_tbl')
+            ->where('user_id', $user->user_id)
+            ->update(['password' => Hash::make($request->newpassword)]);
+
+        // Force logout to confirm it works
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('resident.login')
+            ->with('success', 'Password updated! Please log in with your new password.');
+    }
+
+    public function showChangeAddressForm()
+    {
+        $barangays = DB::table('area_tbl')->get();
+        return view('resident.change_address', compact('barangays'));
+    }
+
+    // Handle Address Update
+    public function updateAddress(Request $request)
+    {
+        $request->validate([
+            'updated_address' => 'required|string',
+            'updated_area' => 'required|exists:area_tbl,brgy_id',
+            'updated_zip' => 'nullable|string',
+        ]);
+
+        $user = Auth::user();
+
+        DB::table('user_tbl')
+            ->where('user_id', $user->user_id)
+            ->update([
+                'street_address' => $request->updated_address,
+                'brgy_id' => $request->updated_area,
+                'zip_code' => $request->updated_zip,
+            ]);
+
+        return redirect()->route('resident.profile')->with('success', 'Address updated successfully!');
+    }
+
+    public function deleteAccount(Request $request)
+    {
+        $user = Auth::user();
+
+        // Soft delete or hard delete? Let's assume hard delete for now.
+        DB::table('user_tbl')->where('user_id', $user->user_id)->delete();
+
+        // Log the user out
+        Auth::logout();
+
+        // Invalidate session
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/')->with('success', 'Your account has been deleted.');
     }
 }

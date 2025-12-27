@@ -19,7 +19,7 @@ class User extends Authenticatable
         'contact_no',
         'email',
         'password',
-        'brgy_id',          // ← foreign key to area_tbl
+        'brgy_id',         
         'zip_code',
         'street_address',
     ];

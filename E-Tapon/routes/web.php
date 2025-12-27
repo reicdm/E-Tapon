@@ -49,15 +49,33 @@ Route::prefix('resident')->group(function () {
     //     Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
     // });
 
-    Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
-    Route::get('/schedule', [ResidentDashboardController::class, 'schedule'])->name('resident.schedule');
-    Route::get('/request', [ResidentDashboardController::class, 'request'])->name('resident.request');
-    Route::get('/request/create', [ResidentDashboardController::class, 'showRequestForm'])->name('resident.request.create');
-    Route::post('/request/create', [ResidentDashboardController::class, 'create'])->name('resident.request.submit');
-    Route::get('/profile', [ResidentDashboardController::class, 'profile'])->name('resident.profile');
+    // PROTECTED routes (require login)
+    Route::middleware('auth')->group(function () {
+        Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
+        Route::get('/schedule', [ResidentDashboardController::class, 'schedule'])->name('resident.schedule');
+        Route::get('/request', [ResidentDashboardController::class, 'request'])->name('resident.request');
+        Route::get('/request/create', [ResidentDashboardController::class, 'showRequestForm'])->name('resident.request.create');
+        Route::post('/request/create', [ResidentDashboardController::class, 'create'])->name('resident.request.submit');
+        Route::put('/resident/request/{request_id}/cancel', [ResidentDashboardController::class, 'cancelRequest'])
+            ->name('resident.request.cancel');
 
-    Route::put('/resident/request/{request_id}/cancel', [ResidentDashboardController::class, 'cancelRequest'])
-    ->name('resident.request.cancel');
+        // PROFILE ROUTES
+        Route::get('/profile', [ResidentDashboardController::class, 'profile'])->name('resident.profile');
+        Route::get('/profile/edit', [ResidentDashboardController::class, 'editProfile'])->name('resident.profile.edit');
+        Route::post('/profile/update', [ResidentDashboardController::class, 'updateProfile'])->name('resident.profile.update');
+
+        Route::get('/profile/change-password', [ResidentDashboardController::class, 'showChangePasswordForm'])
+            ->name('resident.profile.change_password');
+        Route::post('/profile/change-password', [ResidentDashboardController::class, 'updatePassword'])
+            ->name('resident.profile.update_password');
+
+        Route::get('/profile/change-address', [ResidentDashboardController::class, 'showChangeAddressForm'])
+            ->name('resident.profile.change_address');
+        Route::post('/profile/change-address', [ResidentDashboardController::class, 'updateAddress'])
+            ->name('resident.profile.update_address');
+        Route::delete('/profile/delete-account', [ResidentDashboardController::class, 'deleteAccount'])
+            ->name('resident.account.delete');
+    });
 });
 
 // COLLECTOR ROUTES
@@ -86,5 +104,4 @@ Route::prefix('collector')->group(function () {
     Route::get('/dashboard', [CollectorDashboardController::class, 'showOverview'])->name('collector.dashboard');
     Route::get('/schedule', [CollectorScheduleController::class, 'showSchedule'])->name('collector.schedule');
     Route::get('/request', [CollectorRequestController::class, 'showRequest'])->name('collector.request');
-
 });

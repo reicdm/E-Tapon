@@ -1,5 +1,4 @@
 @php
-// Define the current route to determine active links
 $currentRoute = request()->route() ? request()->route()->getName() : '';
 use Illuminate\Support\Str;
 @endphp
