@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title', 'Resident Request')
-@section('body-class', 'is-static-page')
+<!-- @section('body-class') -->
 @section('content')
 <div class="dashboard-mobile-container mt-0">
   <div>

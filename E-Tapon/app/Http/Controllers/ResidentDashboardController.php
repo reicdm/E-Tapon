@@ -13,19 +13,18 @@ use Illuminate\Support\Facades\Hash;
 
 class ResidentDashboardController extends Controller
 {
+    // ==== DASHBOARD ====
     public function dashboard()
     {
         $user = Auth::user();
         $brgyId = $user->brgy_id;
         $userId = $user->user_id;
 
-        // === 1. Requests: Pending + Assigned count ===
         $requestsCount = DB::table('request_tbl')
             ->where('user_id', $userId)
             ->whereIn('status', ['Pending', 'Assigned'])
             ->count();
 
-        // === 2. Schedule: Next recurring collection date ===
         $scheduledDayOrders = DB::table('brgysched_tbl')
             ->join('collectorsched_tbl', 'brgysched_tbl.sched_id', '=', 'collectorsched_tbl.sched_id')
             ->where('brgysched_tbl.brgy_id', $brgyId)
@@ -37,7 +36,6 @@ class ResidentDashboardController extends Controller
         $today = now()->startOfDay();
         $current = clone $today;
 
-        // Find next scheduled date (within next 3 months)
         while ($nextScheduleDate === null && $current->lte($today->copy()->addMonths(3))) {
             if (in_array($current->dayOfWeek, $scheduledDayOrders)) {
                 $nextScheduleDate = $current;
@@ -45,22 +43,19 @@ class ResidentDashboardController extends Controller
             $current->addDay();
         }
 
-        // === 3. Collections: Completed count ===
         $completedCount = DB::table('record_tbl')
             ->where('brgy_id', $brgyId)
             ->where('status', 'Completed')
             ->count();
 
-        // === 4. Upcoming Collections: Scheduled dates + Assigned requests (next 14 days) ===
         $upcoming = [];
 
-        // A. Scheduled recurring dates
         $start = now()->startOfDay();
         $end = now()->addDays(14);
         $current = clone $start;
         while ($current->lte($end)) {
             if (in_array($current->dayOfWeek, $scheduledDayOrders)) {
-                // Get one truck for this day (optional: get all)
+
                 $truck = DB::table('brgysched_tbl')
                     ->join('collectorsched_tbl', 'brgysched_tbl.sched_id', '=', 'collectorsched_tbl.sched_id')
                     ->where('brgysched_tbl.brgy_id', $brgyId)
@@ -75,7 +70,6 @@ class ResidentDashboardController extends Controller
             $current->addDay();
         }
 
-        // B. Assigned/In Progress user requests (future only)
         $assignedRequests = DB::table('request_tbl')
             ->where('user_id', $userId)
             ->whereIn('status', ['Assigned', 'In Progress'])
@@ -90,7 +84,6 @@ class ResidentDashboardController extends Controller
             ];
         }
 
-        // Sort by date and limit to 4 (to match your dummy)
         usort($upcoming, function ($a, $b) {
             return \Carbon\Carbon::parse($a['date']) <=> \Carbon\Carbon::parse($b['date']);
         });
@@ -104,12 +97,12 @@ class ResidentDashboardController extends Controller
         ));
     }
 
+    // ==== SCHEDULE ====
     public function schedule()
     {
         $user = Auth::user();
         $brgyId = $user->brgy_id;
 
-        // === 1. Get scheduled weekdays for calendar dots (unchanged) ===
         $scheduledDayOrders = DB::table('brgysched_tbl')
             ->join('collectorsched_tbl', 'brgysched_tbl.sched_id', '=', 'collectorsched_tbl.sched_id')
             ->where('brgysched_tbl.brgy_id', $brgyId)
@@ -128,7 +121,6 @@ class ResidentDashboardController extends Controller
             $current->addDay();
         }
 
-        // === 2. Fetch REAL records with TRUCK info ===
         $records = DB::table('record_tbl')
             ->join('collectorsched_tbl', 'record_tbl.sched_id', '=', 'collectorsched_tbl.sched_id')
             ->join('area_tbl', 'record_tbl.brgy_id', '=', 'area_tbl.brgy_id')
@@ -145,13 +137,12 @@ class ResidentDashboardController extends Controller
             ->map(function ($item) {
                 $truck = $item->license_plate ?? 'Not assigned';
 
-                // If status is In Progress or Completed, but truck is not assigned → show "Assigned Truck" as fallback
                 if (in_array($item->status, ['In Progress', 'Completed']) && $truck === 'Not assigned') {
-                    $truck = 'Assigned Truck'; // or fetch from assignment log if available
+                    $truck = 'Assigned Truck'; 
                 }
                 return [
                     'barangay' => $item->barangay,
-                    'truck' => $item->license_plate ?? 'Not assigned',        // ✅ Now shows correct truck!
+                    'truck' => $item->license_plate ?? 'Not assigned',      
                     'date' => $item->date,
                     'status' => $item->status,
                 ];
@@ -162,8 +153,7 @@ class ResidentDashboardController extends Controller
         return view('resident.schedule', compact('schedules', 'scheduleDates'));
     }
 
-    // In ResidentDashboardController.php
-
+    // ==== REQUEST ====
     public function request()
     {
         $user = Auth::user();
@@ -176,16 +166,15 @@ class ResidentDashboardController extends Controller
             ->map(function ($item) {
                 $truck = $item->license_plate ?? 'Not assigned';
 
-                // If status is In Progress or Completed, but truck is not assigned → show "Assigned Truck" as fallback
                 if (in_array($item->status, ['In Progress', 'Completed']) && $truck === 'Not assigned') {
-                    $truck = 'Assigned Truck'; // or fetch from assignment log if available
+                    $truck = 'Assigned Truck'; 
                 }
                 return [
                     'request_id' => $item->request_id,
                     'type' => $item->waste_type,
                     'quantity' => $item->quantity,
                     'preferred_date' => \Carbon\Carbon::parse($item->preferred_date)->format('M d, Y'),
-                    'preferred_time' => \Carbon\Carbon::parse($item->preferred_time)->format('g:i A'), // e.g., "9:00 AM"
+                    'preferred_time' => \Carbon\Carbon::parse($item->preferred_time)->format('g:i A'), 
                     'status' => $item->status,
                     'truck' => $item->license_plate ?: 'Not assigned',
                 ];
@@ -232,22 +221,20 @@ class ResidentDashboardController extends Controller
             'qty' => 'required|numeric|min:0.1',
         ]);
 
-        // Generate request_id: RQ + 4-digit number (e.g., RQ0001)
         $latest = UserRequest::orderBy('request_id', 'desc')->first();
         $number = $latest ? (int) substr($latest->request_id, 2) + 1 : 1;
         $requestId = 'RQ' . str_pad($number, 4, '0', STR_PAD_LEFT);
 
-        // Get authenticated user
         $user = Auth::user();
 
         UserRequest::create([
             'request_id' => $requestId,
-            'user_id' => $user->user_id, // matches USER_TBL.user_id (INT)
+            'user_id' => $user->user_id,
             'quantity' => $request->qty,
             'waste_type' => $request->waste_type,
-            'preferred_date' => $request->pref_date, // DATE
-            'preferred_time' => $request->pref_time, // TIME
-            'request_date' => now()->toDateString(), // DATE
+            'preferred_date' => $request->pref_date, 
+            'preferred_time' => $request->pref_time, 
+            'request_date' => now()->toDateString(), 
             'status' => 'Pending',
             'completion_date' => $request->pref_date,
         ]);
@@ -256,12 +243,11 @@ class ResidentDashboardController extends Controller
             ->with('popup_message', 'Request successful! Please wait for approval.');
     }
 
-
+    // ==== PROFILE ====
     public function profile()
     {
         $user = Auth::user();
 
-        // Fetch full user info with barangay name
         $userData = DB::table('user_tbl')
             ->join('area_tbl', 'user_tbl.brgy_id', '=', 'area_tbl.brgy_id')
             ->where('user_tbl.user_id', $user->user_id)
@@ -286,7 +272,6 @@ class ResidentDashboardController extends Controller
     {
         $user = Auth::user();
 
-        // Fetch real user data + barangay name
         $userData = DB::table('user_tbl')
             ->join('area_tbl', 'user_tbl.brgy_id', '=', 'area_tbl.brgy_id')
             ->where('user_tbl.user_id', $user->user_id)
@@ -299,13 +284,12 @@ class ResidentDashboardController extends Controller
                 'user_tbl.contact_no',
                 'user_tbl.email',
                 'user_tbl.street_address',
-                'area_tbl.brgy_id as area_barangay_id',   // needed for dropdown
-                'area_tbl.brgy_name as area_barangay',    // for display
+                'area_tbl.brgy_id as area_barangay_id',   
+                'area_tbl.brgy_name as area_barangay',   
                 'user_tbl.zip_code'
             )
             ->first();
 
-        // Also get all barangays for the dropdown
         $barangays = DB::table('area_tbl')->get();
 
         return view('resident.profile-edit', compact('userData', 'barangays'));
@@ -338,7 +322,7 @@ class ResidentDashboardController extends Controller
         return redirect()->route('resident.profile')->with('success', 'Profile updated successfully!');
     }
 
-    // Show Change Password Form
+    // ==== PASSWORD ====
     public function showChangePasswordForm()
     {
         return view('resident.change_password');
@@ -349,7 +333,6 @@ class ResidentDashboardController extends Controller
 
         $user = Auth::user();
 
-        // Validate the input
         $request->validate([
             'oldpassword' => 'required',
             'newpassword' => 'required|string|min:8|confirmed',
@@ -365,31 +348,27 @@ class ResidentDashboardController extends Controller
             ]);
         }
 
-        // 🔑 IMPORTANT: Replace 'password' with your actual column name if different!
-        // e.g., if your DB column is 'pass', use 'pass' => ...
         DB::table('user_tbl')
             ->where('user_id', $user->user_id)
             ->update([
                 'password' => Hash::make($request->newpassword)
             ]);
 
-        // Log the user out for security (as requested)
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Redirect to login with success message
         return redirect()->route('resident.login')
             ->with('success', 'Password updated successfully! Please log in with your new password.');
     }
 
+    // ==== ADDRESS ====
     public function showChangeAddressForm()
     {
         $barangays = DB::table('area_tbl')->get();
         return view('resident.change_address', compact('barangays'));
     }
 
-    // Handle Address Update
     public function updateAddress(Request $request)
     {
         $request->validate([
