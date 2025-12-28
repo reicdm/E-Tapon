@@ -27,7 +27,7 @@
             </svg>
 
             <!-- ✅ REAL FIRST NAME -->
-            <h2 class="fw-bold fs-1 mb-4">{{ $userData->firstname }}</h2>
+            <h2 class="fw-bold fs-1 mb-4">{{ $userData->firstname }} {{ $userData->lastname }}</h2>
         </div>
 
         <!-- FIELDS -->

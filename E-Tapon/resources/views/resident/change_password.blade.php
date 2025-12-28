@@ -11,20 +11,42 @@
                 @csrf
 
                 <!-- CURRENT PASSWORD -->
-                <!-- <div class="mb-4 form-input-group">
-                    <input id="oldpassword" type="password" name="oldpassword" placeholder="Enter Current Password" required>
-                </div> -->
+                <div class="mb-4 form-input-group">
+                    <input
+                        id="oldpassword"
+                        type="password"
+                        name="oldpassword"
+                        placeholder="Enter Current Password"
+                        value="{{ old('oldpassword') }}"
+                        required
+                        autocomplete="current-password">
+                    @error('oldpassword')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
 
                 <div class="my-4 border-t border-gray-400"></div>
 
                 <!-- NEW PASSWORD -->
                 <div class="mb-3 form-input-group">
-                    <input id="newpassword" type="password" name="newpassword" placeholder="Enter New Password" required>
+                    <input
+                        id="newpassword"
+                        type="password"
+                        name="newpassword"
+                        placeholder="Enter New Password"
+                        value="{{ old('newpassword') }}"
+                        required>
+                    @error('newpassword')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- CONFIRM NEW PASSWORD -->
                 <div class="mb-3 form-input-group">
-                    <input id="new_password_confirmation" type="password" name="new_password_confirmation" placeholder="Re-Enter New Password" required>
+                    <input id="newpassword_confirmation" type="password" name="newpassword_confirmation" placeholder="Re-Enter New Password" required>
+                    @error('newpassword_confirmation')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- ACTION BUTTONS -->

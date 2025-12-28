@@ -20,6 +20,18 @@
       </div>
       @endif
 
+      @if(session('success'))
+      <div class="mb-4 p-3 bg-green-100 text-green-700 rounded">
+        {{ session('success') }}
+      </div>
+      @endif
+
+      @if(session('success'))
+      <script>
+        alert("{{ session('success') }}");
+      </script>
+      @endif
+
       <form method="POST" action="{{ route('resident.login.submit') }}">
         @csrf
         <!-- EMAIL -->

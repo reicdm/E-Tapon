@@ -22,7 +22,7 @@
       5 12 5zm0 14.2c-2.5 0-4.71-1.28-6-3.21.03-1.99 4.03-3.08 6-3.08 1.96 0 5.97 1.09 6 3.08-1.29 1.93-3.5 3.21-6 3.21z" />
       </svg>
 
-      <h2 class="fw-bold fs-1 mb-4">Sample Name</h2>
+      <h2 class="fw-bold fs-1 mb-4">{{ $userData->firstname }} {{ $userData->lastname }}</h2>
     </div>
 
     <!-- FIELDS -->

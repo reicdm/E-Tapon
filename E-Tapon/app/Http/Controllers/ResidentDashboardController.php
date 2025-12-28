@@ -321,10 +321,7 @@ class ResidentDashboardController extends Controller
             'last_name' => 'required|string|max:255',
             'date_of_birth' => 'required|date|before:today',
             'phone_number' => 'required|string',
-            'email' => 'required|email|unique:user_tbl,email,' . $user->user_id,
-            'updated_address' => 'required|string',
-            'updated_area' => 'required|exists:area_tbl,brgy_id',
-            'updated_zip' => 'nullable|string',
+            'email' => 'required|email|unique:user_tbl,email,' . $user->user_id . ',user_id',
         ]);
 
         DB::table('user_tbl')
@@ -336,9 +333,6 @@ class ResidentDashboardController extends Controller
                 'date_of_birth' => $request->date_of_birth,
                 'contact_no' => $request->phone_number,
                 'email' => $request->email,
-                'street_address' => $request->updated_address,
-                'brgy_id' => $request->updated_area,
-                'zip_code' => $request->updated_zip,
             ]);
 
         return redirect()->route('resident.profile')->with('success', 'Profile updated successfully!');
@@ -350,27 +344,43 @@ class ResidentDashboardController extends Controller
         return view('resident.change_password');
     }
 
-    // Handle Password Update
     public function updatePassword(Request $request)
     {
-        $request->validate([
-            'newpassword' => 'required|min:8|confirmed', // oldpassword removed
-        ]);
 
         $user = Auth::user();
 
-        // ✅ Directly update password — NO old password check
+        // Validate the input
+        $request->validate([
+            'oldpassword' => 'required',
+            'newpassword' => 'required|string|min:8|confirmed',
+        ], [
+            'oldpassword.required' => 'Please enter your current password.',
+            'newpassword.min' => 'The new password must be at least 8 characters.',
+            'newpassword.confirmed' => 'The password confirmation does not match.',
+        ]);
+
+        if (!Hash::check($request->oldpassword, $user->password)) {
+            return back()->withErrors([
+                'oldpassword' => 'The current password you entered is incorrect.',
+            ]);
+        }
+
+        // 🔑 IMPORTANT: Replace 'password' with your actual column name if different!
+        // e.g., if your DB column is 'pass', use 'pass' => ...
         DB::table('user_tbl')
             ->where('user_id', $user->user_id)
-            ->update(['password' => Hash::make($request->newpassword)]);
+            ->update([
+                'password' => Hash::make($request->newpassword)
+            ]);
 
-        // Force logout to confirm it works
+        // Log the user out for security (as requested)
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
+        // Redirect to login with success message
         return redirect()->route('resident.login')
-            ->with('success', 'Password updated! Please log in with your new password.');
+            ->with('success', 'Password updated successfully! Please log in with your new password.');
     }
 
     public function showChangeAddressForm()
@@ -405,16 +415,14 @@ class ResidentDashboardController extends Controller
     {
         $user = Auth::user();
 
-        // Soft delete or hard delete? Let's assume hard delete for now.
+        // Delete user
         DB::table('user_tbl')->where('user_id', $user->user_id)->delete();
 
-        // Log the user out
+        // Log out
         Auth::logout();
-
-        // Invalidate session
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('success', 'Your account has been deleted.');
+        return redirect()->route('resident.login')->with('success', 'Account deleted successfully.');
     }
 }
