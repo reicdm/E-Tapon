@@ -10,16 +10,38 @@
 
       <h1 class="text-4xl font-extrabold mb-10 mt-4">RESIDENT LOGIN</h1>
 
+      @if ($errors->any())
+      <div class="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+        <ul class="list-disc list-inside">
+          @foreach ($errors->all() as $error)
+          <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+      @endif
+
+      @if(session('success'))
+      <div class="mb-4 p-3 bg-green-100 text-green-700 rounded">
+        {{ session('success') }}
+      </div>
+      @endif
+
+      @if(session('success'))
+      <script>
+        alert("{{ session('success') }}");
+      </script>
+      @endif
+
       <form method="POST" action="{{ route('resident.login.submit') }}">
         @csrf
         <!-- EMAIL -->
         <div class="mb-4 form-input-group">
-          <input id="email" type="text" name="email" placeholder="Email">
+          <input id="email" type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
         </div>
 
         <!-- PASSWORD -->
         <div class="mb-2 form-input-group">
-          <input id="password" type="password" name="password" placeholder="Password">
+          <input id="password" type="password" name="password" placeholder="Password" required>
         </div>
 
         <!-- FORGOT PASSWORD -->

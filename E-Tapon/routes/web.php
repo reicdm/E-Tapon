@@ -36,12 +36,12 @@ Route::prefix('resident')->group(function () {
     Route::get('greet', function () {
         return view('auth.resident.greet');
     });
-    // LOGIN
-    Route::get('/login', [ResidentAuthController::class, 'showLoginForm'])->name('resident.login');
-    Route::post('/login', [ResidentAuthController::class, 'login'])->name('resident.login.submit');
     // REGISTER
     Route::get('/register', [ResidentAuthController::class, 'showRegisterForm'])->name('resident.register');
     Route::post('/register', [ResidentAuthController::class, 'register'])->name('resident.register.submit');
+    // LOGIN
+    Route::get('/login', [ResidentAuthController::class, 'showLoginForm'])->name('resident.login');
+    Route::post('/login', [ResidentAuthController::class, 'login'])->name('resident.login.submit');
     // FORGOT
     Route::get('/forgot', [ResidentAuthController::class, 'showForgotForm'])->name('resident.forgot');
     Route::post('/forgot', [ResidentAuthController::class, 'forgot'])->name('resident.forgot.submit');
@@ -53,8 +53,36 @@ Route::prefix('resident')->group(function () {
     Route::post('/logout', [ResidentAuthController::class, 'logout'])->name('resident.logout');
 
     // DASHBOARD WITH VERIFICATION
+    // Route::middleware('auth')->group(function () {
+    //     Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
+    // });
+
+    // PROTECTED routes (require login)
     Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
+        Route::get('/schedule', [ResidentDashboardController::class, 'schedule'])->name('resident.schedule');
+        Route::get('/request', [ResidentDashboardController::class, 'request'])->name('resident.request');
+        Route::get('/request/create', [ResidentDashboardController::class, 'showRequestForm'])->name('resident.request.create');
+        Route::post('/request/create', [ResidentDashboardController::class, 'create'])->name('resident.request.submit');
+        Route::put('/resident/request/{request_id}/cancel', [ResidentDashboardController::class, 'cancelRequest'])
+            ->name('resident.request.cancel');
+
+        // PROFILE ROUTES
+        Route::get('/profile', [ResidentDashboardController::class, 'profile'])->name('resident.profile');
+        Route::get('/profile/edit', [ResidentDashboardController::class, 'editProfile'])->name('resident.profile.edit');
+        Route::post('/profile/update', [ResidentDashboardController::class, 'updateProfile'])->name('resident.profile.update');
+
+        Route::get('/profile/change-password', [ResidentDashboardController::class, 'showChangePasswordForm'])
+            ->name('resident.profile.change_password');
+        Route::post('/profile/change-password', [ResidentDashboardController::class, 'updatePassword'])
+            ->name('resident.profile.update_password');
+
+        Route::get('/profile/change-address', [ResidentDashboardController::class, 'showChangeAddressForm'])
+            ->name('resident.profile.change_address');
+        Route::post('/profile/change-address', [ResidentDashboardController::class, 'updateAddress'])
+            ->name('resident.profile.update_address');
+        Route::delete('/profile/delete-account', [ResidentDashboardController::class, 'deleteAccount'])
+            ->name('resident.account.delete');
     });
 });
 
