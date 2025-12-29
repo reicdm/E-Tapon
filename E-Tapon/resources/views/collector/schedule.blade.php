@@ -158,7 +158,7 @@
             });
         });
 
-        // Update button functionality
+        // Update button functionality - Navigate to confirmation page
         const updateButtons = document.querySelectorAll('.btn-update');
 
         updateButtons.forEach(button => {
@@ -180,49 +180,21 @@
                 const brgyId = collapsibleButton.dataset.brgyId;
                 const requestId = collapsibleButton.dataset.requestId;
 
-                // Disable button during request
-                this.disabled = true;
-                this.textContent = 'Updating...';
-
-                // Prepare data based on type
-                const requestData = {
+                // Build query parameters
+                const params = new URLSearchParams({
                     type: type,
                     status: newStatus
-                };
+                });
 
                 if (type === 'scheduled') {
-                    requestData.sched_id = schedId;
-                    requestData.brgy_id = brgyId;
+                    params.append('sched_id', schedId);
+                    params.append('brgy_id', brgyId);
                 } else {
-                    requestData.request_id = requestId;
+                    params.append('request_id', requestId);
                 }
 
-                // Send AJAX request
-                fetch('/collector/schedule/update', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify(requestData)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert(data.message || 'Status updated successfully!');
-                            location.reload();
-                        } else {
-                            alert('Error: ' + (data.message || 'Failed to update status'));
-                            this.disabled = false;
-                            this.textContent = 'Update';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred while updating status');
-                        this.disabled = false;
-                        this.textContent = 'Update';
-                    });
+                // Navigate to confirmation page
+                window.location.href = '/collector/schedule/confirm?' + params.toString();
             });
         });
 

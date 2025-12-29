@@ -42,6 +42,36 @@ class CollectorAcceptedReqController extends Controller
         ]);
     }
 
+    // Show confirmation before updating status
+    public function showUpdateConfirm(Request $request, $requestId)
+    {
+        $collector = Auth::guard('collector')->user();
+
+        $status = $request->query('status');
+
+        // Verify request belongs to collector
+        $requestData = DB::table('request_tbl')
+            ->where('request_id', $requestId)
+            ->where('collector_id', $collector->collector_id)
+            ->whereIn('status', ['Assigned', 'In Progress'])
+            ->first();
+
+        if (!$requestData) {
+            return redirect()->route('collector.dashboard')
+                ->with('error', 'Request not found or unauthorized');
+        }
+
+        return view('collector.confirm', [
+            'confirmMessage' => 'Are you sure you want to update the status?',
+            'confirmRoute' => route('collector.acceptedrequest.updateStatus', $requestId),
+            'cancelRoute' => route('collector.acceptedrequest', $requestId),
+            'hiddenInputs' => [
+                'status' => $status
+            ],
+            'requestId' => $requestId
+        ]);
+    }
+
     public function updateStatus(Request $request, $requestId)
     {
         $collector = Auth::guard('collector')->user();
@@ -69,12 +99,21 @@ class CollectorAcceptedReqController extends Controller
             $updateData['completion_date'] = now();
         }
 
-        DB::table('request_tbl')
+        $updated = DB::table('request_tbl')
             ->where('request_id', $requestId)
             ->where('collector_id', $collector->collector_id)
             ->update($updateData);
 
+        if ($updated) {
+            // Return view directly, don't pass $redirectRoute
+            return view('collector.success', [
+                'message' => 'Status Updated!',
+                'requestId' => $requestId
+            ]);
+        }
+
+        // Fallback if update fails
         return redirect()->route('collector.dashboard')
-            ->with('success', 'Request status updated successfully');
+            ->with('error', 'Failed to update status. Please try again.');
     }
 }

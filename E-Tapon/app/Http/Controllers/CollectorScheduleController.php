@@ -122,6 +122,53 @@ class CollectorScheduleController extends Controller
         return view('collector.schedule', compact('scheduleByDate', 'calendarEvents'));
     }
 
+    // Show confirmation before updating status
+    public function showUpdateConfirm(Request $request)
+    {
+        $collector = Auth::guard('collector')->user();
+
+        $type = $request->query('type');
+        $status = $request->query('status');
+        $schedId = $request->query('sched_id');
+        $brgyId = $request->query('brgy_id');
+        $requestId = $request->query('request_id');
+
+        // Verify ownership
+        if ($type === 'scheduled') {
+            $exists = DB::table('record_tbl as r')
+                ->join('collectorsched_tbl as cs', 'r.sched_id', '=', 'cs.sched_id')
+                ->where('r.sched_id', $schedId)
+                ->where('r.brgy_id', $brgyId)
+                ->where('cs.collector_id', $collector->collector_id)
+                ->whereIn('r.status', ['Assigned', 'In Progress'])
+                ->exists();
+        } else {
+            $exists = DB::table('request_tbl')
+                ->where('request_id', $requestId)
+                ->where('collector_id', $collector->collector_id)
+                ->whereIn('status', ['Assigned', 'In Progress'])
+                ->exists();
+        }
+
+        if (!$exists) {
+            return redirect()->route('collector.schedule')
+                ->with('error', 'Record not found or unauthorized');
+        }
+
+        return view('collector.confirm', [
+            'confirmMessage' => 'Are you sure you want to update the status?',
+            'confirmRoute' => route('collector.schedule.updateStatus'),
+            'cancelRoute' => route('collector.schedule'),
+            'hiddenInputs' => [
+                'type' => $type,
+                'status' => $status,
+                'sched_id' => $schedId,
+                'brgy_id' => $brgyId,
+                'request_id' => $requestId
+            ]
+        ]);
+    }
+
     public function updateStatus(Request $request)
     {
         $validated = $request->validate([
@@ -132,8 +179,23 @@ class CollectorScheduleController extends Controller
             'request_id' => 'required_if:type,request'
         ]);
 
+        $collector = Auth::guard('collector')->user();
+
         try {
             if ($validated['type'] === 'scheduled') {
+                // Verify ownership
+                $exists = DB::table('record_tbl as r')
+                    ->join('collectorsched_tbl as cs', 'r.sched_id', '=', 'cs.sched_id')
+                    ->where('r.sched_id', $validated['sched_id'])
+                    ->where('r.brgy_id', $validated['brgy_id'])
+                    ->where('cs.collector_id', $collector->collector_id)
+                    ->exists();
+
+                if (!$exists) {
+                    return redirect()->route('collector.schedule')
+                        ->with('error', 'Record not found or unauthorized');
+                }
+
                 // Update record_tbl for scheduled collections
                 $affected = DB::table('record_tbl')
                     ->where('sched_id', $validated['sched_id'])
@@ -143,20 +205,21 @@ class CollectorScheduleController extends Controller
                     ]);
 
                 if ($affected === 0) {
-                    // Check if the record exists
-                    $exists = DB::table('record_tbl')
-                        ->where('sched_id', $validated['sched_id'])
-                        ->where('brgy_id', $validated['brgy_id'])
-                        ->exists();
-
-                    return response()->json([
-                        'success' => false,
-                        'message' => $exists
-                            ? 'Record found but not updated (possibly same status)'
-                            : 'No record found with sched_id: ' . $validated['sched_id'] . ' and brgy_id: ' . $validated['brgy_id']
-                    ], 404);
+                    return redirect()->route('collector.schedule')
+                        ->with('error', 'Failed to update status');
                 }
             } else {
+                // Verify ownership
+                $exists = DB::table('request_tbl')
+                    ->where('request_id', $validated['request_id'])
+                    ->where('collector_id', $collector->collector_id)
+                    ->exists();
+
+                if (!$exists) {
+                    return redirect()->route('collector.schedule')
+                        ->with('error', 'Request not found or unauthorized');
+                }
+
                 // Update request_tbl for requests
                 $updateData = ['status' => $validated['status']];
 
@@ -170,22 +233,17 @@ class CollectorScheduleController extends Controller
                     ->update($updateData);
 
                 if ($affected === 0) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'No request found with request_id: ' . $validated['request_id']
-                    ], 404);
+                    return redirect()->route('collector.schedule')
+                        ->with('error', 'Failed to update status');
                 }
             }
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Status updated successfully'
+            return view('collector.success', [
+                'message' => 'Status Updated!'
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to update status: ' . $e->getMessage()
-            ], 500);
+            return redirect()->route('collector.schedule')
+                ->with('error', 'Failed to update status: ' . $e->getMessage());
         }
     }
 }

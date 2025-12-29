@@ -52,8 +52,7 @@
         <div class="update-status-card">
             <h4 class="update-title">Update Status</h4>
             <!-- STATUS OPTIONS -->
-            <form action="{{ route('collector.acceptedrequest.updateStatus', $requestData->request_id) }}" method="POST">
-                @csrf
+            <form id="status-form" action="{{ route('collector.acceptedrequest.confirm', $requestData->request_id) }}" method="GET">
                 <input type="hidden" name="status" id="selected-status" value="{{ $requestData->status }}">
 
                 <!-- STATUS OPTIONS -->
@@ -94,7 +93,7 @@
         const statusButtons = document.querySelectorAll(
             '.sched-status-completed, .sched-status-inprogress, .sched-status-assigned, .sched-status-cancelled'
         );
-        const hiddenInput = document.getElementById('selected-status'); // get the hidden input
+        const hiddenInput = document.getElementById('selected-status');
 
         statusButtons.forEach(button => {
             button.addEventListener('click', () => {

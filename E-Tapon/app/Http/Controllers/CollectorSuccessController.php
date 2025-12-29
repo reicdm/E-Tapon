@@ -2,17 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class CollectorSuccessController extends Controller
 {
-    // LOGIN
-    public function showSuccess()
+    public function showSuccess($requestId = null)
     {
-        return view('collector.success');
+        return view('collector.success', [
+            'message' => session('message', 'Success!'),
+            'requestId' => $requestId
+        ]);
     }
- 
+
+    public function confirmSuccess(Request $request)
+    {
+        // Check where the success came from based on session or referer
+        $previousUrl = url()->previous();
+
+        // If coming from profile update
+        if (str_contains($previousUrl, 'profile')) {
+            return redirect()->route('collector.profile');
+        }
+
+        // If coming from schedule update
+        if (str_contains($previousUrl, 'schedule')) {
+            return redirect()->route('collector.schedule');
+        }
+
+        // If coming from accepted request update
+        if (str_contains($previousUrl, 'acceptedrequest')) {
+            return redirect()->route('collector.dashboard');
+        }
+
+        // Default fallback to dashboard
+        return redirect()->route('collector.dashboard');
+    }
 }
