@@ -128,21 +128,21 @@ class ResidentDashboardController extends Controller
             ->select(
                 'area_tbl.brgy_name as barangay',
                 'collectorsched_tbl.license_plate as truck',
-                'record_tbl.collector_date as date',
+                'record_tbl.collection_date as date',
                 'record_tbl.status',
                 'record_tbl.quantity_kg'
             )
-            ->orderBy('record_tbl.collector_date', 'desc')
+            ->orderBy('record_tbl.collection_date', 'desc')
             ->get()
             ->map(function ($item) {
                 $truck = $item->license_plate ?? 'Not assigned';
 
                 if (in_array($item->status, ['In Progress', 'Completed']) && $truck === 'Not assigned') {
-                    $truck = 'Assigned Truck'; 
+                    $truck = 'Assigned Truck';
                 }
                 return [
                     'barangay' => $item->barangay,
-                    'truck' => $item->license_plate ?? 'Not assigned',      
+                    'truck' => $item->license_plate ?? 'Not assigned',
                     'date' => $item->date,
                     'status' => $item->status,
                 ];
@@ -167,16 +167,23 @@ class ResidentDashboardController extends Controller
                 $truck = $item->license_plate ?? 'Not assigned';
 
                 if (in_array($item->status, ['In Progress', 'Completed']) && $truck === 'Not assigned') {
-                    $truck = 'Assigned Truck'; 
+                    $truck = 'Assigned Truck';
                 }
+
+                $completionDate = null;
+                if ($item->completion_date && $item->status === 'Completed') {
+                    $completionDate = \Carbon\Carbon::parse($item->completion_date)->format('M d, Y g:i A');
+                }
+
                 return [
                     'request_id' => $item->request_id,
                     'type' => $item->waste_type,
                     'quantity' => $item->quantity,
                     'preferred_date' => \Carbon\Carbon::parse($item->preferred_date)->format('M d, Y'),
-                    'preferred_time' => \Carbon\Carbon::parse($item->preferred_time)->format('g:i A'), 
+                    'preferred_time' => \Carbon\Carbon::parse($item->preferred_time)->format('g:i A'),
                     'status' => $item->status,
                     'truck' => $item->license_plate ?: 'Not assigned',
+                    'completion_date' => $completionDate,
                 ];
             });
 
@@ -232,11 +239,11 @@ class ResidentDashboardController extends Controller
             'user_id' => $user->user_id,
             'quantity' => $request->qty,
             'waste_type' => $request->waste_type,
-            'preferred_date' => $request->pref_date, 
-            'preferred_time' => $request->pref_time, 
-            'request_date' => now()->toDateString(), 
+            'preferred_date' => $request->pref_date,
+            'preferred_time' => $request->pref_time,
+            'request_date' => now()->toDateString(),
             'status' => 'Pending',
-            'completion_date' => $request->pref_date,
+            'completion_date' => null,
         ]);
 
         return redirect()->route('resident.request')
@@ -284,8 +291,8 @@ class ResidentDashboardController extends Controller
                 'user_tbl.contact_no',
                 'user_tbl.email',
                 'user_tbl.street_address',
-                'area_tbl.brgy_id as area_barangay_id',   
-                'area_tbl.brgy_name as area_barangay',   
+                'area_tbl.brgy_id as area_barangay_id',
+                'area_tbl.brgy_name as area_barangay',
                 'user_tbl.zip_code'
             )
             ->first();
