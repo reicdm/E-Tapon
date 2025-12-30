@@ -13,7 +13,17 @@
                 Forgot Password?
             </h1>
 
-            <form method="POST" action="{{ route('collector.forgot.submit') }}">
+            @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"">
+                <ul class=" mb-0">
+                @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+                </ul>
+            </div>
+            @endif
+
+            <form method="GET" action="{{ route('collector.forgot.showConfirm') }}">
                 @csrf
 
                 <div class="mb-4 form-input-group">
@@ -27,7 +37,7 @@
                 </div>
 
                 <div class="mb-2 form-input-group">
-                    <input id="newpassword" type="password" name="newpassword" placeholder="Re-Enter New Password">
+                    <input id="newpassword_confirmation" type="password" name="newpassword_confirmation" placeholder="Re-Enter New Password">
                 </div>
 
                 <button type="submit" class="w-full btn-green-gradient text-lg shadow-xl mt-48">
@@ -37,7 +47,7 @@
                 <div class="mt-8 try-link text-sm">
                     <a>Try another method</a>
                 </div>
-                
+
             </form>
 
         </div>

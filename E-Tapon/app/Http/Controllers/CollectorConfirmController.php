@@ -2,131 +2,133 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rules\Password;
 
-class CollectorConfirmController extends Controller
+class CollectorProfileEditController extends Controller
 {
-    // Show confirmation page
-    public function showConfirm(Request $request)
+    public function showProfileEdit()
+    {
+        $collector = Auth::guard('collector')->user();
+        if (!$collector) {
+            return redirect()->route('collector.login')
+                ->with('error', 'Please login first');
+        }
+
+        $profileData = DB::table('collector_tbl')
+            ->where('collector_id', $collector->collector_id)
+            ->select(
+                'collector_id',
+                'firstname',
+                'middlename',
+                'lastname',
+                'contact_no',
+                'email',
+                'password',
+                DB::raw("CONCAT_WS(' ', firstname, COALESCE(middlename, ''), lastname) as full_name")
+            )
+            ->first();
+        if (!$profileData) {
+            return redirect()->route('collector.dashboard')
+                ->with('error', 'Profile not found');
+        }
+
+        $password_display = '••••••••';
+
+        $profile = [
+            'full_name' => $profileData->full_name ?? 'N/A',
+            'firstname' => $profileData->firstname ?? '',
+            'middlename' => $profileData->middlename ?? '',
+            'lastname' => $profileData->lastname ?? '',
+            'contact_number' => $profileData->contact_no ?? '',
+            'email' => $profileData->email ?? '',
+            'password_display' => $password_display
+        ];
+
+        return view('collector.profileedit', compact('profile'));
+    }
+
+    // Show confirmation before updating profile
+    public function showUpdateConfirm(Request $request)
     {
         $collector = Auth::guard('collector')->user();
 
-        $requestId = $request->query('requestId');
-        $licensePlate = $request->query('license_plate');
-
-        // Get request details for confirmation page
-        $requestData = DB::table('request_tbl as req')
-            ->join('user_tbl as u', 'req.user_id', '=', 'u.user_id')
-            ->join('area_tbl as a', 'u.brgy_id', '=', 'a.brgy_id')
-            ->where('req.request_id', $requestId)
-            ->where('req.status', 'Pending')
-            ->where(function ($query) use ($collector) {
-                $query->whereNull('req.collector_id')
-                    ->orWhere('req.collector_id', $collector->collector_id);
-            })
-            ->select(
-                'req.request_id',
-                'req.quantity',
-                'req.waste_type',
-                'req.preferred_date',
-                'req.preferred_time',
-                DB::raw("CONCAT_WS(' ', u.firstname, COALESCE(u.middlename, ''), u.lastname) as resident_name"),
-                'a.brgy_name',
-                'u.street_address'
-            )
-            ->first();
-
-        if (!$requestData) {
-            return redirect()->route('collector.dashboard')
-                ->with('error', 'Request not found or already taken');
-        }
+        $contact_number = $request->query('contact_number');
+        $email = $request->query('email');
 
         return view('collector.confirm', [
-            'requestData' => $requestData,
-            'confirmMessage' => 'Are you sure you want to accept this request?',
-            'confirmRoute' => route('collector.confirmAccept', $requestId),
-            'cancelRoute' => route('collector.reqdetails.showRequestDetails', $requestId),
+            'confirmMessage' => 'Are you sure you want to update your profile?',
+            'confirmRoute' => route('collector.profile.confirmUpdate'),
+            'cancelRoute' => route('collector.profile'),
             'hiddenInputs' => [
-                'license_plate' => $licensePlate
-            ],
-            'licensePlate' => $licensePlate,
-            'requestId' => $requestId
+                'contact_number' => $contact_number,
+                'email' => $email
+            ]
         ]);
     }
 
     // Handle "Confirm" button - UPDATE DATABASE
-    public function confirmAccept(Request $request, $requestId)
+    public function confirmUpdate(Request $request)
     {
         $collector = Auth::guard('collector')->user();
 
-        $validated = $request->validate([
-            'license_plate' => 'required|exists:truck_tbl,license_plate'
-        ]);
+        // Validation rules
+        $rules = [
+            'contact_number' => [
+                'required',
+                'string',
+                'size:13',
+                'regex:/^(09|\+639)\d{9}$/'
+            ],
+            'email' => [
+                'required',
+                'email',
+                'max:50',
+                'unique:collector_tbl,email,' . $collector->collector_id . ',collector_id'
+            ]
+        ];
 
-        // Verify if request is still pending
-        $requestData = DB::table('request_tbl')
-            ->where('request_id', $requestId)
-            ->where('status', 'Pending')
-            ->where(function ($query) use ($collector) {
-                $query->whereNull('collector_id')
-                    ->orWhere('collector_id', $collector->collector_id);
-            })
-            ->first();
+        // Custom error messages
+        $messages = [
+            'contact_number.required' => 'Contact number is required.',
+            'contact_number.size' => 'Contact number must be exactly 13 characters.',
+            'contact_number.regex' => 'Please enter a valid Philippine mobile number (e.g., 09123456789 or +639123456789).',
+            'email.required' => 'Email address is required.',
+            'email.email' => 'Please enter a valid email address.',
+            'email.max' => 'Email address must not exceed 50 characters.',
+            'email.unique' => 'This email address is already taken.'
+        ];
 
-        if (!$requestData) {
-            return redirect()->route('collector.dashboard')
-                ->with('error', 'Request no longer available');
-        }
+        try {
+            $validated = $request->validate($rules, $messages);
 
-        $preferredDate = $requestData->preferred_date;
-        $preferredDay = Carbon::parse($preferredDate)->format('l');
+            $updateData = [
+                'contact_no' => $validated['contact_number'],
+                'email' => $validated['email']
+            ];
 
-        // Final truck availability check
-        $truckAvailable = DB::table('truck_tbl as t')
-            ->where('t.license_plate', $validated['license_plate'])
-            ->whereNotExists(function ($query) use ($preferredDay) {
-                $query->select(DB::raw(1))
-                    ->from('collectorsched_tbl as cs')
-                    ->whereColumn('cs.license_plate', '=', 't.license_plate')
-                    ->where('cs.collection_day', $preferredDay);
-            })
-            ->whereNotExists(function ($query) use ($preferredDate) {
-                $query->select(DB::raw(1))
-                    ->from('request_tbl as req')
-                    ->whereColumn('req.license_plate', '=', 't.license_plate')
-                    ->whereDate('req.preferred_date', $preferredDate)
-                    ->whereIn('req.status', ['Assigned', 'In Progress']);
-            })
-            ->exists();
+            $updated = DB::table('collector_tbl')
+                ->where('collector_id', $collector->collector_id)
+                ->update($updateData);
 
-        if (!$truckAvailable) {
-            return redirect()->route('collector.dashboard')
-                ->with('error', 'Selected truck is no longer available');
-        }
-
-        // DATABASE UPDATE
-        $updated = DB::table('request_tbl')
-            ->where('request_id', $requestId)
-            ->where('status', 'Pending')
-            ->where(function ($query) use ($collector) {
-                $query->whereNull('collector_id')
-                    ->orWhere('collector_id', $collector->collector_id);
-            })
-            ->update([
-                'collector_id' => $collector->collector_id,
-                'status' => 'Assigned',
-                'license_plate' => $validated['license_plate']
+            return view('collector.success', [
+                'message' => 'Profile Updated!',
+                'redirectRoute' => route('collector.profile')
             ]);
-
-        if ($updated) {
-            return redirect()->route('collector.success', ['requestId' => $requestId]);
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput()
+                ->with('error', 'Please check your input.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Failed to update profile: ' . $e->getMessage());
         }
-
-        // Fallback if update fails
-        return redirect()->route('collector.dashboard')
-            ->with('error', 'Failed to assign request. Please try again.');
     }
 }

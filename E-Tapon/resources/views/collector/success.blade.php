@@ -6,7 +6,7 @@
 <div class="overlay">
     <div class="popup-success">
         <div class="popup-box"></div>
-        <h2 class="text-4xl font-extrabold my-2">{{ $message ?? 'Request accepted!' }}</h2>
+        <h2 class="my-2">{{ $message ?? 'Request accepted!' }}</h2>
 
         <div class="action-buttons mt-3">
             <form action="{{ route('collector.success.confirm') }}" method="POST">
