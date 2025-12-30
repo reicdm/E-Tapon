@@ -45,9 +45,11 @@
                             <input id="name" name="email" type="text" class="form-control" placeholder="Email Address" value="{{ old('email', $profile['email']) }}">
                         </div>
 
-                        <div class="card-field-edit">
-                            <input id="name" name="password" type="password" class="form-control" placeholder="Password" value="{{ $profile['password_display'] }}">
-                        </div>
+                        <a href="{{ route('collector.forgot') }}" style="text-decoration: none;">
+                            <div class="card-field-edit">
+                                <input id="name" name="password" type="password" class="form-control" placeholder="Password" value="{{ $profile['password_display'] }}">
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
