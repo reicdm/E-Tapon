@@ -9,9 +9,7 @@ use App\Http\Controllers\CollectorAcceptedReqController;
 use App\Http\Controllers\CollectorProfileController;
 use App\Http\Controllers\CollectorProfileEditController;
 use App\Http\Controllers\CollectorReqReqDetailsController;
-
 use App\Http\Controllers\CollectorSuccessController;
-use App\Http\Controllers\CollectorConfirmController;
 
 use App\Http\Controllers\ResidentAuthController;
 use App\Http\Controllers\ResidentDashboardController;
@@ -67,9 +65,10 @@ Route::prefix('collector')->group(function () {
     // LOGIN
     Route::get('/login', [CollectorAuthController::class, 'showLoginForm'])->name('collector.login');
     Route::post('/login', [CollectorAuthController::class, 'login'])->name('login');
-    // FORGOT
+    // FORGOT PASSWORD
     Route::get('/forgot', [CollectorAuthController::class, 'showForgotForm'])->name('collector.forgot');
-    Route::post('/forgot', [CollectorAuthController::class, 'forgot'])->name('collector.forgot.submit');
+    Route::get('/forgot/confirm', [CollectorAuthController::class, 'showForgotConfirm'])->name('collector.forgot.showConfirm');
+    Route::post('/forgot/confirm', [CollectorAuthController::class, 'confirmForgot'])->name('collector.forgot.confirm');
     // LOGOUT
     Route::post('/logout', [CollectorAuthController::class, 'logout'])->name('collector.logout');
 
@@ -98,20 +97,19 @@ Route::prefix('collector')->group(function () {
         // request details
         Route::prefix('requestdetails')->group(function () {
             Route::get('/{requestId}', [CollectorReqDetailsController::class, 'showRequestDetails'])->name('collector.reqdetails.showRequestDetails');
+            Route::get('/{requestId}/confirm', [CollectorReqDetailsController::class, 'showAcceptConfirm'])->name('collector.reqdetails.confirm');
             Route::post('/{requestId}/accept', [CollectorReqDetailsController::class, 'accept'])->name('collector.reqdetails.accept');
             Route::post('/{requestId}/decline', [CollectorReqDetailsController::class, 'decline'])->name('collector.reqdetails.decline');
         });
 
-        // request details
+        // request request details
         Route::prefix('reqreqdetails')->group(function () {
             Route::get('/{requestId}', [CollectorReqReqDetailsController::class, 'showRequestDetails'])->name('collector.reqreqdetails.showRequestDetails');
             Route::post('/{requestId}/accept', [CollectorReqReqDetailsController::class, 'accept'])->name('collector.reqreqdetails.accept');
             Route::post('/{requestId}/decline', [CollectorReqReqDetailsController::class, 'decline'])->name('collector.reqreqdetails.decline');
         });
 
-        // Confirmation and success routes
-        Route::get('/confirm', [CollectorConfirmController::class, 'showConfirm'])->name('collector.confirm');
-        Route::post('/request/{requestId}/confirm', [CollectorConfirmController::class, 'confirmAccept'])->name('collector.confirmAccept');
+        // Success routes
         Route::get('/success/{requestId}', [CollectorSuccessController::class, 'showSuccess'])->name('collector.success');
         Route::post('/success/confirm', [CollectorSuccessController::class, 'confirmSuccess'])->name('collector.success.confirm');
     });

@@ -49,8 +49,7 @@
 
         <label class="font-extrabold" style="color: var(--color-dark-green)">Assigned Truck</label>
 
-        <form action="{{ route('collector.reqdetails.accept', $requestData->request_id) }}" method="POST">
-            @csrf
+        <form action="{{ route('collector.reqdetails.confirm', $requestData->request_id) }}" method="GET">
             <div class="card-field-t">
                 <label>Select Truck</label>
                 <select name="license_plate" required>

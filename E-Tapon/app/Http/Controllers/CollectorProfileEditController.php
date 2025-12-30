@@ -117,7 +117,7 @@ class CollectorProfileEditController extends Controller
                 ->update($updateData);
 
             return view('collector.success', [
-                'message' => 'Profile Updated Successfully!',
+                'message' => 'Profile Updated!',
                 'redirectRoute' => route('collector.profile')
             ]);
         } catch (ValidationException $e) {
