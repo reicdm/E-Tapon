@@ -20,7 +20,6 @@ body {
     z-index: 999;
 }
 
-
 .popup-confirm,
 .popup-success {
     background: var(--color-cream);
@@ -37,7 +36,8 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 }
 
-.popup-confirm h2 {
+.popup-confirm h2,
+.popup-success h2 {
     font-size: 20px;
     font-weight: bold;
 }
@@ -48,7 +48,6 @@ body {
     background: var(--color-orange);
     border-radius: 30px;
 }
-
 
 .circle-top {
     flex-shrink: 0;
@@ -73,7 +72,7 @@ body {
 
 .btn-confirm,
 .btn-ok {
-    background-image: linear-gradient(to top, #ff9100, #FFA733);
+    background-image: linear-gradient(to top, #ff9100, #ffa733);
     color: white;
 }
 
@@ -102,7 +101,6 @@ body {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
     transition: all 0.2s ease;
 }
-
 
 .btn-confirm:active,
 .btn-cancel:active,
