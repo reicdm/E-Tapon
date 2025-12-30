@@ -15,8 +15,6 @@ class CollectorProfileEditController extends Controller
     public function showProfileEdit()
     {
         $collector = Auth::guard('collector')->user();
-
-        // Check if collector is authenticated
         if (!$collector) {
             return redirect()->route('collector.login')
                 ->with('error', 'Please login first');
@@ -36,14 +34,12 @@ class CollectorProfileEditController extends Controller
             )
             ->first();
 
-        // Check if profile data exists
         if (!$profileData) {
             return redirect()->route('collector.dashboard')
                 ->with('error', 'Profile not found');
         }
 
-        // Generate bullets based on actual password length
-        $password_display = str_repeat('•', strlen($profileData->password));
+        $password_display = '••••••••';
 
         $profile = [
             'full_name' => $profileData->full_name ?? 'N/A',
@@ -58,14 +54,12 @@ class CollectorProfileEditController extends Controller
         return view('collector.profileedit', compact('profile'));
     }
 
-    // Show confirmation before updating profile
     public function showUpdateConfirm(Request $request)
     {
         $collector = Auth::guard('collector')->user();
 
         $contact_number = $request->query('contact_number');
         $email = $request->query('email');
-        $password = $request->query('password');
 
         return view('collector.confirm', [
             'confirmMessage' => 'Are you sure you want to update your profile?',
@@ -73,8 +67,7 @@ class CollectorProfileEditController extends Controller
             'cancelRoute' => route('collector.profileedit'),
             'hiddenInputs' => [
                 'contact_number' => $contact_number,
-                'email' => $email,
-                'password' => $password
+                'email' => $email
             ]
         ]);
     }
@@ -84,7 +77,7 @@ class CollectorProfileEditController extends Controller
     {
         $collector = Auth::guard('collector')->user();
 
-        // Validation rules based on database schema
+        // Validation rules
         $rules = [
             'contact_number' => [
                 'required',
@@ -100,16 +93,6 @@ class CollectorProfileEditController extends Controller
             ]
         ];
 
-        // Add password validation only if provided and not just bullets
-        if ($request->filled('password') && !preg_match('/^•+$/', $request->password)) {
-            $rules['password'] = [
-                'required',
-                'string',
-                'min:8',
-                'max:255'
-            ];
-        }
-
         // Custom error messages
         $messages = [
             'contact_number.required' => 'Contact number is required.',
@@ -118,31 +101,21 @@ class CollectorProfileEditController extends Controller
             'email.required' => 'Email address is required.',
             'email.email' => 'Please enter a valid email address.',
             'email.max' => 'Email address must not exceed 50 characters.',
-            'email.unique' => 'This email address is already taken.',
-            'password.min' => 'Password must be at least 8 characters.',
-            'password.max' => 'Password must not exceed 255 characters.'
+            'email.unique' => 'This email address is already taken.'
         ];
 
         try {
             $validated = $request->validate($rules, $messages);
 
-            // Prepare update data
             $updateData = [
                 'contact_no' => $validated['contact_number'],
                 'email' => $validated['email']
             ];
 
-            // Add password to update if provided and not just bullets
-            if ($request->filled('password') && !preg_match('/^•+$/', $request->password)) {
-                $updateData['password'] = $validated['password'];
-            }
-
-            // Update the collector profile
             $updated = DB::table('collector_tbl')
                 ->where('collector_id', $collector->collector_id)
                 ->update($updateData);
 
-            // Always return success view after validation passes
             return view('collector.success', [
                 'message' => 'Profile Updated Successfully!',
                 'redirectRoute' => route('collector.profile')
