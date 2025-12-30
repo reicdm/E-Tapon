@@ -39,7 +39,6 @@ class CollectorAuthController extends Controller
 
     public function showForgotConfirm(Request $request)
     {
-        // Validation rules
         $rules = [
             'email' => [
                 'required',
@@ -53,7 +52,6 @@ class CollectorAuthController extends Controller
             ]
         ];
 
-        // Custom error messages
         $messages = [
             'email.required' => 'Email address is required.',
             'email.email' => 'Please enter a valid email address.',
