@@ -2,138 +2,118 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CollectorAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use App\Http\Requests\CollectorLoginRequest;
-use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 
 class CollectorAuthController extends Controller
 {
-    // LOGIN
     public function showLoginForm()
     {
         return view('auth.collector.login');
     }
 
-    public function login(CollectorLoginRequest $request)
+    public function login(Request $request)
     {
-        $collector = CollectorAuth::where('email', $request['email'])->first();
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-        if (!$collector) {
-            return back()->withErrors([
-                'email' => 'No existing user in records.',
-            ])->withInput($request->except('password'));
+        if (Auth::guard('collector')->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended(route('collector.dashboard'));
         }
 
-        if ($collector->password !== $request->password) {
-            return back()->withErrors([
-                'password' => 'Incorrect password.',
-            ])->withInput($request->except('password'));
-        }
-
-        // Login successful
-        Auth::guard('collector')->login($collector);
-        $request->session()->regenerate();
-        return redirect()->route('collector.dashboard');
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 
-    // FORGOT PASSWORD
     public function showForgotForm()
     {
         return view('auth.collector.forgot');
     }
 
-    // Show confirmation before updating password
     public function showForgotConfirm(Request $request)
-    {
-        $email = $request->query('email');
-        $newpassword = $request->query('newpassword');
-        $newpassword_confirmation = $request->query('newpassword_confirmation');
-
-        return view('collector.confirm', [
-            'confirmMessage' => 'Are you sure you want to reset your password?',
-            'confirmRoute' => route('collector.forgot.confirm'),
-            'cancelRoute' => route('collector.forgot'),
-            'hiddenInputs' => [
-                'email' => $email,
-                'newpassword' => $newpassword,
-                'newpassword_confirmation' => $newpassword_confirmation
-            ]
-        ]);
-    }
-
-    // Handle "Confirm" button - UPDATE PASSWORD
-    public function confirmForgot(Request $request)
     {
         // Validation rules
         $rules = [
             'email' => [
                 'required',
                 'email',
-                'max:50',
                 'exists:collector_tbl,email'
             ],
             'newpassword' => [
                 'required',
-                'string',
                 'min:8',
                 'confirmed'
-            ],
-            'newpassword_confirmation' => 'required'
+            ]
         ];
 
         // Custom error messages
         $messages = [
             'email.required' => 'Email address is required.',
             'email.email' => 'Please enter a valid email address.',
-            'email.exists' => 'Email address not found in our records.',
+            'email.exists' => 'This email address does not exist in our records.',
             'newpassword.required' => 'New password is required.',
             'newpassword.min' => 'Password must be at least 8 characters.',
-            'newpassword.confirmed' => 'Password confirmation does not match.',
-            'newpassword_confirmation.required' => 'Password confirmation is required.'
+            'newpassword.confirmed' => 'Passwords do not match.'
         ];
 
         try {
             $validated = $request->validate($rules, $messages);
 
-            // Update password in database
-            $updated = DB::table('collector_tbl')
-                ->where('email', $validated['email'])
-                ->update([
-                    'password' => $validated['newpassword']
-                ]);
+            $email = $validated['email'];
+            $newpassword = $validated['newpassword'];
 
-            if (!$updated) {
-                return redirect()->back()
-                    ->withInput()
-                    ->with('error', 'Failed to update password. Please try again.');
-            }
-
-            return view('collector.success', [
-                'message' => 'Reset Successfully!',
-                'redirectRoute' => route('collector.login')
+            return view('collector.confirm', [
+                'confirmMessage' => 'Are you sure you want to reset your password?',
+                'confirmRoute' => route('collector.forgot.confirm'),
+                'cancelRoute' => route('collector.forgot'),
+                'hiddenInputs' => [
+                    'email' => $email,
+                    'newpassword' => $newpassword
+                ]
             ]);
         } catch (ValidationException $e) {
             return redirect()->back()
                 ->withErrors($e->validator)
-                ->withInput($request->except(['newpassword', 'newpassword_confirmation']))
-                ->with('error', 'Please check your input.');
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->withInput($request->except(['newpassword', 'newpassword_confirmation']))
-                ->with('error', 'Failed to reset password: ' . $e->getMessage());
+                ->withInput($request->only('email'));
         }
     }
 
-    // LOGOUT
+    public function confirmForgot(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email|exists:collector_tbl,email',
+            'newpassword' => 'required|min:8'
+        ]);
+
+        $updated = DB::table('collector_tbl')
+            ->where('email', $validated['email'])
+            ->update([
+                'password' => Hash::make($validated['newpassword'])
+            ]);
+
+        if ($updated) {
+            return view('collector.success', [
+                'message' => 'Password Reset Successfully!',
+                'redirectRoute' => route('collector.login')
+            ]);
+        }
+
+        return redirect()->back()
+            ->with('error', 'Failed to reset password. Please try again.');
+    }
+
     public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('collector')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/collector/login');
+        return redirect()->route('collector.login');
     }
 }
