@@ -2,7 +2,7 @@
 @section('title', 'Collector Request')
 @section('content')
 
-<div class="min-h-screen flex flex-col p-2">
+<div id="requesttab" class="min-h-screen flex flex-col p-2">
 
     <!-- TOP CONTAINER -->
     <div class="mx-auto max-w-4xl w-full px-2">

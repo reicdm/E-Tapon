@@ -3,7 +3,7 @@
 @section('title', 'Collector Dashboard')
 
 @section('content')
-<div class="min-h-screen flex flex-col p-2">
+<div id="dashboard" class="min-h-screen flex flex-col p-2">
     <div class="mx-auto max-w-4xl w-full p-2">
         <!-- GREETINGS -->
         <div class="row row-wel justify-content-center">

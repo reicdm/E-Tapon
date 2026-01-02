@@ -1,7 +1,7 @@
-<!-- REQUEST DETAILS MODAL -->
-<div id="requestModal" class="modal-overlay" style="display: none;">
+<!-- ACCEPTED REQUEST DETAILS MODAL -->
+<div id="acceptedModal" class="modal-overlay" style="display: none;">
     <div class="modal-popup">
-        <button class="modal-close-btn" onclick="closeRequestModal()">&times;</button>
+        <button class="modal-close-btn" onclick="closeAcceptedModal()">&times;</button>
 
         <div class="row justify-content-center mb-4 mt-2">
             <div class="modal-circle">
@@ -11,53 +11,75 @@
 
         <div class="card-field-nr">
             <label>Name</label>
-            <input id="reqname" type="text" class="form-control" value="" readonly>
+            <input id="accname" type="text" class="form-control" value="" readonly>
         </div>
 
         <div class="card-field-nr mb-2">
             <label>Resident</label>
-            <input id="reqbrgy" type="text" class="form-control" value="" readonly>
+            <input id="accbrgy" type="text" class="form-control" value="" readonly>
         </div>
 
         <div class="form-row-container">
             <div class="card-field-wq mb-2">
                 <label class="form-label">Waste Type</label>
-                <input id="reqwaste" type="text" class="form-control" value="" readonly>
+                <input id="accwaste" type="text" class="form-control" value="" readonly>
             </div>
 
             <div class="card-field-wq mb-2">
                 <label class="form-label">Quantity</label>
-                <input id="reqquantity" type="text" class="form-control" value="" readonly>
+                <input id="accquantity" type="text" class="form-control" value="" readonly>
             </div>
         </div>
 
         <div class="card-field-dt">
             <label>Preferred Date</label>
-            <input id="reqdate" type="text" class="form-control" value="" readonly>
+            <input id="accdate" type="text" class="form-control" value="" readonly>
         </div>
 
-        <div class="card-field-dt mb-8">
+        <div class="card-field-dt">
             <label>Preferred Time</label>
-            <input id="reqtime" type="text" class="form-control" value="" readonly>
+            <input id="acctime" type="text" class="form-control" placeholder="" readonly>
         </div>
-
-        <hr class="my-2">
-
-        <label class="font-extrabold" style="color: var(--color-dark-green)">Assigned Truck</label>
 
         <div class="card-field-t">
-            <label>Select Truck</label>
-            <select id="reqtruck">
+            <label>Assigned Truck</label>
+            <select id="acctruck" disabled>
                 <option>ABC 1234 (5-ton capacity)</option>
                 <option>DEF 9981 (10-ton capacity)</option>
                 <option>XYZ 5561 (8-ton capacity)</option>
             </select>
         </div>
 
-        <div class="action-buttons mt-16">
-            <button class="btn-accept">Accept</button>
-            <button class="btn-decline">Decline</button>
+        <hr class="my-3">
+        <div class="update-status-card">
+            <h4 class="update-title">Update Status</h4>
+            <!-- STATUS OPTIONS -->
+            <div class="status-options mb-4">
+                <button type="button" class="sched-status-assigned" data-status="assigned">
+                    Assigned
+                </button>
+
+                <button type="button" class="sched-status-cancelled" data-status="cancelled">
+                    Cancelled
+                </button>
+
+                <button type="button" class="sched-status-inprogress" data-status="in_progress">
+                    In Progress
+                </button>
+
+                <button type="button" class="sched-status-completed" data-status="completed">
+                    Completed
+                </button>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="status-actions">
+                <button class="btn-update push" onclick="openUpdateRequest()">Update</button>
+                <button class="btn-cancel push" onclick="closeAcceptedModal()">Cancel</button>
+            </div>
+
         </div>
+
     </div>
 </div>
 
@@ -195,35 +217,114 @@
         gap: 16px;
     }
 
-    .btn-accept,
-    .btn-decline {
-        width: 100px;
-        padding: 10px 24px;
-        border-radius: 10px;
-        font-size: 14px;
+    .update-status-card {
+        text-align: flex-start;
+    }
+
+    .update-title {
+        font-size: 16px;
         font-weight: bold;
+        color: var(--color-dark-green);
+        margin-bottom: 12px;
+    }
+
+    .status-options {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    /* INDIVIDUAL (SMALL) CONTAINER: SCHED STATUS */
+    .sched-status-completed,
+    .sched-status-inprogress,
+    .sched-status-assigned,
+    .sched-status-cancelled {
+        width: 150px;
+        font-size: 12px;
+        border-radius: 10px;
+        font-weight: 400;
+        padding: 0.15rem;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
     }
 
-    .btn-accept {
+    .card-sched-status {
+        display: block;
+        padding: 0.25rem 1rem;
+        text-align: center;
+        border-radius: 50px;
+        margin-bottom: 4px;
+    }
+
+    /* COMPLETED CONTAINER */
+    .sched-status-completed {
+        background-color: var(--color-completed);
+        color: white;
+    }
+
+    .sched-status-completed.active {
+        border: 2px solid;
+        color: black;
+        background-color: var(--color-bg-completed);
+        border-color: var(--color-completed);
+    }
+
+    /* IN PROGRESS CONTAINER */
+    .sched-status-inprogress {
+        background-color: var(--color-inprogress);
+    }
+
+    .sched-status-inprogress.active {
+        border: 2px solid;
+        background-color: var(--color-bg-inprogress);
+        border-color: var(--color-inprogress);
+    }
+
+    /* ASSIGNED CONTAINER */
+    .sched-status-assigned {
+        background-color: var(--color-assigned);
+    }
+
+    .sched-status-assigned.active {
+        border: 2px solid;
+        background-color: var(--color-bg-assigned);
+        border-color: var(--color-assigned);
+    }
+
+    /* CANCELLED CONTAINER */
+    .sched-status-cancelled {
+        background-color: var(--color-cancelled);
+        color: white;
+    }
+
+    .sched-status-cancelled.active {
+        border: 2px solid;
+        color: black;
+        background-color: var(--color-bg-cancelled);
+        border-color: var(--color-cancelled);
+    }
+
+    .status-actions {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .btn-update {
         background-image: linear-gradient(to top, #ff9100, #FFA733);
         color: white;
     }
 
-    .btn-decline {
+    .btn-cancel {
         background: var(--color-cream);
         color: var(--color-orange);
         border: 2px solid;
         border-color: var(--color-orange);
     }
 
-    .btn-accept:active,
-    .btn-decline:active {
-        animation: push 0.2s ease-in-out;
-    }
-
-    .btn-accept,
-    .btn-decline {
+    .btn-update,
+    .btn-cancel {
         width: 100px;
         padding: 10px 24px;
         border-radius: 10px;
@@ -239,19 +340,25 @@
         transition: all 0.2s ease;
     }
 
-    .btn-accept:active,
-    .btn-decline:active {
+    .btn-update:active,
+    .btn-cancel:active {
         top: 3px;
         box-shadow: 0 2px 0px var(--color-orange);
         transition: all 0.2s;
     }
 
-
     /* Make sure buttons are clickable */
-    .btn-details {
+    .card-mid-button {
         cursor: pointer;
         pointer-events: auto;
         z-index: 10;
         position: relative;
     }
 </style>
+
+<script>
+    function openUpdateRequest() {
+        document.getElementById('acceptedModal').style.display = 'none';
+        document.getElementById('updateModal').style.display = 'flex';
+    }
+</script>

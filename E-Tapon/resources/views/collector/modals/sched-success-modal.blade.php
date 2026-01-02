@@ -1,10 +1,10 @@
-<div class="overlay">
+<div id="updSuccessSchModal" class="success-overlay" style="display: none;">
     <div class="popup-success">
         <div class="popup-box"></div>
-        <h2 class="text-4xl font-extrabold my-2">Success!</h2>
+        <h2 class="text-4xl font-extrabold my-2">Request Updated!</h2>
 
         <div class="action-buttons mt-3">
-            <button class="btn-ok">Confirm</button>
+            <button class="btn-ok" onclick="closeSuccessSchModal()">Confirm</button>
         </div>
     </div>
 </div>
@@ -22,10 +22,11 @@
         font-family: "Roboto", sans-serif;
     }
 
-    .overlay {
+    .success-overlay {
         position: fixed;
         inset: 0;
-        background: rgb(31, 75, 44, 0.7);
+        background: rgb(0, 0, 0, 0.50);
+        backdrop-filter: blur(10px);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -61,23 +62,6 @@
         border-radius: 30px;
     }
 
-
-    .circle-top {
-        flex-shrink: 0;
-        border-radius: 50%;
-        padding: 0.5rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    /* TOP ICON CONTAINER */
-    .circle-top {
-        width: 80px;
-        height: 80px;
-        background-color: var(--color-orange);
-    }
-
     .status-actions {
         display: flex;
         justify-content: center;
@@ -110,3 +94,18 @@
         transition: all 0.2s;
     }
 </style>
+
+<script>
+    function closeSuccessSchModal() {
+        document.querySelectorAll('[class*="clicked-status-"]').forEach(content => {
+            content.style.maxHeight = null;
+            content.classList.remove('clicked-status-open');
+        });
+
+        document.querySelectorAll('.collapsible.active').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        document.getElementById('updSuccessSchModal').style.display = 'none';
+    }
+</script>

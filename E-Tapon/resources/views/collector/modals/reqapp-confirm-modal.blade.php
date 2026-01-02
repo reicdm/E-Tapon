@@ -1,11 +1,11 @@
-<div class="overlay">
+<div id="confirmModal" class="confirm-overlay" style="display: none;">
     <div class="popup-confirm">
-        <div class="circle-top"></div>
-        <h2 class="my-2">hui,, us2 mu buh talaga iupdate to?</h2>
+        <div class="circle-pop"></div>
+        <h2 class="my-2">hui,, us2 mu buh talaga iaccept to?</h2>
 
         <div class="action-buttons mt-4">
-            <button class="btn-confirm">Confirm</button>
-            <button class="btn-cancel">Cancel</button>
+            <button class="btn-confirm" onclick="confirmUpdRequest()">Confirm</button>
+            <button class="btn-cancel" onclick="closeConfirmUpdModal()">Cancel</button>
         </div>
     </div>
 </div>
@@ -23,10 +23,11 @@
         font-family: "Roboto", sans-serif;
     }
 
-    .overlay {
+    .confirm-overlay {
         position: fixed;
         inset: 0;
-        background: rgb(31, 75, 44, 0.7);
+        background: rgb(0, 0, 0, 0.50);
+        backdrop-filter: blur(10px);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -63,7 +64,7 @@
     }
 
 
-    .circle-top {
+    .circle-pop {
         flex-shrink: 0;
         border-radius: 50%;
         padding: 0.5rem;
@@ -73,7 +74,7 @@
     }
 
     /* TOP ICON CONTAINER */
-    .circle-top {
+    .circle-pop {
         width: 80px;
         height: 80px;
         background-color: var(--color-orange);
@@ -84,7 +85,7 @@
         justify-content: center;
     }
 
-    .btn-confirm{
+    .btn-confirm {
         background-image: linear-gradient(to top, #ff9100, #FFA733);
         color: white;
     }
@@ -98,7 +99,7 @@
     }
 
     .btn-confirm,
-    .btn-cancel{
+    .btn-cancel {
         width: 110px;
         padding: 5px;
         border-radius: 10px;
@@ -122,3 +123,16 @@
         transition: all 0.2s;
     }
 </style>
+
+<script>
+    function confirmUpdRequest() {
+        document.getElementById('confirmModal').style.display = 'none';
+        document.getElementById('confirmSuccessModal').style.display = 'flex';
+    }
+
+    function closeConfirmUpdModal() {
+        document.getElementById('confirmModal').style.display = 'none';
+        document.getElementById('requestModal').style.display = 'flex';
+    }
+
+</script>

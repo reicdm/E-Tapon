@@ -1,11 +1,10 @@
-<div class="overlay">
-    <div class="popup-confirm">
-        <div class="circle-top"></div>
-        <h2 class="my-2">hui,, us2 mu buh talaga iaccept to?</h2>
+<div id="updateSuccessModal" class="success-overlay" style="display: none;">
+    <div class="popup-success">
+        <div class="popup-box"></div>
+        <h2 class="text-4xl font-extrabold my-2">Request Updated!</h2>
 
-        <div class="action-buttons mt-4">
-            <button class="btn-confirm">Confirm</button>
-            <button class="btn-cancel">Cancel</button>
+        <div class="action-buttons mt-3">
+            <button class="btn-ok" onclick="closeSuccessModal()">Confirm</button>
         </div>
     </div>
 </div>
@@ -23,10 +22,11 @@
         font-family: "Roboto", sans-serif;
     }
 
-    .overlay {
+    .success-overlay {
         position: fixed;
         inset: 0;
-        background: rgb(31, 75, 44, 0.7);
+        background: rgb(0, 0, 0, 0.50);
+        backdrop-filter: blur(10px);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -62,43 +62,17 @@
         border-radius: 30px;
     }
 
-
-    .circle-top {
-        flex-shrink: 0;
-        border-radius: 50%;
-        padding: 0.5rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    /* TOP ICON CONTAINER */
-    .circle-top {
-        width: 80px;
-        height: 80px;
-        background-color: var(--color-orange);
-    }
-
     .status-actions {
         display: flex;
         justify-content: center;
     }
 
-    .btn-confirm{
+    .btn-ok {
         background-image: linear-gradient(to top, #ff9100, #FFA733);
         color: white;
     }
 
-    .btn-cancel {
-        background: var(--color-cream);
-        color: var(--color-orange);
-        border: 2px solid;
-        border-color: var(--color-orange);
-        margin-left: 12px;
-    }
-
-    .btn-confirm,
-    .btn-cancel{
+    .btn-ok {
         width: 110px;
         padding: 5px;
         border-radius: 10px;
@@ -114,11 +88,15 @@
         transition: all 0.2s ease;
     }
 
-
-    .btn-confirm:active,
-    .btn-cancel:active {
+    .btn-ok:active {
         top: 3px;
         box-shadow: 0 2px 0px var(--color-orange);
         transition: all 0.2s;
     }
 </style>
+
+<script>
+    function closeSuccessModal() {
+        document.getElementById('updateSuccessModal').style.display = 'none';
+    }
+</script>

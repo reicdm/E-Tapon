@@ -3,7 +3,7 @@
 @section('title', 'Collector Schedule')
 
 @section('content')
-<div class="min-h-screen flex flex-col p-2">
+<div id="schedtab" class="min-h-screen flex flex-col p-2">
     <div class="mx-auto max-w-4xl w-full p-2">
 
         <!-- HEADER -->
@@ -67,8 +67,8 @@
 
                                 <!-- ACTION BUTTONS -->
                                 <div class="status-actions">
-                                    <button class="btn-update push">Update</button>
-                                    <button class="btn-cancel push">Cancel</button>
+                                    <button class="btn-update push" onclick="confirmSchRequest()">Update</button>
+                                    <button class="btn-cancel push" onclick="closeConfirmSchModal()">Cancel</button>
                                 </div>
                             </div>
 
@@ -109,8 +109,8 @@
 
                                 <!-- ACTION BUTTONS -->
                                 <div class="status-actions">
-                                    <button class="btn-update push">Update</button>
-                                    <button class="btn-cancel push">Cancel</button>
+                                    <button class="btn-update push" onclick="confirmSchRequest()">Update</button>
+                                    <button class="btn-cancel push" onclick="closeConfirmSchModal()">Cancel</button>
                                 </div>
                             </div>
 
@@ -163,8 +163,8 @@
 
                                 <!-- ACTION BUTTONS -->
                                 <div class="status-actions">
-                                    <button class="btn-update push">Update</button>
-                                    <button class="btn-cancel push">Cancel</button>
+                                    <button class="btn-update push" onclick="confirmSchRequest()">Update</button>
+                                    <button class="btn-cancel push" onclick="closeConfirmSchModal()">Cancel</button>
                                 </div>
                             </div>
 
@@ -205,8 +205,8 @@
 
                                 <!-- ACTION BUTTONS -->
                                 <div class="status-actions">
-                                    <button class="btn-update push">Update</button>
-                                    <button class="btn-cancel push">Cancel</button>
+                                    <button class="btn-update push" onclick="confirmSchRequest()">Update</button>
+                                    <button class="btn-cancel push" onclick="closeConfirmSchModal()">Cancel</button>
                                 </div>
                             </div>
                         </div>
@@ -282,6 +282,23 @@
             }
         });
     });
+
+    function confirmSchRequest() {
+        document.getElementById('updSchModal').style.display = 'flex';
+    }
+
+    function closeConfirmSchModal() {
+        document.querySelectorAll('[class*="clicked-status-"]').forEach(content => {
+            content.style.maxHeight = null;
+            content.classList.remove('clicked-status-open');
+        });
+
+        document.querySelectorAll('.collapsible.active').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        document.getElementById('updSchModal').style.display = 'none';
+    }
 </script>
 @endpush
 

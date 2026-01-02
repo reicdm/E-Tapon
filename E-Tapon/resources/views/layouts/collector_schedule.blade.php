@@ -29,6 +29,9 @@
     @include('layouts.header')
     @yield('content')
   </main>
+  @include('collector.modals.sched-update-modal')
+  @include('collector.modals.sched-success-modal')
+  
   @stack('scripts')
 </body>
 
