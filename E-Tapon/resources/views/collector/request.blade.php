@@ -33,8 +33,15 @@
                                         <p class="card-top-text"><b>Qty:</b> {1kg}</p>
                                     </div>
                                 </div>
-                                <div class="card-top-button mt-3">
-                                    <a href="#">View Details</a>
+                                <div class="card-top-button mt-3"
+                                    onclick="openRequestModal(this)"
+                                    data-name="John Doe"
+                                    data-resident="Brgy. 123"
+                                    data-waste="Recyclable"
+                                    data-quantity="1kg"
+                                    data-date="January 1, 2025"
+                                    data-time="10:00 AM">
+                                    View Details
                                 </div>
                             </div>
                         </div>
@@ -317,3 +324,22 @@
 </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    function openRequestModal(button) {
+        document.getElementById('modalName').value = button.dataset.name;
+        document.getElementById('modalResident').value = button.dataset.resident;
+        document.getElementById('modalWaste').value = button.dataset.waste;
+        document.getElementById('modalQuantity').value = button.dataset.quantity;
+        document.getElementById('modalDate').value = button.dataset.date;
+        document.getElementById('modalTime').value = button.dataset.time;
+
+        document.getElementById('requestModal').style.display = 'flex';
+    }
+
+    function closeRequestModal() {
+        document.getElementById('requestModal').style.display = 'none';
+    }
+</script>
+@endpush

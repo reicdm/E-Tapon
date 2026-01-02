@@ -3,9 +3,9 @@
 @section('title', 'Collector Request to Approve')
 
 @section('content')
-<div class="overlay">
+<div id="requestModal" class="overlay">
     <div class="popup">
-        <button class="close-btn">&times;</button>
+        <button class="close-btn" onclick="closeRequestModal()">&times;</button>
 
         <div class="row justify-content-center mb-4 mt-2">
             <div class="circle">
@@ -15,18 +15,18 @@
 
         <div class="card-field-nr">
             <label>Name</label>
-            <input id="name" type="text" class="form-control" value="John Doe" readonly>
+            <input id="name" type="text" class="form-control" value="modalName" readonly>
         </div>
 
         <div class="card-field-nr mb-2">
             <label>Resident</label>
-            <input id="brgy" type="text" class="form-control" value="Brgy. 123" readonly>
+            <input id="brgy" type="text" class="form-control" value="modalResident" readonly>
         </div>
 
         <div class="form-row-container">
             <div class="card-field-wq mb-2">
                 <label class="form-label">Waste Type</label>
-                <input type="text" class="form-control" value="Recyclable" readonly>
+                <input type="text" class="form-control" value="modalWaste" readonly>
             </div>
 
             <div class="card-field-wq mb-2">
