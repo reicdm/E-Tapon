@@ -122,10 +122,20 @@
                                 </div>
                                 <div class="card-req-right">
                                     <p class="card-req-text-date">01/01/25</p>
-                                    <button type="button" class="btn-details">Details</button>
+                                    <button type="button"
+                                        class="btn-details"
+                                        onclick="openRequestModal(this)"
+                                        data-reqname="John Doe"
+                                        data-reqbrgy="Brgy. 123"
+                                        data-reqwaste="Recyclable"
+                                        data-reqquantity="1kg"
+                                        data-reqdate="January 1, 2025"
+                                        data-reqtime="10:00 AM">
+                                        Details
+                                    </button>
                                 </div>
                             </div>
-                            
+
                             <div class="card-data-box-req">
                                 <div class="circle">
                                     <img src="{{ asset('icons/C_bio.png') }}" class="waste-img">
@@ -137,7 +147,17 @@
                                 </div>
                                 <div class="card-req-right">
                                     <p class="card-req-text-date">01/01/25</p>
-                                    <button type="button" class="btn-details">Details</button>
+                                    <button type="button"
+                                        class="btn-details"
+                                        onclick="openRequestModal(this)"
+                                        data-reqname="John Doe"
+                                        data-reqbrgy="Brgy. 123"
+                                        data-reqwaste="Recyclable"
+                                        data-reqquantity="1kg"
+                                        data-reqdate="January 1, 2025"
+                                        data-reqtime="10:00 AM">
+                                        Details
+                                    </button>
                                 </div>
                             </div>
 
@@ -152,7 +172,17 @@
                                 </div>
                                 <div class="card-req-right">
                                     <p class="card-req-text-date">01/01/25</p>
-                                    <button type="button" class="btn-details">Details</button>
+                                    <button type="button"
+                                        class="btn-details"
+                                        onclick="openRequestModal(this)"
+                                        data-reqname="John Doe"
+                                        data-reqbrgy="Brgy. 123"
+                                        data-reqwaste="Recyclable"
+                                        data-reqquantity="1kg"
+                                        data-reqdate="January 1, 2025"
+                                        data-reqtime="10:00 AM">
+                                        Details
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -163,3 +193,37 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    function openRequestModal(button) {
+        console.log('Opening modal...');
+        console.log('Button data:', button.dataset);
+
+        document.getElementById('reqname').value = button.dataset.reqname || '';
+        document.getElementById('reqbrgy').value = button.dataset.reqbrgy || '';
+        document.getElementById('reqwaste').value = button.dataset.reqwaste || '';
+        document.getElementById('reqquantity').value = button.dataset.reqquantity || '';
+        document.getElementById('reqdate').value = button.dataset.reqdate || '';
+        document.getElementById('reqtime').value = button.dataset.reqtime || '';
+
+        const modal = document.getElementById('requestModal');
+        modal.style.display = 'flex';
+
+        console.log('Modal displayed');
+    }
+
+    function closeRequestModal() {
+        console.log('Closing modal...');
+        const modal = document.getElementById('requestModal');
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('requestModal');
+        if (event.target == modal) {
+            closeRequestModal();
+        }
+    }
+</script>
+@endpush

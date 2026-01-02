@@ -23,6 +23,9 @@
     @include('layouts.header')
     @yield('content')
   </main>
+  @include('collector.modals.request-modal')
+
+  @stack('scripts')
 </body>
 
 </html>

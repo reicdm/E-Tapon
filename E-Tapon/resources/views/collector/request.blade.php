@@ -33,65 +33,17 @@
                                         <p class="card-top-text"><b>Qty:</b> {1kg}</p>
                                     </div>
                                 </div>
-                                <div class="card-top-button mt-3"
+                                <button type="button"
+                                    class="card-top-button"
                                     onclick="openRequestModal(this)"
-                                    data-name="John Doe"
-                                    data-resident="Brgy. 123"
-                                    data-waste="Recyclable"
-                                    data-quantity="1kg"
-                                    data-date="January 1, 2025"
-                                    data-time="10:00 AM">
+                                    data-reqname="John Doe"
+                                    data-reqbrgy="Brgy. 123"
+                                    data-reqwaste="Recyclable"
+                                    data-reqquantity="1kg"
+                                    data-reqdate="January 1, 2025"
+                                    data-reqtime="10:00 AM">
                                     View Details
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-6 col-md-6">
-                            <div class="card card-top h-100">
-                                <div class="card-top-details">
-                                    <div class="card-top-circle-date">
-                                        <div class="circle-top">
-                                            <img src="{{ asset('icons/O_bio.png') }}" class="wastes-img-top">
-                                        </div>
-                                        <h2 class="card-top-text-date">JAN 01</h2>
-                                    </div>
-                                    <div class="card-top-data">
-                                        <h5 class="card-top-title">John Doe</h5>
-                                        <p class="card-top-text"><b>Waste Type:</b> Biodegradable</p>
-                                        <p class="card-top-text"><b>Qty:</b> {1kg}</p>
-                                    </div>
-                                </div>
-                                <div class="card-top-button mt-3">
-                                    <a href="#">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- 2ND SLIDE -->
-                <div class="carousel-item">
-                    <div class="row g-3">
-                        <!-- CARDS -->
-                        <div class="col-6 col-md-6">
-                            <div class="card card-top h-100">
-                                <div class="card-top-details">
-                                    <div class="card-top-circle-date">
-                                        <div class="circle-top">
-                                            <img src="{{ asset('icons/O_nonbio.png') }}" class="wastes-img-top">
-                                        </div>
-                                        <h2 class="card-top-text-date">JAN 01</h2>
-                                    </div>
-                                    <div class="card-top-data">
-                                        <h5 class="card-top-title">John Doe</h5>
-                                        <p class="card-top-text"><b>Waste Type:</b> Non-Biodegradable</p>
-                                        <p class="card-top-text"><b>Qty:</b> {1kg}</p>
-                                    </div>
-                                </div>
-                                <div class="card-top-button mt-3">
-                                    <a href="#">View Details</a>
-                                </div>
+                                </button>
                             </div>
                         </div>
 
@@ -107,12 +59,85 @@
                                     <div class="card-top-data">
                                         <h5 class="card-top-title">John Doe</h5>
                                         <p class="card-top-text"><b>Waste Type:</b> Recyclable</p>
-                                        <p class="card-top-text">Qty: {1kg}</p>
+                                        <p class="card-top-text"><b>Qty:</b> {1kg}</p>
                                     </div>
                                 </div>
-                                <div class="card-top-button mt-3">
-                                    <a href="#">View Details</a>
+                                <button type="button"
+                                    class="card-top-button"
+                                    onclick="openRequestModal(this)"
+                                    data-reqname="John Doe"
+                                    data-reqbrgy="Brgy. 123"
+                                    data-reqwaste="Recyclable"
+                                    data-reqquantity="1kg"
+                                    data-reqdate="January 1, 2025"
+                                    data-reqtime="10:00 AM">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 2ND SLIDE -->
+                <div class="carousel-item">
+                    <div class="row g-3">
+                        <!-- CARDS -->
+                        <div class="col-6 col-md-6">
+                            <div class="card card-top h-100">
+                                <div class="card-top-details">
+                                    <div class="card-top-circle-date">
+                                        <div class="circle-top">
+                                            <img src="{{ asset('icons/O_recycle.png') }}" class="wastes-img-top">
+                                        </div>
+                                        <h2 class="card-top-text-date">JAN 01</h2>
+                                    </div>
+                                    <div class="card-top-data">
+                                        <h5 class="card-top-title">John Doe</h5>
+                                        <p class="card-top-text"><b>Waste Type:</b> Recyclable</p>
+                                        <p class="card-top-text"><b>Qty:</b> {1kg}</p>
+                                    </div>
                                 </div>
+                                <button type="button"
+                                    class="card-top-button"
+                                    onclick="openRequestModal(this)"
+                                    data-reqname="John Doe"
+                                    data-reqbrgy="Brgy. 123"
+                                    data-reqwaste="Recyclable"
+                                    data-reqquantity="1kg"
+                                    data-reqdate="January 1, 2025"
+                                    data-reqtime="10:00 AM">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-6">
+                            <div class="card card-top h-100">
+                                <div class="card-top-details">
+                                    <div class="card-top-circle-date">
+                                        <div class="circle-top">
+                                            <img src="{{ asset('icons/O_recycle.png') }}" class="wastes-img-top">
+                                        </div>
+                                        <h2 class="card-top-text-date">JAN 01</h2>
+                                    </div>
+                                    <div class="card-top-data">
+                                        <h5 class="card-top-title">John Doe</h5>
+                                        <p class="card-top-text"><b>Waste Type:</b> Recyclable</p>
+                                        <p class="card-top-text"><b>Qty:</b> {1kg}</p>
+                                    </div>
+                                </div>
+                                <button type="button"
+                                    class="card-top-button"
+                                    onclick="openRequestModal(this)"
+                                    data-reqname="John Doe"
+                                    data-reqbrgy="Brgy. 123"
+                                    data-reqwaste="Recyclable"
+                                    data-reqquantity="1kg"
+                                    data-reqdate="January 1, 2025"
+                                    data-reqtime="10:00 AM">
+                                    View Details
+                                </button>
                             </div>
                         </div>
 
@@ -165,59 +190,18 @@
                                             <p class="card-mid-text"><b>Qty:</b> {1kg}</p>
                                         </div>
                                     </div>
-                                    <div class="card-mid-button mt-3">
-                                        <a href="#">View Details</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-6 col-md-6">
-                                <div class="card card-mid h-100">
-                                    <div class="card-mid-details">
-                                        <div class="card-mid-circle-date">
-                                            <div class="circle-mid">
-                                                <img src="{{ asset('icons/DG_bio.png') }}" class="wastes-img-mid">
-                                            </div>
-                                            <h2 class="card-mid-text-date">JAN 01</h2>
-                                        </div>
-                                        <div class="card-mid-data">
-                                            <h5 class="card-mid-title">John Doe</h5>
-                                            <p class="card-mid-text"><b>Waste Type:</b> Biodegradable</p>
-                                            <p class="card-mid-text"><b>Qty:</b> {1kg}</p>
-                                        </div>
-                                    </div>
-                                    <div class="card-mid-button mt-3">
-                                        <a href="#">View Details</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- 2ND SLIDE -->
-                    <div class="carousel-item">
-                        <div class="row g-3">
-
-                            <!-- CARDS -->
-                            <div class="col-6 col-md-6">
-                                <div class="card card-mid h-100">
-                                    <div class="card-mid-details">
-                                        <div class="card-mid-circle-date">
-                                            <div class="circle-mid">
-                                                <img src="{{ asset('icons/DG_nonbio.png') }}" class="wastes-img-mid">
-                                            </div>
-                                            <h2 class="card-mid-text-date">JAN 01</h2>
-                                        </div>
-                                        <div class="card-mid-data">
-                                            <h5 class="card-mid-title">John Doe</h5>
-                                            <p class="card-mid-text"><b>Waste Type:</b> Non-Biodegradable</p>
-                                            <p class="card-mid-text"><b>Qty:</b> {1kg}</p>
-                                        </div>
-                                    </div>
-                                    <div class="card-mid-button mt-3">
-                                        <a href="#">View Details</a>
-                                    </div>
+                                    <button type="button"
+                                        class="card-mid-button"
+                                        onclick="openAcceptedModal(this)"
+                                        data-accname="John Doe"
+                                        data-accbrgy="Brgy. 123"
+                                        data-accwaste="Recyclable"
+                                        data-accquantity="1kg"
+                                        data-accdate="January 1, 2025"
+                                        data-acctime="10:00 AM"
+                                        data-acctruck="ABC 1234 (5-ton capacity)">
+                                        View Details
+                                    </button>
                                 </div>
                             </div>
 
@@ -236,9 +220,86 @@
                                             <p class="card-mid-text"><b>Qty:</b> {1kg}</p>
                                         </div>
                                     </div>
-                                    <div class="card-mid-button mt-3">
-                                        <a href="#">View Details</a>
+                                    <button type="button"
+                                        class="card-mid-button"
+                                        onclick="openAcceptedModal(this)"
+                                        data-accname="John Doe"
+                                        data-accbrgy="Brgy. 123"
+                                        data-accwaste="Recyclable"
+                                        data-accquantity="1kg"
+                                        data-accdate="January 1, 2025"
+                                        data-acctime="10:00 AM"
+                                        data-acctruck="ABC 1234 (5-ton capacity)">
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- 2ND SLIDE -->
+                    <div class="carousel-item">
+                        <div class="row g-3">
+
+                            <!-- CARDS -->
+                            <div class="col-6 col-md-6">
+                                <div class="card card-mid h-100">
+                                    <div class="card-mid-details">
+                                        <div class="card-mid-circle-date">
+                                            <div class="circle-mid">
+                                                <img src="{{ asset('icons/DG_recycle.png') }}" class="wastes-img-mid">
+                                            </div>
+                                            <h2 class="card-mid-text-date">JAN 01</h2>
+                                        </div>
+                                        <div class="card-mid-data">
+                                            <h5 class="card-mid-title">John Doe</h5>
+                                            <p class="card-mid-text"><b>Waste Type:</b> Recyclable</p>
+                                            <p class="card-mid-text"><b>Qty:</b> {1kg}</p>
+                                        </div>
                                     </div>
+                                    <button type="button"
+                                        class="card-mid-button"
+                                        onclick="openAcceptedModal(this)"
+                                        data-accname="John Doe"
+                                        data-accbrgy="Brgy. 123"
+                                        data-accwaste="Recyclable"
+                                        data-accquantity="1kg"
+                                        data-accdate="January 1, 2025"
+                                        data-acctime="10:00 AM"
+                                        data-acctruck="ABC 1234 (5-ton capacity)">
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-6">
+                                <div class="card card-mid h-100">
+                                    <div class="card-mid-details">
+                                        <div class="card-mid-circle-date">
+                                            <div class="circle-mid">
+                                                <img src="{{ asset('icons/DG_recycle.png') }}" class="wastes-img-mid">
+                                            </div>
+                                            <h2 class="card-mid-text-date">JAN 01</h2>
+                                        </div>
+                                        <div class="card-mid-data">
+                                            <h5 class="card-mid-title">John Doe</h5>
+                                            <p class="card-mid-text"><b>Waste Type:</b> Recyclable</p>
+                                            <p class="card-mid-text"><b>Qty:</b> {1kg}</p>
+                                        </div>
+                                    </div>
+                                    <button type="button"
+                                        class="card-mid-button"
+                                        onclick="openAcceptedModal(this)"
+                                        data-accname="John Doe"
+                                        data-accbrgy="Brgy. 123"
+                                        data-accwaste="Recyclable"
+                                        data-accquantity="1kg"
+                                        data-accdate="January 1, 2025"
+                                        data-acctime="10:00 AM"
+                                        data-acctruck="ABC 1234 (5-ton capacity)">
+                                        View Details
+                                    </button>
                                 </div>
                             </div>
 
@@ -322,24 +383,82 @@
         </div>
     </div>
 </div>
-</div>
 @endsection
 
 @push('scripts')
 <script>
     function openRequestModal(button) {
-        document.getElementById('modalName').value = button.dataset.name;
-        document.getElementById('modalResident').value = button.dataset.resident;
-        document.getElementById('modalWaste').value = button.dataset.waste;
-        document.getElementById('modalQuantity').value = button.dataset.quantity;
-        document.getElementById('modalDate').value = button.dataset.date;
-        document.getElementById('modalTime').value = button.dataset.time;
+        console.log('Opening modal...');
+        console.log('Button data:', button.dataset);
 
-        document.getElementById('requestModal').style.display = 'flex';
+        document.getElementById('reqname').value = button.dataset.reqname || '';
+        document.getElementById('reqbrgy').value = button.dataset.reqbrgy || '';
+        document.getElementById('reqwaste').value = button.dataset.reqwaste || '';
+        document.getElementById('reqquantity').value = button.dataset.reqquantity || '';
+        document.getElementById('reqdate').value = button.dataset.reqdate || '';
+        document.getElementById('reqtime').value = button.dataset.reqtime || '';
+
+        const modal = document.getElementById('requestModal');
+        modal.style.display = 'flex';
+
+        console.log('Modal displayed');
     }
 
     function closeRequestModal() {
-        document.getElementById('requestModal').style.display = 'none';
+        console.log('Closing modal...');
+        const modal = document.getElementById('requestModal');
+        modal.style.display = 'none';
     }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('requestModal');
+        if (event.target == modal) {
+            closeRequestModal();
+        }
+    }
+
+    function openAcceptedModal(button) {
+        console.log('Opening modal...');
+        console.log('Button data:', button.dataset);
+
+        document.getElementById('accname').value = button.dataset.accname || '';
+        document.getElementById('accbrgy').value = button.dataset.accbrgy || '';
+        document.getElementById('accwaste').value = button.dataset.accwaste || '';
+        document.getElementById('accquantity').value = button.dataset.accquantity || '';
+        document.getElementById('accdate').value = button.dataset.accdate || '';
+        document.getElementById('acctime').value = button.dataset.acctime || '';
+
+        const modal = document.getElementById('acceptedModal');
+        modal.style.display = 'flex';
+
+        console.log('Modal displayed');
+    }
+
+    function closeAcceptedModal() {
+        console.log('Closing modal...');
+        const modal = document.getElementById('acceptedModal');
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('acceptedModal');
+        if (event.target == modal) {
+            closeAcceptedModal();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const statusButtons = document.querySelectorAll(
+            '.sched-status-completed, .sched-status-inprogress, .sched-status-assigned, .sched-status-cancelled'
+        );
+
+        statusButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                statusButtons.forEach(btn => btn.classList.remove('active'));
+
+                button.classList.add('active');
+            });
+        });
+    });
 </script>
 @endpush

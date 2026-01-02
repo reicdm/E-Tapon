@@ -15,23 +15,23 @@
 
         <div class="card-field-nr">
             <label>Name</label>
-            <input id="name" type="text" class="form-control" value="modalName" readonly>
+            <input id="name" type="text" class="form-control" value="John Doe" readonly>
         </div>
 
         <div class="card-field-nr mb-2">
             <label>Resident</label>
-            <input id="brgy" type="text" class="form-control" value="modalResident" readonly>
+            <input id="brgy" type="text" class="form-control" value="Brgy. 123" readonly>
         </div>
 
         <div class="form-row-container">
             <div class="card-field-wq mb-2">
                 <label class="form-label">Waste Type</label>
-                <input type="text" class="form-control" value="modalWaste" readonly>
+                <input id="waste" type="text" class="form-control" value="Recyclable" readonly>
             </div>
 
             <div class="card-field-wq mb-2">
                 <label class="form-label">Quantity</label>
-                <input type="text" class="form-control" value="1kg" readonly>
+                <input id="quantity" type="text" class="form-control" value="1kg" readonly>
             </div>
         </div>
 
@@ -51,7 +51,7 @@
 
         <div class="card-field-t">
             <label>Select Truck</label>
-            <select>
+            <select id="truck">
                 <option>ABC 1234 (5-ton capacity)</option>
                 <option>DEF 9981 (10-ton capacity)</option>
                 <option>XYZ 5561 (8-ton capacity)</option>
