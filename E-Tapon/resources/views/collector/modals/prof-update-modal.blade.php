@@ -1,7 +1,7 @@
 <div id="saveModal" class="confirm-overlay" style="display: none;">
     <div class="popup-confirm">
         <div class="circle-pop"></div>
-        <h2 class="my-2">hui,, us2 mu buh talaga iupdate to?</h2>
+        <h2 class="my-2">Are you sure about your changes?</h2>
 
         <div class="action-buttons mt-4">
             <button class="btn-confirm" onclick="confirmSaveProfile()">Confirm</button>
@@ -34,7 +34,6 @@
         z-index: 999;
     }
 
-
     .popup-confirm,
     .popup-success {
         background: var(--color-cream);
@@ -63,7 +62,6 @@
         border-radius: 30px;
     }
 
-
     .circle-pop {
         flex-shrink: 0;
         border-radius: 50%;
@@ -80,7 +78,8 @@
         background-color: var(--color-orange);
     }
 
-    .status-actions {
+    .status-actions,
+    .action-buttons {
         display: flex;
         justify-content: center;
     }
@@ -88,6 +87,7 @@
     .btn-confirm {
         background-image: linear-gradient(to top, #ff9100, #FFA733);
         color: white;
+        border: none;
     }
 
     .btn-cancel {
@@ -115,7 +115,6 @@
         transition: all 0.2s ease;
     }
 
-
     .btn-confirm:active,
     .btn-cancel:active {
         top: 3px;
@@ -123,3 +122,44 @@
         transition: all 0.2s;
     }
 </style>
+
+<script>
+    function closeSaveModal() {
+        document.getElementById('saveModal').style.display = 'none';
+    }
+
+    function confirmSaveProfile() {
+        // Get form data
+        const contactNumber = document.getElementById('contact_number').value;
+        const email = document.getElementById('email').value;
+
+        // Create form and submit
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{{ route("collector.profile.update") }}';
+
+        // CSRF token
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_token';
+        csrfInput.value = '{{ csrf_token() }}';
+        form.appendChild(csrfInput);
+
+        // Contact Number
+        const contactInput = document.createElement('input');
+        contactInput.type = 'hidden';
+        contactInput.name = 'contact_number';
+        contactInput.value = contactNumber;
+        form.appendChild(contactInput);
+
+        // Email
+        const emailInput = document.createElement('input');
+        emailInput.type = 'hidden';
+        emailInput.name = 'email';
+        emailInput.value = email;
+        form.appendChild(emailInput);
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>

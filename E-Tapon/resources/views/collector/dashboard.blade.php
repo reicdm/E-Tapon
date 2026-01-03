@@ -183,7 +183,7 @@
 
         // Update form action with the correct route
         const form = document.getElementById('acceptRequestForm');
-        form.action = `/collector/request/${requestId}/accept`;
+        form.action = `/collector/dashboard/${requestId}/accept`;
 
         // Populate truck dropdown with available trucks for this request
         const truckSelect = document.getElementById('reqtruck');

@@ -74,11 +74,13 @@ Route::prefix('collector')->group(function () {
 
     // DASHBOARD WITH VERIFICATION
     Route::middleware('auth:collector')->group(function () {
+        // Dashboard
         Route::get('/dashboard', [CollectorDashboardController::class, 'showOverview'])->name('collector.dashboard');
+        Route::post('/dashboard/{requestId}/accept', [CollectorDashboardController::class, 'accept'])->name('collector.dashboard.accept');
+
+        // Schedule
         Route::get('/schedule', [CollectorScheduleController::class, 'showSchedule'])->name('collector.schedule');
         Route::post('/collector/schedule/update', [CollectorScheduleController::class, 'updateStatus'])->name('collector.schedule.update');
-        // Route::get('/schedule/confirm', [CollectorScheduleController::class, 'showUpdateConfirm'])->name('collector.schedule.confirm');
-        // Route::post('/schedule/update', [CollectorScheduleController::class, 'updateStatus'])->name('collector.schedule.updateStatus');
 
         // Profile routes
         Route::get('/profile', [CollectorProfileController::class, 'showProfile'])->name('collector.profile');
@@ -86,18 +88,17 @@ Route::prefix('collector')->group(function () {
         Route::get('/profile/confirm', [CollectorProfileEditController::class, 'showUpdateConfirm'])->name('collector.profile.confirm');
         Route::post('/profile/confirm-update', [CollectorProfileEditController::class, 'confirmUpdate'])->name('collector.profile.confirmUpdate');
         Route::get('/profile/success', [CollectorSuccessController::class, 'showSuccess'])->name('collector.profile.success');
+        Route::post('/profile/update', [CollectorProfileEditController::class, 'update'])->name('collector.profile.update');
 
-        // request routes
+        // Request routes
         Route::prefix('request')->group(function () {
             Route::get('/', [CollectorRequestController::class, 'showRequest'])->name('collector.request');
+            Route::post('/{requestId}/accept', [CollectorRequestController::class, 'accept'])->name('collector.request.accept');
             Route::get('/acceptedrequest/{requestId}', [CollectorAcceptedReqController::class, 'showAcceptedRequest'])->name('collector.acceptedrequest');
-            Route::post('/{requestId}/accept', [CollectorDashboardController::class, 'accept'])->name('collector.request.accept');
             Route::get('/{requestId}/success', [CollectorDashboardController::class, 'showSuccess'])->name('collector.request.success');
-            // Route::get('/acceptedrequest/{requestId}/confirm', [CollectorAcceptedReqController::class, 'showUpdateConfirm'])->name('collector.acceptedrequest.confirm');
-            // Route::post('/acceptedrequest/{requestId}/updateStatus', [CollectorAcceptedReqController::class, 'updateStatus'])->name('collector.acceptedrequest.updateStatus');
         });
 
-        // request details
+        // Request details
         Route::prefix('requestdetails')->group(function () {
             Route::get('/{requestId}', [CollectorReqDetailsController::class, 'showRequestDetails'])->name('collector.reqdetails.showRequestDetails');
             Route::get('/{requestId}/confirm', [CollectorReqDetailsController::class, 'showAcceptConfirm'])->name('collector.reqdetails.confirm');
@@ -105,7 +106,7 @@ Route::prefix('collector')->group(function () {
             Route::post('/{requestId}/decline', [CollectorReqDetailsController::class, 'decline'])->name('collector.reqdetails.decline');
         });
 
-        // request request details
+        // Request request details
         Route::prefix('reqreqdetails')->group(function () {
             Route::get('/{requestId}', [CollectorReqReqDetailsController::class, 'showRequestDetails'])->name('collector.reqreqdetails.showRequestDetails');
             Route::post('/{requestId}/accept', [CollectorReqReqDetailsController::class, 'accept'])->name('collector.reqreqdetails.accept');
