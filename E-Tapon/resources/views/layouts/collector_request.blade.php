@@ -6,9 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@yield('title', 'E-Tapon')</title>
   @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('css/collector_request.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/collector_request.css') }}">
 
   <script src="https://cdn.tailwindcss.com"></script>
+  
   <style>
     body {
       font-family: 'Roboto', sans-serif;
@@ -23,6 +24,15 @@
     @include('layouts.header')
     @yield('content')
   </main>
+  @include('collector.modals.reqapp-request-modal')
+  @include('collector.modals.reqapp-confirm-modal')
+  @include('collector.modals.reqapp-success-modal')
+
+  @include('collector.modals.accepted-request-modal')
+  @include('collector.modals.accepted-confirm-modal')
+  @include('collector.modals.accepted-success-modal')
+
+  @stack('scripts')
 </body>
 
 </html>

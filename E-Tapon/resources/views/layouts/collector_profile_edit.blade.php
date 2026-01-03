@@ -23,6 +23,11 @@
     @include('layouts.header_top')
     @yield('content')
   </main>
+
+  @include('collector.modals.prof-update-modal')
+  @include('collector.modals.prof-success-modal')
+
+  @stack('scripts')
 </body>
 
 </html>

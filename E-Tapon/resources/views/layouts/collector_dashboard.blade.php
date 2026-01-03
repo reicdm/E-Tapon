@@ -23,6 +23,11 @@
     @include('layouts.header')
     @yield('content')
   </main>
+  @include('collector.modals.reqapp-request-modal')
+  @include('collector.modals.reqapp-confirm-modal')
+  @include('collector.modals.reqapp-success-modal')
+
+  @stack('scripts')
 </body>
 
 </html>

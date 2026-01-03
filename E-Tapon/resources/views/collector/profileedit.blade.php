@@ -1,6 +1,6 @@
-@extends('layouts.collector_profile')
+@extends('layouts.collector_profile_edit')
 
-@section('title', 'Collector Profile')
+@section('title', 'Collector Profile Edit')
 
 @section('content')
 <div class="min-h-screen flex flex-col p-2">
@@ -58,10 +58,36 @@
             </div>
 
             <div class="action-buttons mt-4">
-                <button type="submit" class="btn-save">Save</button>
-                <a href="{{ route('collector.profile') }}"><button class="btn-cancel">Cancel</button></a>
+                <button class="btn-save" onclick="openSaveModal()">Save</button>
+                <button class="btn-cancel" onclick="cancelEdit()">Cancel</button>
             </div>
         </form>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    function openSaveModal() {
+        document.getElementById('saveModal').style.display = 'flex';
+    }
+
+    function cancelEdit() {
+        window.location.href = "{{ route('collector.profile') }}";
+    }
+
+    function closeSaveModal() {
+        document.getElementById('saveModal').style.display = 'none';
+    }
+
+    function confirmSaveProfile() {
+        document.getElementById('saveModal').style.display = 'none';
+        document.getElementById('saveSuccessModal').style.display = 'flex';
+    }
+
+    function closeSuccessSaveModal() {
+        document.getElementById('saveSuccessModal').style.display = 'none';
+        window.location.href = "{{ route('collector.profile') }}";
+    }
+</script>
+@endpush

@@ -3,9 +3,9 @@
 @section('title', 'Collector Request to Approve')
 
 @section('content')
-<div class="overlay">
+<div id="requestModal" class="overlay">
     <div class="popup">
-        <a href="{{ route('collector.dashboard') }}" class="close-btn" style="text-decoration: none;">&times;</a>
+        <button class="close-btn" onclick="closeRequestModal()">&times;</button>
 
         <div class="row justify-content-center mb-4 mt-2">
             <div class="circle">
@@ -26,12 +26,12 @@
         <div class="form-row-container">
             <div class="card-field-wq mb-2">
                 <label class="form-label">Waste Type</label>
-                <input type="text" class="form-control" value="{{ $requestData->waste_type }}" readonly>
+                <input id="waste" type="text" class="form-control" value="{{ $requestData->waste_type }}" readonly>
             </div>
 
             <div class="card-field-wq mb-2">
                 <label class="form-label">Quantity</label>
-                <input type="text" class="form-control" value="{{ number_format($requestData->quantity, 2) }}kg" readonly>
+                <input id="quantity" type="text" class="form-control" value="{{ number_format($requestData->quantity, 2) }}k" readonly>
             </div>
         </div>
 
@@ -49,7 +49,8 @@
 
         <label class="font-extrabold" style="color: var(--color-dark-green)">Assigned Truck</label>
 
-        <form action="{{ route('collector.reqdetails.confirm', $requestData->request_id) }}" method="GET">
+        <<<<<<< HEAD
+            <form action="{{ route('collector.reqdetails.confirm', $requestData->request_id) }}" method="GET">
             <div class="card-field-t">
                 <label>Select Truck</label>
                 <select name="license_plate" required>
@@ -61,16 +62,31 @@
                     @endforeach
                 </select>
             </div>
+            =======
+            <div class="card-field-t">
+                <label>Select Truck</label>
+                <select id="truck">
+                    <option>ABC 1234 (5-ton capacity)</option>
+                    <option>DEF 9981 (10-ton capacity)</option>
+                    <option>XYZ 5561 (8-ton capacity)</option>
+                </select>
+            </div>
+
+            <div class="action-buttons mt-16">
+                <button class="btn-accept">Accept</button>
+                <button class="btn-decline">Decline</button>
+            </div>
+            >>>>>>> Sarah-Code
 
             <div class="action-buttons mt-16">
                 <button type="submit" class="btn-accept">Accept</button>
                 <button type="button" class="btn-decline" onclick="event.preventDefault(); document.getElementById('decline-form').submit();">Decline</button>
             </div>
-        </form>
+            </form>
 
-        <form id="decline-form" action="{{ route('collector.reqdetails.decline', $requestData->request_id) }}" method="POST" style="display: none;">
-            @csrf
-        </form>
+            <form id="decline-form" action="{{ route('collector.reqdetails.decline', $requestData->request_id) }}" method="POST" style="display: none;">
+                @csrf
+            </form>
     </div>
 </div>
 @endsection

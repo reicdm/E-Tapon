@@ -3,7 +3,7 @@
 @section('title', 'Collector Dashboard')
 
 @section('content')
-<div class="min-h-screen flex flex-col p-2">
+<div id="dashboard" class="min-h-screen flex flex-col p-2">
     <div class="mx-auto max-w-4xl w-full p-2">
         <!-- GREETINGS -->
         <div class="row row-wel justify-content-center">
@@ -126,9 +126,17 @@
                                     <p class="card-req-text-date">
                                         {{ \Carbon\Carbon::parse($request->request_date)->format('m/d/y') }}
                                     </p>
-                                    <button class="btn-details"><a href="{{ route('collector.reqdetails.showRequestDetails', $request->request_id) }}">
-                                            Details
-                                        </a></button>
+                                    <button type="button"
+                                        class="btn-details"
+                                        onclick="openRequestModal(this)"
+                                        data-reqname="John Doe"
+                                        data-reqbrgy="Brgy. 123"
+                                        data-reqwaste="Recyclable"
+                                        data-reqquantity="1kg"
+                                        data-reqdate="January 1, 2025"
+                                        data-reqtime="10:00 AM">
+                                        Details
+                                    </button>
                                 </div>
                             </div>
                             @empty
@@ -142,3 +150,37 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    function openRequestModal(button) {
+        console.log('Opening modal...');
+        console.log('Button data:', button.dataset);
+
+        document.getElementById('reqname').value = button.dataset.reqname || '';
+        document.getElementById('reqbrgy').value = button.dataset.reqbrgy || '';
+        document.getElementById('reqwaste').value = button.dataset.reqwaste || '';
+        document.getElementById('reqquantity').value = button.dataset.reqquantity || '';
+        document.getElementById('reqdate').value = button.dataset.reqdate || '';
+        document.getElementById('reqtime').value = button.dataset.reqtime || '';
+
+        const modal = document.getElementById('requestModal');
+        modal.style.display = 'flex';
+
+        console.log('Modal displayed');
+    }
+
+    function closeRequestModal() {
+        console.log('Closing modal...');
+        const modal = document.getElementById('requestModal');
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('requestModal');
+        if (event.target == modal) {
+            closeRequestModal();
+        }
+    }
+</script>
+@endpush
