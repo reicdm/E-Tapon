@@ -1,7 +1,7 @@
 <div id="confirmSuccessModal" class="success-overlay" style="display: none;">
     <div class="popup-success">
         <div class="popup-box"></div>
-        <h2 class="text-4xl font-extrabold my-2">Request Confirmed!</h2>
+        <h2 class="text-4xl font-extrabold my-2">Request Accepted!</h2>
 
         <div class="action-buttons mt-3">
             <button class="btn-ok" onclick="closeSuccessUpdModal()">Confirm</button>

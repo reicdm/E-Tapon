@@ -1,11 +1,11 @@
 <div id="confirmModal" class="confirm-overlay" style="display: none;">
     <div class="popup-confirm">
         <div class="circle-pop"></div>
-        <h2 class="my-2">hui,, us2 mu buh talaga iaccept to?</h2>
+        <h2 class="my-2">Are you sure you want to accept this request?</h2>
 
         <div class="action-buttons mt-4">
             <button class="btn-confirm" onclick="confirmUpdRequest()">Confirm</button>
-            <button class="btn-cancel" onclick="closeConfirmUpdModal()">Cancel</button>
+            <button class="btn-cancel" onclick="closeConfirmModal()">Cancel</button>
         </div>
     </div>
 </div>
@@ -134,5 +134,4 @@
         document.getElementById('confirmModal').style.display = 'none';
         document.getElementById('requestModal').style.display = 'flex';
     }
-
 </script>

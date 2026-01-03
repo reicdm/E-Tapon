@@ -1,7 +1,7 @@
 <div id="updSuccessSchModal" class="success-overlay" style="display: none;">
     <div class="popup-success">
         <div class="popup-box"></div>
-        <h2 class="text-4xl font-extrabold my-2">Request Updated!</h2>
+        <h2 class="text-4xl font-extrabold my-2">Status Updated!</h2>
 
         <div class="action-buttons mt-3">
             <button class="btn-ok" onclick="closeSuccessSchModal()">Confirm</button>
@@ -105,7 +105,7 @@
         document.querySelectorAll('.collapsible.active').forEach(btn => {
             btn.classList.remove('active');
         });
-        
+
         document.getElementById('updSuccessSchModal').style.display = 'none';
     }
 </script>

@@ -1,7 +1,7 @@
 <div id="updSchModal" class="confirm-overlay" style="display: none;">
     <div class="popup-confirm">
         <div class="circle-pop"></div>
-        <h2 class="my-2">hui,, us2 mu buh talaga iupdate to?</h2>
+        <h2 class="my-2">Are you sure you want to update the status?</h2>
 
         <div class="action-buttons mt-4">
             <button class="btn-confirm" onclick="confirmPopSchRequest()">Confirm</button>
@@ -34,7 +34,6 @@
         z-index: 999;
     }
 
-
     .popup-confirm,
     .popup-success {
         background: var(--color-cream);
@@ -62,7 +61,6 @@
         background: var(--color-orange);
         border-radius: 30px;
     }
-
 
     .circle-pop {
         flex-shrink: 0;
@@ -115,7 +113,6 @@
         transition: all 0.2s ease;
     }
 
-
     .btn-confirm:active,
     .btn-cancel:active {
         top: 3px;
@@ -126,8 +123,76 @@
 
 <script>
     function confirmPopSchRequest() {
-        document.getElementById('updSchModal').style.display = 'none';
-        document.getElementById('updSuccessSchModal').style.display = 'flex';
+        const modal = document.getElementById('updSchModal');
+
+        // Get stored data from modal
+        const type = modal.dataset.type;
+        const status = modal.dataset.status;
+        const schedId = modal.dataset.schedId;
+        const brgyId = modal.dataset.brgyId;
+        const requestId = modal.dataset.requestId;
+
+        // Create form and submit
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{{ route("collector.schedule.update") }}';
+
+        // CSRF token
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_token';
+        csrfInput.value = '{{ csrf_token() }}';
+        form.appendChild(csrfInput);
+
+        // Type
+        const typeInput = document.createElement('input');
+        typeInput.type = 'hidden';
+        typeInput.name = 'type';
+        typeInput.value = type;
+        form.appendChild(typeInput);
+
+        // Status
+        const statusInput = document.createElement('input');
+        statusInput.type = 'hidden';
+        statusInput.name = 'status';
+        statusInput.value = status;
+        form.appendChild(statusInput);
+
+        // Conditional inputs
+        if (type === 'scheduled') {
+            const schedIdInput = document.createElement('input');
+            schedIdInput.type = 'hidden';
+            schedIdInput.name = 'sched_id';
+            schedIdInput.value = schedId;
+            form.appendChild(schedIdInput);
+
+            const brgyIdInput = document.createElement('input');
+            brgyIdInput.type = 'hidden';
+            brgyIdInput.name = 'brgy_id';
+            brgyIdInput.value = brgyId;
+            form.appendChild(brgyIdInput);
+        } else {
+            const requestIdInput = document.createElement('input');
+            requestIdInput.type = 'hidden';
+            requestIdInput.name = 'request_id';
+            requestIdInput.value = requestId;
+            form.appendChild(requestIdInput);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
     }
 
+    function closeConfirmSchModal() {
+        document.querySelectorAll('[class*="clicked-status-"]').forEach(content => {
+            content.style.maxHeight = null;
+            content.classList.remove('clicked-status-open');
+        });
+
+        document.querySelectorAll('.collapsible.active').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        document.getElementById('updSchModal').style.display = 'none';
+    }
 </script>

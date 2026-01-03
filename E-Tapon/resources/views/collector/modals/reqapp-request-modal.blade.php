@@ -3,61 +3,65 @@
     <div class="modal-popup">
         <button class="modal-close-btn" onclick="closeRequestModal()">&times;</button>
 
-        <div class="row justify-content-center mb-4 mt-2">
-            <div class="modal-circle">
-            </div>
-            <h2 class="font-extrabold" style="color: var(--color-dark-green)">Request Details</h2>
-        </div>
+        <form id="acceptRequestForm" method="POST" action="">
+            @csrf
 
-        <div class="card-field-nr">
-            <label>Name</label>
-            <input id="reqname" type="text" class="form-control" value="" readonly>
-        </div>
-
-        <div class="card-field-nr mb-2">
-            <label>Resident</label>
-            <input id="reqbrgy" type="text" class="form-control" value="" readonly>
-        </div>
-
-        <div class="form-row-container">
-            <div class="card-field-wq mb-2">
-                <label class="form-label">Waste Type</label>
-                <input id="reqwaste" type="text" class="form-control" value="" readonly>
+            <div class="row justify-content-center mb-4 mt-2">
+                <div class="modal-circle">
+                </div>
+                <h2 class="font-extrabold" style="color: var(--color-dark-green)">Request Details</h2>
             </div>
 
-            <div class="card-field-wq mb-2">
-                <label class="form-label">Quantity</label>
-                <input id="reqquantity" type="text" class="form-control" value="" readonly>
+            <div class="card-field-nr">
+                <label>Name</label>
+                <input id="reqname" type="text" class="form-control" value="" readonly>
             </div>
-        </div>
 
-        <div class="card-field-dt">
-            <label>Preferred Date</label>
-            <input id="reqdate" type="text" class="form-control" value="" readonly>
-        </div>
+            <div class="card-field-nr mb-2">
+                <label>Resident</label>
+                <input id="reqbrgy" type="text" class="form-control" value="" readonly>
+            </div>
 
-        <div class="card-field-dt mb-8">
-            <label>Preferred Time</label>
-            <input id="reqtime" type="text" class="form-control" value="" readonly>
-        </div>
+            <div class="form-row-container">
+                <div class="card-field-wq mb-2">
+                    <label class="form-label">Waste Type</label>
+                    <input id="reqwaste" type="text" class="form-control" value="" readonly>
+                </div>
 
-        <hr class="my-2">
+                <div class="card-field-wq mb-2">
+                    <label class="form-label">Quantity</label>
+                    <input id="reqquantity" type="text" class="form-control" value="" readonly>
+                </div>
+            </div>
 
-        <label class="font-extrabold" style="color: var(--color-dark-green)">Assigned Truck</label>
+            <div class="card-field-dt">
+                <label>Preferred Date</label>
+                <input id="reqdate" type="text" class="form-control" value="" readonly>
+            </div>
 
-        <div class="card-field-t">
-            <label>Select Truck</label>
-            <select id="reqtruck">
-                <option>ABC 1234 (5-ton capacity)</option>
-                <option>DEF 9981 (10-ton capacity)</option>
-                <option>XYZ 5561 (8-ton capacity)</option>
-            </select>
-        </div>
+            <div class="card-field-dt mb-8">
+                <label>Preferred Time</label>
+                <input id="reqtime" type="text" class="form-control" value="" readonly>
+            </div>
 
-        <div class="action-buttons mt-16">
-            <button class="btn-accept" onclick="openAcceptUpdRequest()">Accept</button>
-            <button class="btn-decline" onclick="closeRequestUpdModal()">Decline</button>
-        </div>
+            <hr class="my-2">
+
+            <label class="font-extrabold" style="color: var(--color-dark-green)">Assigned Truck</label>
+
+            <div class="card-field-t">
+                <label>Select Truck <span style="color: red;">*</span></label>
+                <select id="reqtruck" name="license_plate" class="form-control" required>
+                    <option value="">-- Select Truck --</option>
+                </select>
+            </div>
+
+            <div class="action-buttons mt-16">
+                <button type="button" id="acceptButton" class="btn-accept" onclick="showConfirmation()">
+                    Accept
+                </button>
+                <button type="button" class="btn-decline" onclick="closeRequestModal()">Decline</button>
+            </div>
+        </form>
     </div>
 </div>
 
