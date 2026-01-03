@@ -22,7 +22,13 @@ class CollectorAuthController extends Controller
             'password' => 'required'
         ]);
 
-        if (Auth::guard('collector')->attempt($credentials)) {
+        $collector = DB::table('collector_tbl')
+            ->where('email', $credentials['email'])
+            ->where('password', $credentials['password'])
+            ->first();
+
+        if ($collector) {
+            Auth::guard('collector')->loginUsingId($collector->collector_id);
             $request->session()->regenerate();
             return redirect()->intended(route('collector.dashboard'));
         }
@@ -93,7 +99,7 @@ class CollectorAuthController extends Controller
         $updated = DB::table('collector_tbl')
             ->where('email', $validated['email'])
             ->update([
-                'password' => Hash::make($validated['newpassword'])
+                'password' => $validated['newpassword']
             ]);
 
         if ($updated) {
