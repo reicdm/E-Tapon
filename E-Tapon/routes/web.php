@@ -94,8 +94,9 @@ Route::prefix('collector')->group(function () {
         Route::prefix('request')->group(function () {
             Route::get('/', [CollectorRequestController::class, 'showRequest'])->name('collector.request');
             Route::post('/{requestId}/accept', [CollectorRequestController::class, 'accept'])->name('collector.request.accept');
-            Route::get('/acceptedrequest/{requestId}', [CollectorAcceptedReqController::class, 'showAcceptedRequest'])->name('collector.acceptedrequest');
+            // Route::get('/acceptedrequest/{requestId}', [CollectorAcceptedReqController::class, 'showAcceptedRequest'])->name('collector.acceptedrequest');
             Route::get('/{requestId}/success', [CollectorDashboardController::class, 'showSuccess'])->name('collector.request.success');
+            Route::post('/{requestId}/update', [CollectorRequestController::class, 'updateStatus'])->name('collector.request.update');
         });
 
         // Request details

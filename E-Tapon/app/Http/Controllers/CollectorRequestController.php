@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class CollectorRequestController extends Controller
 {
@@ -111,32 +111,55 @@ class CollectorRequestController extends Controller
 
     public function accept(Request $request, $requestId)
     {
-        // Log everything
-        Log::info('=== REQUEST ACCEPT CALLED ===');
-        Log::info('Request ID: ' . $requestId);
-        Log::info('All Input: ', $request->all());
+        Log::info('========================================');
+        Log::info('COLLECTOR REQUEST CONTROLLER - ACCEPT METHOD CALLED');
+        Log::info('========================================');
+        Log::info('Request ID from URL: ' . $requestId);
+        Log::info('All POST data: ', $request->all());
+        Log::info('Request method: ' . $request->method());
+        Log::info('Request URL: ' . $request->fullUrl());
 
         $collector = Auth::guard('collector')->user();
-        Log::info('Collector ID: ' . ($collector ? $collector->collector_id : 'NULL'));
 
+        if (!$collector) {
+            Log::error('ERROR: No collector authenticated!');
+            return redirect()->route('collector.request')->with('error', 'Not authenticated');
+        }
+
+        Log::info('Collector authenticated:', [
+            'id' => $collector->collector_id,
+            'name' => $collector->firstname
+        ]);
+
+        // Validate
         try {
             $validated = $request->validate([
                 'license_plate' => 'required|exists:truck_tbl,license_plate'
             ]);
-            Log::info('Validation passed', $validated);
+            Log::info('✓ Validation PASSED', $validated);
         } catch (\Exception $e) {
-            Log::error('Validation failed: ' . $e->getMessage());
-            return back()->withErrors(['error' => $e->getMessage()]);
+            Log::error('✗ Validation FAILED: ' . $e->getMessage());
+            return back()->with('error', 'Validation failed: ' . $e->getMessage());
         }
 
-        // Check if request exists
+        // Check if request exists in database
         $checkExists = DB::table('request_tbl')
             ->where('request_id', $requestId)
             ->first();
 
-        Log::info('Request exists check:', (array)$checkExists);
+        if (!$checkExists) {
+            Log::error('✗ Request ID does not exist in database!');
+            return redirect()->route('collector.request')->with('error', 'Request not found');
+        }
 
-        // Your existing requestData query
+        Log::info('✓ Request exists in DB:', [
+            'request_id' => $checkExists->request_id,
+            'current_status' => $checkExists->status,
+            'current_collector_id' => $checkExists->collector_id,
+            'current_license_plate' => $checkExists->license_plate
+        ]);
+
+        // Get request data with joins
         $requestData = DB::table('request_tbl as req')
             ->join('user_tbl as u', 'req.user_id', '=', 'u.user_id')
             ->join('area_tbl as a', 'u.brgy_id', '=', 'a.brgy_id')
@@ -158,17 +181,22 @@ class CollectorRequestController extends Controller
             )
             ->first();
 
-        Log::info('Request data found: ' . ($requestData ? 'YES' : 'NO'));
-
         if (!$requestData) {
-            Log::error('Request not found or already taken');
+            Log::error('✗ Request data query returned NULL - possibly already taken or wrong status');
             return redirect()->route('collector.request')
                 ->with('error', 'Request not found or already taken');
         }
 
-        // Truck availability check
+        Log::info('✓ Request data retrieved successfully');
+
         $preferredDate = $requestData->preferred_date;
         $preferredDay = Carbon::parse($preferredDate)->format('l');
+
+        Log::info('Checking truck availability:', [
+            'license_plate' => $validated['license_plate'],
+            'preferred_date' => $preferredDate,
+            'preferred_day' => $preferredDay
+        ]);
 
         $truckAvailable = DB::table('truck_tbl as t')
             ->where('t.license_plate', $validated['license_plate'])
@@ -187,19 +215,20 @@ class CollectorRequestController extends Controller
             })
             ->exists();
 
-        Log::info('Truck available: ' . ($truckAvailable ? 'YES' : 'NO'));
-
         if (!$truckAvailable) {
-            Log::error('Truck not available');
+            Log::error('✗ Truck is NOT available');
             return back()->with('error', 'Selected truck is not available');
         }
 
+        Log::info('✓ Truck is available');
+
         // THE UPDATE
-        Log::info('About to update with:', [
-            'request_id' => $requestId,
-            'collector_id' => $collector->collector_id,
-            'license_plate' => $validated['license_plate'],
-            'status' => 'Assigned'
+        Log::info('Attempting database UPDATE with values:', [
+            'table' => 'request_tbl',
+            'where_request_id' => $requestId,
+            'set_collector_id' => $collector->collector_id,
+            'set_license_plate' => $validated['license_plate'],
+            'set_status' => 'Assigned'
         ]);
 
         $updated = DB::table('request_tbl')
@@ -210,16 +239,62 @@ class CollectorRequestController extends Controller
                 'status' => 'Assigned'
             ]);
 
-        Log::info('Rows affected: ' . $updated);
+        Log::info('UPDATE query executed - Rows affected: ' . $updated);
 
-        if ($updated) {
-            Log::info('SUCCESS - Redirecting');
+        if ($updated > 0) {
+            Log::info('✓✓✓ SUCCESS! Database updated successfully');
+            Log::info('Redirecting to collector.request with success modal');
             return redirect()->route('collector.request')
                 ->with('show_success_modal', true);
         }
 
-        Log::error('FAILED - No rows updated');
+        Log::error('✗✗✗ FAILED! No rows were updated (rows affected: 0)');
         return redirect()->route('collector.request')
             ->with('error', 'Failed to accept request. Please try again.');
+    }
+
+    public function updateStatus(Request $request, $requestId)
+    {
+        $collector = Auth::guard('collector')->user();
+
+        $validated = $request->validate([
+            'status' => 'required|in:Assigned,In Progress,Completed,Cancelled'
+        ]);
+
+        // Verify this request belongs to this collector and is in valid status
+        $requestData = DB::table('request_tbl')
+            ->where('request_id', $requestId)
+            ->where('collector_id', $collector->collector_id)
+            ->whereIn('status', ['Assigned', 'In Progress'])
+            ->first();
+
+        if (!$requestData) {
+            return redirect()->route('collector.request')
+                ->with('error', 'Request not found or unauthorized');
+        }
+
+        // Prepare update data
+        $updateData = [
+            'status' => $validated['status']
+        ];
+
+        // Add completion date if status is Completed
+        if ($validated['status'] === 'Completed') {
+            $updateData['completion_date'] = now();
+        }
+
+        // Update the status
+        $updated = DB::table('request_tbl')
+            ->where('request_id', $requestId)
+            ->where('collector_id', $collector->collector_id)
+            ->update($updateData);
+
+        if ($updated) {
+            return redirect()->route('collector.request')
+                ->with('show_update_success_modal', true);
+        }
+
+        return redirect()->route('collector.request')
+            ->with('error', 'Failed to update status. Please try again.');
     }
 }

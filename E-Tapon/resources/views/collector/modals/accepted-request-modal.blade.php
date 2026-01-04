@@ -4,8 +4,7 @@
         <button class="modal-close-btn" onclick="closeAcceptedModal()">&times;</button>
 
         <div class="row justify-content-center mb-4 mt-2">
-            <div class="modal-circle">
-            </div>
+            <div class="modal-circle"></div>
             <h2 class="font-extrabold" style="color: var(--color-dark-green)">Request Details</h2>
         </div>
 
@@ -38,16 +37,12 @@
 
         <div class="card-field-dt">
             <label>Preferred Time</label>
-            <input id="acctime" type="text" class="form-control" placeholder="" readonly>
+            <input id="acctime" type="text" class="form-control" value="" readonly>
         </div>
 
         <div class="card-field-t">
             <label>Assigned Truck</label>
-            <select id="acctruck" disabled>
-                <option>ABC 1234 (5-ton capacity)</option>
-                <option>DEF 9981 (10-ton capacity)</option>
-                <option>XYZ 5561 (8-ton capacity)</option>
-            </select>
+            <input id="acctruck" type="text" class="form-control" value="" readonly>
         </div>
 
         <hr class="my-3">
@@ -55,19 +50,19 @@
             <h4 class="update-title">Update Status</h4>
             <!-- STATUS OPTIONS -->
             <div class="status-options mb-4">
-                <button type="button" class="sched-status-assigned" data-status="assigned">
+                <button type="button" class="sched-status-assigned" data-status="Assigned">
                     Assigned
                 </button>
 
-                <button type="button" class="sched-status-cancelled" data-status="cancelled">
+                <button type="button" class="sched-status-cancelled" data-status="Cancelled">
                     Cancelled
                 </button>
 
-                <button type="button" class="sched-status-inprogress" data-status="in_progress">
+                <button type="button" class="sched-status-inprogress" data-status="In Progress">
                     In Progress
                 </button>
 
-                <button type="button" class="sched-status-completed" data-status="completed">
+                <button type="button" class="sched-status-completed" data-status="Completed">
                     Completed
                 </button>
             </div>
@@ -77,146 +72,36 @@
                 <button class="btn-update push" onclick="openUpdateRequest()">Update</button>
                 <button class="btn-cancel push" onclick="closeAcceptedModal()">Cancel</button>
             </div>
-
         </div>
+    </div>
+</div>
 
+<!-- UPDATE CONFIRMATION MODAL -->
+<div id="updateModal" class="confirm-overlay" style="display: none;">
+    <div class="popup-confirm">
+        <div class="circle-pop"></div>
+        <h2 class="my-2">Are you sure you want to update the status?</h2>
+
+        <div class="action-buttons mt-4">
+            <button class="btn-confirm" onclick="confirmUpdateRequest()">Confirm</button>
+            <button class="btn-cancel" onclick="closeUpdateConfirmModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- UPDATE SUCCESS MODAL -->
+<div id="updateSuccessModal" class="success-overlay" style="display: none;">
+    <div class="popup-success">
+        <div class="popup-box"></div>
+        <h2 class="text-4xl font-extrabold my-2">Status Updated!</h2>
+
+        <div class="action-buttons mt-3">
+            <button class="btn-ok" onclick="closeUpdateSuccessModal()">Confirm</button>
+        </div>
     </div>
 </div>
 
 <style>
-    :root {
-        --color-dark-green: #1f4b2c;
-        --color-mid-green: #4d7111;
-        --color-orange: #ff9100;
-        --color-light-olive: #d5ed9f;
-        --color-cream: #fffbe6;
-
-        --color-bg-completed: #f2f9e1;
-        --color-bg-inprogress: #ffe9cc;
-        --color-bg-assigned: #ffeccc;
-        --color-bg-cancelled: #f7ddd9;
-
-        --color-completed: #4d7111;
-        --color-inprogress: #ff7b00;
-        --color-assigned: #ffa813;
-        --color-cancelled: #c2402a;
-    }
-
-    body {
-        font-family: "Roboto", sans-serif;
-    }
-
-    label {
-        font-size: 16px;
-    }
-
-    .modal-close-btn {
-        position: absolute;
-        top: 12px;
-        right: 20px;
-        background: transparent;
-        border: none;
-        font-size: 32px;
-        cursor: pointer;
-        color: var(--color-orange);
-    }
-
-    .modal-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgb(0, 0, 0, 0.50);
-        backdrop-filter: blur(10px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 999;
-    }
-
-    /* REQUEST DETAILS POPUP*/
-    .modal-popup {
-        width: 360px;
-        height: 710px;
-        background: var(--color-cream);
-        padding: 24px;
-        border-radius: 30px;
-        font-size: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-        justify-content: center;
-        position: relative;
-    }
-
-    .modal-popup h2 {
-        text-align: center;
-    }
-
-    /* CIRCLE IMAGE CONTAINER */
-    .modal-circle {
-        flex-shrink: 0;
-        width: 80px;
-        height: 80px;
-        background-color: var(--color-orange);
-        border-radius: 50%;
-        padding: 0.5rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 0.75rem;
-    }
-
-    /* FORM INPUT CONTAINER*/
-    .form-row-container {
-        display: flex;
-        gap: 24px;
-        margin-top: 8px;
-    }
-
-    .card-field-nr,
-    .card-field-wq,
-    .card-field-dt,
-    .card-field-t {
-        font-weight: 500;
-        display: flex;
-        justify-content: center;
-        margin-top: 8px;
-    }
-
-    .card-field-nr,
-    .card-field-dt,
-    .card-field-t {
-        gap: 24px;
-        align-items: center;
-    }
-
-    .card-field-wq {
-        flex-direction: column;
-    }
-
-    .card-field-nr label,
-    .card-field-wq label,
-    .card-field-dt label,
-    .card-field-t label {
-        min-width: 80px;
-        font-size: 12px;
-    }
-
-    /* Inputs and selects */
-    .card-field-nr input,
-    .card-field-wq input,
-    .card-field-dt input,
-    .card-field-t select {
-        flex: 1;
-        padding: 10px 12px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        font-size: 12px;
-    }
-
-    .action-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 16px;
-    }
-
     .update-status-card {
         text-align: flex-start;
     }
@@ -236,7 +121,6 @@
         margin-bottom: 20px;
     }
 
-    /* INDIVIDUAL (SMALL) CONTAINER: SCHED STATUS */
     .sched-status-completed,
     .sched-status-inprogress,
     .sched-status-assigned,
@@ -247,17 +131,10 @@
         font-weight: 400;
         padding: 0.15rem;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+        cursor: pointer;
+        transition: all 0.2s ease;
     }
 
-    .card-sched-status {
-        display: block;
-        padding: 0.25rem 1rem;
-        text-align: center;
-        border-radius: 50px;
-        margin-bottom: 4px;
-    }
-
-    /* COMPLETED CONTAINER */
     .sched-status-completed {
         background-color: var(--color-completed);
         color: white;
@@ -270,29 +147,30 @@
         border-color: var(--color-completed);
     }
 
-    /* IN PROGRESS CONTAINER */
     .sched-status-inprogress {
         background-color: var(--color-inprogress);
+        color: white;
     }
 
     .sched-status-inprogress.active {
         border: 2px solid;
+        color: black;
         background-color: var(--color-bg-inprogress);
         border-color: var(--color-inprogress);
     }
 
-    /* ASSIGNED CONTAINER */
     .sched-status-assigned {
         background-color: var(--color-assigned);
+        color: white;
     }
 
     .sched-status-assigned.active {
         border: 2px solid;
+        color: black;
         background-color: var(--color-bg-assigned);
         border-color: var(--color-assigned);
     }
 
-    /* CANCELLED CONTAINER */
     .sched-status-cancelled {
         background-color: var(--color-cancelled);
         color: white;
@@ -305,60 +183,156 @@
         border-color: var(--color-cancelled);
     }
 
-    .status-actions {
-        display: flex;
-        justify-content: center;
-        gap: 16px;
-    }
-
     .btn-update {
         background-image: linear-gradient(to top, #ff9100, #FFA733);
         color: white;
+        border: none;
     }
 
-    .btn-cancel {
+    .btn-cancel-update {
         background: var(--color-cream);
         color: var(--color-orange);
-        border: 2px solid;
-        border-color: var(--color-orange);
+        border: 2px solid var(--color-orange);
     }
 
     .btn-update,
-    .btn-cancel {
+    .btn-cancel-update {
         width: 100px;
         padding: 10px 24px;
         border-radius: 10px;
         font-size: 14px;
         font-weight: bold;
         cursor: pointer;
-
         position: relative;
         top: 0;
-        display: inline-block;
-
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
         transition: all 0.2s ease;
     }
 
     .btn-update:active,
-    .btn-cancel:active {
+    .btn-cancel-update:active {
         top: 3px;
         box-shadow: 0 2px 0px var(--color-orange);
-        transition: all 0.2s;
-    }
-
-    /* Make sure buttons are clickable */
-    .card-mid-button {
-        cursor: pointer;
-        pointer-events: auto;
-        z-index: 10;
-        position: relative;
     }
 </style>
 
 <script>
+    // Open accepted request modal and populate with data
+    function openAcceptedModal(button) {
+        console.log('Opening accepted modal...');
+
+        document.getElementById('accname').value = button.dataset.accname || '';
+        document.getElementById('accbrgy').value = button.dataset.accbrgy || '';
+        document.getElementById('accwaste').value = button.dataset.accwaste || '';
+        document.getElementById('accquantity').value = button.dataset.accquantity || '';
+        document.getElementById('accdate').value = button.dataset.accdate || '';
+        document.getElementById('acctime').value = button.dataset.acctime || '';
+        document.getElementById('acctruck').value = button.dataset.acctruck || '';
+
+        // Store request ID and current status for later use
+        const modal = document.getElementById('acceptedModal');
+        modal.dataset.requestId = button.dataset.requestId || '';
+        modal.dataset.currentStatus = button.dataset.currentStatus || '';
+
+        // Set the current status as active
+        const currentStatus = button.dataset.currentStatus || '';
+        document.querySelectorAll('#acceptedModal .status-options button').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.status === currentStatus) {
+                btn.classList.add('active');
+            }
+        });
+
+        modal.style.display = 'flex';
+    }
+
+    function closeAcceptedModal() {
+        document.getElementById('acceptedModal').style.display = 'none';
+    }
+
+    // Status button selection in accepted modal
+    document.addEventListener('DOMContentLoaded', function() {
+        const statusButtons = document.querySelectorAll('#acceptedModal .status-options button');
+
+        statusButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active from all buttons in this modal
+                document.querySelectorAll('#acceptedModal .status-options button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                // Add active to clicked button
+                this.classList.add('active');
+            });
+        });
+    });
+
+    // Open update confirmation modal
     function openUpdateRequest() {
+        const acceptedModal = document.getElementById('acceptedModal');
+        const activeStatusBtn = acceptedModal.querySelector('.status-options button.active');
+
+        if (!activeStatusBtn) {
+            alert('Please select a status');
+            return;
+        }
+
+        const newStatus = activeStatusBtn.dataset.status;
+        const requestId = acceptedModal.dataset.requestId;
+
+        // Store data in update modal
+        const updateModal = document.getElementById('updateModal');
+        updateModal.dataset.requestId = requestId;
+        updateModal.dataset.status = newStatus;
+
+        // Show confirmation modal
         document.getElementById('acceptedModal').style.display = 'none';
         document.getElementById('updateModal').style.display = 'flex';
     }
+
+    // Confirm update and submit to backend
+    function confirmUpdateRequest() {
+        const modal = document.getElementById('updateModal');
+        const requestId = modal.dataset.requestId;
+        const status = modal.dataset.status;
+
+        // Create form and submit
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/collector/request/${requestId}/update`;
+
+        // CSRF token
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_token';
+        csrfInput.value = '{{ csrf_token() }}';
+        form.appendChild(csrfInput);
+
+        // Status
+        const statusInput = document.createElement('input');
+        statusInput.type = 'hidden';
+        statusInput.name = 'status';
+        statusInput.value = status;
+        form.appendChild(statusInput);
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function closeUpdateConfirmModal() {
+        document.getElementById('updateModal').style.display = 'none';
+        document.getElementById('acceptedModal').style.display = 'flex';
+    }
+
+    function closeUpdateSuccessModal() {
+        document.getElementById('updateSuccessModal').style.display = 'none';
+        window.location.reload();
+    }
 </script>
+
+@if(session('show_update_success_modal'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('updateSuccessModal').style.display = 'flex';
+    });
+</script>
+@endif

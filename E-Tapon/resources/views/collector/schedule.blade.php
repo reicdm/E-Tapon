@@ -79,8 +79,8 @@
 
                                     <!-- ACTION BUTTONS -->
                                     <div class="status-actions">
-                                        <button class="btn-update push">Update</button>
-                                        <button class="btn-cancel push">Cancel</button>
+                                        <button class="btn-update push" onclick="confirmSchRequest()">Update</button>
+                                        <button class="btn-cancel push" onclick="closeConfirmSchModal()">Cancel</button>
                                     </div>
                                 </div>
                                 @endif
