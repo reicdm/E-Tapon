@@ -65,6 +65,7 @@ Route::prefix('collector')->group(function () {
     // LOGIN
     Route::get('/login', [CollectorAuthController::class, 'showLoginForm'])->name('collector.login');
     Route::post('/login', [CollectorAuthController::class, 'login'])->name('login');
+    Route::post('/logout', [CollectorAuthController::class, 'logout'])->name('collector.logout');
     // FORGOT PASSWORD
     Route::get('/forgot', [CollectorAuthController::class, 'showForgotForm'])->name('collector.forgot');
     Route::get('/forgot/confirm', [CollectorAuthController::class, 'showForgotConfirm'])->name('collector.forgot.showConfirm');

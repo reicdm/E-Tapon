@@ -54,6 +54,11 @@
                 </div>
             </div>
         </div>
+        <form method="POST" action="{{ route('collector.logout') }}" class="d-block"
+            onsubmit="return confirm('Are you sure you want to log out?');">
+            @csrf
+            <button type="submit" class="btn-full-orange-border w-100">Log Out</button>
+        </form>
     </div>
 </div>
 @endsection

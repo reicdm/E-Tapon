@@ -147,3 +147,18 @@ body {
     box-shadow: 0 2px 0px var(--color-orange);
     transition: all 0.2s;
 }
+
+.btn-full-orange-border {
+    background: var(--color-white-theme);
+    color: var(--orange-dark);
+    border: 3px solid;
+    border-color: var(--orange-dark);
+    width: 100%;
+    font-weight: bold;
+
+    display: flex;
+    align-items: start;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
