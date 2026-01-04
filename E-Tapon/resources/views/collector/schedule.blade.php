@@ -3,7 +3,7 @@
 @section('title', 'Collector Schedule')
 
 @section('content')
-<div class="min-h-screen flex flex-col p-2">
+<div id="schedtab" class="min-h-screen flex flex-col p-2">
     <div class="mx-auto max-w-4xl w-full p-2">
 
         <!-- HEADER -->
@@ -33,7 +33,7 @@
                         <div class="task-card">
                             @foreach($dateData['items'] as $item)
                             <div class="{{ !$loop->first ? 'mt-3' : '' }}">
-                                <div class="collapsible"
+                                <button class="collapsible"
                                     data-type="{{ $item['type'] }}"
                                     data-sched-id="{{ $item['sched_id'] ?? '' }}"
                                     data-brgy-id="{{ $item['brgy_id'] ?? '' }}"
@@ -43,9 +43,6 @@
                                         <div class="sched-info">
                                             <p class="card-sched-text-ba"><strong>{{ $item['brgy_name'] }}</strong></p>
                                             <p class="card-sched-text-ba">Truck: {{ $item['license_plate'] }}</p>
-                                            @if($item['type'] === 'request' && isset($item['waste_type']))
-                                            <p class="card-sched-text-ba">Type: {{ $item['waste_type'] }}</p>
-                                            @endif
                                         </div>
 
                                         <div class="card-sched-status">
@@ -54,7 +51,7 @@
                                             </p>
                                         </div>
                                     </div>
-                                </div>
+                                </button>
 
                                 @if($item['status'] !== 'Completed' && $item['status'] !== 'Cancelled')
                                 <div class="clicked-status-{{ strtolower(str_replace(' ', '', $item['status'])) }}">
@@ -82,8 +79,8 @@
 
                                     <!-- ACTION BUTTONS -->
                                     <div class="status-actions">
-                                        <button class="btn-update push">Update</button>
-                                        <button class="btn-cancel push">Cancel</button>
+                                        <button class="btn-update push" onclick="confirmSchRequest()">Update</button>
+                                        <button class="btn-cancel push" onclick="closeConfirmSchModal()">Cancel</button>
                                     </div>
                                 </div>
                                 @endif
@@ -103,6 +100,49 @@
 
     </div>
 </div>
+
+<!-- CONFIRMATION MODAL -->
+<div id="updSchModal" class="confirm-overlay" style="display: none;">
+    <div class="popup-confirm">
+        <div class="circle-pop"></div>
+        <h2 class="my-2">Are you sure you want to update the status?</h2>
+
+        <div class="action-buttons mt-4">
+            <button class="btn-confirm" onclick="confirmPopSchRequest()">Confirm</button>
+            <button class="btn-cancel" onclick="closeConfirmSchModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div id="updSuccessSchModal" class="success-overlay" style="display: none;">
+    <div class="popup-success">
+        <div class="popup-box"></div>
+        <h2 class="text-4xl font-extrabold my-2">Status Updated!</h2>
+
+        <div class="action-buttons mt-3">
+            <button class="btn-ok" onclick="closeSuccessSchModal()">Confirm</button>
+        </div>
+    </div>
+</div>
+
+@if(session('show_success_modal'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('updSchModal').style.display = 'none';
+        document.getElementById('updSuccessSchModal').style.display = 'flex';
+    });
+</script>
+@endif
+
+@if(session('error'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        alert('{{ session("error") }}');
+    });
+</script>
+@endif
+
 @endsection
 
 @push('scripts')
@@ -158,7 +198,7 @@
             });
         });
 
-        // Update button functionality - Navigate to confirmation page
+        // Update button functionality - Store data and show confirmation modal
         const updateButtons = document.querySelectorAll('.btn-update');
 
         updateButtons.forEach(button => {
@@ -180,21 +220,16 @@
                 const brgyId = collapsibleButton.dataset.brgyId;
                 const requestId = collapsibleButton.dataset.requestId;
 
-                // Build query parameters
-                const params = new URLSearchParams({
-                    type: type,
-                    status: newStatus
-                });
+                // Store data in modal for later use
+                const modal = document.getElementById('updSchModal');
+                modal.dataset.type = type;
+                modal.dataset.status = newStatus;
+                modal.dataset.schedId = schedId || '';
+                modal.dataset.brgyId = brgyId || '';
+                modal.dataset.requestId = requestId || '';
 
-                if (type === 'scheduled') {
-                    params.append('sched_id', schedId);
-                    params.append('brgy_id', brgyId);
-                } else {
-                    params.append('request_id', requestId);
-                }
-
-                // Navigate to confirmation page
-                window.location.href = '/collector/schedule/confirm?' + params.toString();
+                // Show confirmation modal
+                document.getElementById('updSchModal').style.display = 'flex';
             });
         });
 
@@ -212,11 +247,102 @@
             });
         });
     });
+
+    function closeConfirmSchModal() {
+        document.querySelectorAll('[class*="clicked-status-"]').forEach(content => {
+            content.style.maxHeight = null;
+            content.classList.remove('clicked-status-open');
+        });
+
+        document.querySelectorAll('.collapsible.active').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        document.getElementById('updSchModal').style.display = 'none';
+    }
+
+    // THIS IS THE CORRECTED FUNCTION THAT ACTUALLY SUBMITS TO BACKEND
+    function confirmPopSchRequest() {
+        const modal = document.getElementById('updSchModal');
+
+        // Get stored data from modal
+        const type = modal.dataset.type;
+        const status = modal.dataset.status;
+        const schedId = modal.dataset.schedId;
+        const brgyId = modal.dataset.brgyId;
+        const requestId = modal.dataset.requestId;
+
+        // Create form and submit
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{{ route("collector.schedule.update") }}';
+
+        // CSRF token
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_token';
+        csrfInput.value = '{{ csrf_token() }}';
+        form.appendChild(csrfInput);
+
+        // Type
+        const typeInput = document.createElement('input');
+        typeInput.type = 'hidden';
+        typeInput.name = 'type';
+        typeInput.value = type;
+        form.appendChild(typeInput);
+
+        // Status
+        const statusInput = document.createElement('input');
+        statusInput.type = 'hidden';
+        statusInput.name = 'status';
+        statusInput.value = status;
+        form.appendChild(statusInput);
+
+        // Conditional inputs
+        if (type === 'scheduled') {
+            const schedIdInput = document.createElement('input');
+            schedIdInput.type = 'hidden';
+            schedIdInput.name = 'sched_id';
+            schedIdInput.value = schedId;
+            form.appendChild(schedIdInput);
+
+            const brgyIdInput = document.createElement('input');
+            brgyIdInput.type = 'hidden';
+            brgyIdInput.name = 'brgy_id';
+            brgyIdInput.value = brgyId;
+            form.appendChild(brgyIdInput);
+        } else {
+            const requestIdInput = document.createElement('input');
+            requestIdInput.type = 'hidden';
+            requestIdInput.name = 'request_id';
+            requestIdInput.value = requestId;
+            form.appendChild(requestIdInput);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function closeSuccessSchModal() {
+        window.location.href = '{{ route("collector.schedule") }}';
+    }
 </script>
 @endpush
 
 @push('styles')
 <style>
+    :root {
+        --color-dark-green: #1f4b2c;
+        --color-mid-green: #4d7111;
+        --color-orange: #ff9100;
+        --color-light-olive: #d5ed9f;
+        --color-cream: #fffbe6;
+    }
+
+    body {
+        font-family: "Roboto", sans-serif;
+    }
+
     /* Calendar Container */
     #calendar {
         width: 380px;
@@ -375,6 +501,108 @@
     /* Week rows */
     tbody tr {
         height: 30px;
+    }
+
+    /* MODAL STYLES */
+    .confirm-overlay,
+    .success-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgb(0, 0, 0, 0.50);
+        backdrop-filter: blur(10px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+    }
+
+    .popup-confirm,
+    .popup-success {
+        background: var(--color-cream);
+        color: var(--color-dark-green);
+        width: 340px;
+        height: 240px;
+        padding: 20px;
+        border-radius: 30px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    }
+
+    .popup-confirm h2 {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .popup-box {
+        width: 160px;
+        height: 100px;
+        background: var(--color-orange);
+        border-radius: 30px;
+    }
+
+    .circle-pop {
+        flex-shrink: 0;
+        border-radius: 50%;
+        padding: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80px;
+        height: 80px;
+        background-color: var(--color-orange);
+    }
+
+    .status-actions,
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+    }
+
+    .btn-confirm {
+        background-image: linear-gradient(to top, #ff9100, #FFA733);
+        color: white;
+        border: none;
+    }
+
+    .btn-cancel {
+        background: var(--color-cream);
+        color: var(--color-orange);
+        border: 2px solid;
+        border-color: var(--color-orange);
+        margin-left: 12px;
+    }
+
+    .btn-ok {
+        background-image: linear-gradient(to top, #ff9100, #FFA733);
+        color: white;
+        border: none;
+    }
+
+    .btn-confirm,
+    .btn-cancel,
+    .btn-ok {
+        width: 110px;
+        padding: 5px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        position: relative;
+        top: 0;
+        display: inline-block;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+        transition: all 0.2s ease;
+    }
+
+    .btn-confirm:active,
+    .btn-cancel:active,
+    .btn-ok:active {
+        top: 3px;
+        box-shadow: 0 2px 0px var(--color-orange);
+        transition: all 0.2s;
     }
 </style>
 @endpush

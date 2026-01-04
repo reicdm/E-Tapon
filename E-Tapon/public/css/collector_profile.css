@@ -38,7 +38,6 @@ body {
     padding: 6px;
 }
 
-
 /* CIRCLE IMAGE CONTAINER */
 .circle {
     flex-shrink: 0;
@@ -66,7 +65,7 @@ body {
 .card-con {
     height: 410px;
     padding: 0.5rem 1rem;
-    background-image: linear-gradient(to top, #ff9100, #FFA733);
+    background-image: linear-gradient(to top, #ff9100, #ffa733);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 }
 
@@ -95,13 +94,12 @@ body {
 }
 
 .card-field input {
-    background-color: #FFC880;
+    background-color: #ffc880;
 }
 
 .card-field-edit input {
     background-color: var(--color-cream);
 }
-
 
 .action-buttons {
     display: flex;
@@ -110,7 +108,7 @@ body {
 }
 
 .btn-save {
-    background-image: linear-gradient(to top, #ff9100, #FFA733);
+    background-image: linear-gradient(to top, #ff9100, #ffa733);
     color: white;
 }
 
@@ -128,8 +126,8 @@ body {
 
 .btn-save,
 .btn-cancel {
-    width: 180px;
-    padding: 10px 24px;
+    width: 110px;
+    padding: 10px;
     border-radius: 10px;
     font-size: 14px;
     font-weight: bold;
