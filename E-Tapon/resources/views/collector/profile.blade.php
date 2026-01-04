@@ -24,9 +24,9 @@
         </div>
 
         <!-- FIELD -->
-        <div class="row row-con justify-content-center g-2">
+        <div class="row row-con justify-content-center g-2 mb-4">
             <div class="col">
-                <div class="card-con">
+                <div class="card-con mb-4">
 
                     <div class="card-field">
                         <input id="name" type="text" class="form-control" value="{{ $profile['firstname'] }}" readonly>
@@ -52,13 +52,14 @@
                         <input id="name" type="password" class="form-control" value="{{ $profile['password_display'] }}" readonly>
                     </div>
                 </div>
+
+                <form method="POST" action="{{ route('collector.logout') }}" class="d-block"
+                    onsubmit="return confirm('Are you sure you want to log out?');">
+                    @csrf
+                    <button type="submit" class="btn-full-orange-border w-100">Log Out</button>
+                </form>
             </div>
         </div>
-        <form method="POST" action="{{ route('collector.logout') }}" class="d-block"
-            onsubmit="return confirm('Are you sure you want to log out?');">
-            @csrf
-            <button type="submit" class="btn-full-orange-border w-100">Log Out</button>
-        </form>
     </div>
 </div>
 @endsection
