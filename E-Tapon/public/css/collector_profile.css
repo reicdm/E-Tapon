@@ -149,10 +149,10 @@ body {
 }
 
 .btn-full-orange-border {
-    background: var(--color-white-theme);
-    color: var(--orange-dark);
+    background: #fffbe6;
+    color: #ff9100;
     border: 3px solid;
-    border-color: var(--orange-dark);
+    border-color: #ff9100;
     width: 100%;
     font-weight: bold;
 
