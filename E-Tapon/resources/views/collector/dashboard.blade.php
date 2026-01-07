@@ -62,7 +62,7 @@
                     </div>
                     <!-- CARDS -->
                     <div class="row-sched row-cols-3">
-                        @forelse($recentSchedules as $schedule)
+                        @forelse($todaysSchedule as $schedule)
                         <a href="{{ route('collector.schedule') }}" class="card-link">
                             <div class="col">
                                 <div class="card-status-bg-{{ strtolower(str_replace(' ', '', $schedule->status)) }}">
