@@ -116,7 +116,7 @@ class CollectorDashboardController extends Controller
             ->limit(3)
             ->get();
 
-        // PENDING REQUESTS - unchanged
+        // PENDING REQUESTS
         $pendingRequests = DB::table('request_tbl as req')
             ->join('user_tbl as u', 'req.user_id', '=', 'u.user_id')
             ->join('area_tbl as a', 'u.brgy_id', '=', 'a.brgy_id')
@@ -136,7 +136,7 @@ class CollectorDashboardController extends Controller
             ->limit(3)
             ->get();
 
-        // ASSIGNED TRUCK & AREAS - unchanged
+        // ASSIGNED TRUCK & AREAS
         $assignedTruck = DB::table('collectorsched_tbl as cs')
             ->join('truck_tbl as t', 'cs.license_plate', '=', 't.license_plate')
             ->where('cs.collector_id', $collector->collector_id)
@@ -152,7 +152,6 @@ class CollectorDashboardController extends Controller
             ->pluck('a.brgy_name')
             ->toArray();
 
-        // Available trucks logic - unchanged
         $allTrucks = DB::table('truck_tbl')
             ->select('license_plate', 'capacity')
             ->get();
@@ -262,7 +261,6 @@ class CollectorDashboardController extends Controller
             ]);
 
         if ($updated) {
-            // Redirect back to dashboard with success flag
             return redirect()->route('collector.dashboard')
                 ->with('show_success_modal', true);
         }
