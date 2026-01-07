@@ -13,49 +13,110 @@ class CollectorDashboardController extends Controller
     public function showOverview()
     {
         $collector = Auth::guard('collector')->user();
+        $today = now()->format('l'); // Get current day name
+        $todayDate = now()->toDateString();
 
-        // Get recent scheduled collections
-        $scheduledCollections = DB::table('record_tbl as r')
-            ->join('collectorsched_tbl as cs', 'r.sched_id', '=', 'cs.sched_id')
-            ->join('area_tbl as a', 'r.brgy_id', '=', 'a.brgy_id')
-            ->join('truck_tbl as t', 'cs.license_plate', '=', 't.license_plate')
+        // Insert scheduled collections into record_tbl if they don't exist
+        DB::table('brgysched_tbl as bs')
+            ->join('collectorsched_tbl as cs', 'bs.sched_id', '=', 'cs.sched_id')
             ->where('cs.collector_id', $collector->collector_id)
-            ->whereNot('r.status', 'Pending')
+            ->where('cs.collection_day', $today)
+            ->whereNotExists(function ($query) use ($todayDate) {
+                $query->select(DB::raw(1))
+                    ->from('record_tbl as r')
+                    ->whereColumn('r.sched_id', '=', 'bs.sched_id')
+                    ->whereColumn('r.brgy_id', '=', 'bs.brgy_id')
+                    ->whereDate('r.collection_date', $todayDate);
+            })
+            ->select('bs.sched_id', 'bs.brgy_id')
+            ->get()
+            ->each(function ($schedule) use ($todayDate) {
+                DB::table('record_tbl')->insert([
+                    'sched_id' => $schedule->sched_id,
+                    'brgy_id' => $schedule->brgy_id,
+                    'collection_date' => $todayDate,
+                    'status' => 'Assigned',
+                    'quantity_kg' => 0.00
+                ]);
+            });
+
+        // TODAY'S SCHEDULE - Scheduled collections for today
+        $scheduledCollections = DB::table('brgysched_tbl as bs')
+            ->join('collectorsched_tbl as cs', 'bs.sched_id', '=', 'cs.sched_id')
+            ->join('area_tbl as a', 'bs.brgy_id', '=', 'a.brgy_id')
+            ->join('truck_tbl as t', 'cs.license_plate', '=', 't.license_plate')
+            ->join('record_tbl as r', function ($join) use ($todayDate) {
+                $join->on('bs.sched_id', '=', 'r.sched_id')
+                    ->on('bs.brgy_id', '=', 'r.brgy_id')
+                    ->whereDate('r.collection_date', $todayDate);
+            })
+            ->where('cs.collector_id', $collector->collector_id)
+            ->where('cs.collection_day', $today)
             ->select(
-                'r.collection_date as date',
-                'r.status',
                 'a.brgy_name',
-                'cs.license_plate',
-                'cs.collection_day',
-                DB::raw("'Scheduled' as type"),
+                't.license_plate',
+                'r.status',
+                DB::raw('NOW() as date'),
+                DB::raw('"Scheduled" as type'),
                 DB::raw('NULL as waste_type'),
                 DB::raw('NULL as quantity')
             );
 
-        // Get recent requests
-        $requests = DB::table('request_tbl as req')
+        // TODAY'S ASSIGNED REQUESTS
+        $assignedRequests = DB::table('request_tbl as req')
             ->join('user_tbl as u', 'req.user_id', '=', 'u.user_id')
             ->join('area_tbl as a', 'u.brgy_id', '=', 'a.brgy_id')
             ->where('req.collector_id', $collector->collector_id)
-            ->whereNot('req.status', 'Pending')
+            ->whereDate('req.preferred_date', $todayDate)
+            ->whereIn('req.status', ['Assigned', 'In Progress'])
             ->select(
-                'req.preferred_date as date',
-                'req.status',
                 'a.brgy_name',
                 'req.license_plate',
-                DB::raw('NULL as collection_day'),
-                DB::raw("'Request' as type"),
+                'req.status',
+                'req.preferred_date as date',
+                DB::raw('"Request" as type'),
                 'req.waste_type',
                 'req.quantity'
             );
 
-        // Union and get top 3 most recent
-        $recentSchedules = $scheduledCollections
-            ->union($requests)
+        // Combine scheduled collections and assigned requests
+        $todaysSchedule = $scheduledCollections
+            ->union($assignedRequests)
+            ->orderByRaw("FIELD(status, 'In Progress', 'Assigned')")
+            ->get();
+
+        // RECENT ACTIVITY - Last 3 completed collections/requests
+        $recentActivity = DB::table('record_tbl as r')
+            ->join('collectorsched_tbl as cs', 'r.sched_id', '=', 'cs.sched_id')
+            ->join('area_tbl as a', 'r.brgy_id', '=', 'a.brgy_id')
+            ->where('cs.collector_id', $collector->collector_id)
+            ->where('r.status', 'Completed')
+            ->select(
+                'r.collection_date as date',
+                'r.status',
+                'a.brgy_name',
+                'r.quantity_kg as quantity',
+                DB::raw('"Scheduled Collection" as type')
+            )
+            ->unionAll(
+                DB::table('request_tbl as req')
+                    ->join('user_tbl as u', 'req.user_id', '=', 'u.user_id')
+                    ->join('area_tbl as a', 'u.brgy_id', '=', 'a.brgy_id')
+                    ->where('req.collector_id', $collector->collector_id)
+                    ->where('req.status', 'Completed')
+                    ->select(
+                        'req.completion_date as date',
+                        'req.status',
+                        'a.brgy_name',
+                        'req.quantity',
+                        DB::raw('CONCAT("Request - ", req.waste_type) as type')
+                    )
+            )
             ->orderBy('date', 'desc')
             ->limit(3)
             ->get();
 
+        // PENDING REQUESTS - unchanged
         $pendingRequests = DB::table('request_tbl as req')
             ->join('user_tbl as u', 'req.user_id', '=', 'u.user_id')
             ->join('area_tbl as a', 'u.brgy_id', '=', 'a.brgy_id')
@@ -75,16 +136,12 @@ class CollectorDashboardController extends Controller
             ->limit(3)
             ->get();
 
-        $today = now()->format('l');
-
+        // ASSIGNED TRUCK & AREAS - unchanged
         $assignedTruck = DB::table('collectorsched_tbl as cs')
             ->join('truck_tbl as t', 'cs.license_plate', '=', 't.license_plate')
             ->where('cs.collector_id', $collector->collector_id)
             ->where('cs.collection_day', $today)
-            ->select(
-                't.license_plate',
-                't.capacity'
-            )
+            ->select('t.license_plate', 't.capacity')
             ->first();
 
         $assignedAreas = DB::table('brgysched_tbl as bs')
@@ -92,19 +149,15 @@ class CollectorDashboardController extends Controller
             ->join('area_tbl as a', 'bs.brgy_id', '=', 'a.brgy_id')
             ->where('cs.collector_id', $collector->collector_id)
             ->where('cs.collection_day', $today)
-            ->select('a.brgy_name')
-            ->distinct()
             ->pluck('a.brgy_name')
             ->toArray();
 
-        // Get all available trucks for the modal dropdown
+        // Available trucks logic - unchanged
         $allTrucks = DB::table('truck_tbl')
             ->select('license_plate', 'capacity')
             ->get();
 
-        // a map of available trucks per request
         $availableTrucksPerRequest = [];
-
         foreach ($pendingRequests as $request) {
             $preferredDate = $request->preferred_date;
             $preferredDay = Carbon::parse($preferredDate)->format('l');
@@ -131,7 +184,8 @@ class CollectorDashboardController extends Controller
 
         return view('collector.dashboard', compact(
             'collector',
-            'recentSchedules',
+            'todaysSchedule',
+            'recentActivity',
             'pendingRequests',
             'assignedTruck',
             'assignedAreas',
