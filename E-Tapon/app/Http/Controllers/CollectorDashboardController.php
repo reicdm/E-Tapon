@@ -35,8 +35,7 @@ class CollectorDashboardController extends Controller
                     'sched_id' => $schedule->sched_id,
                     'brgy_id' => $schedule->brgy_id,
                     'collection_date' => $todayDate,
-                    'status' => 'Assigned',
-                    'quantity_kg' => 0.00
+                    'status' => 'Assigned'
                 ]);
             });
 
@@ -95,7 +94,7 @@ class CollectorDashboardController extends Controller
                 'r.collection_date as date',
                 'r.status',
                 'a.brgy_name',
-                'r.quantity_kg as quantity',
+                DB::raw('NULL as quantity'),
                 DB::raw('"Scheduled Collection" as type')
             )
             ->unionAll(

@@ -130,7 +130,6 @@ class ResidentDashboardController extends Controller
                 'collectorsched_tbl.license_plate as truck',
                 'record_tbl.collection_date as date',
                 'record_tbl.status',
-                'record_tbl.quantity_kg'
             )
             ->orderBy('record_tbl.collection_date', 'desc')
             ->get()

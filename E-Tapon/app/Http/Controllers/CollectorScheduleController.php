@@ -22,7 +22,6 @@ class CollectorScheduleController extends Controller
             ->select(
                 'r.collection_date',
                 'r.status',
-                'r.quantity_kg',
                 'a.brgy_name',
                 'cs.license_plate',
                 'cs.collection_day',
@@ -74,7 +73,6 @@ class CollectorScheduleController extends Controller
                 'brgy_name' => $collection->brgy_name,
                 'license_plate' => $collection->license_plate,
                 'status' => $collection->status,
-                'quantity' => $collection->quantity_kg,
                 'sched_id' => $collection->sched_id,
                 'brgy_id' => $collection->brgy_id
             ];
