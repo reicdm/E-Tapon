@@ -2,9 +2,13 @@
 @section('title', 'Collector Login')
 @section('content')
 <div class="min-h-screen flex flex-col">
-  <div class="top-bar w-full"></div>
+  <div class="top-bar w-full">
+  </div>
 
   <div class="bottom-card w-full flex-grow p-8">
+    <div class="circle">
+      <img src="{{ asset('icons/DBA Asset.png') }}" class="login-img">
+    </div>
     <div class="max-w-md mx-auto">
 
       <h1 class="text-4xl font-extrabold mb-10 mt-4">COLLECTOR LOGIN</h1>

@@ -24,6 +24,7 @@ body {
 .top-bar {
   height: 20vh;
   background-color: var(--color-bg-orange);
+  position: relative;
 }
 
 .bottom-card {
@@ -87,4 +88,14 @@ body {
 
 .icons {
   color: var(--color-text-input);
+}
+
+.login-img{
+  width: 155px;
+  height: 155px;
+
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -130px;          
 }
