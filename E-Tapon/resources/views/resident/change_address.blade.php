@@ -7,6 +7,10 @@
         <div class="max-w-md mx-auto">
             <h1 class="text-4xl font-extrabold mb-10 mt-4">Change Address</h1>
 
+            @error('updated_address')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+
             <form method="POST" action="{{ route('resident.profile.update_address') }}">
                 @csrf
 
@@ -20,9 +24,9 @@
                     <select name="updated_area" class="w-100" required>
                         <option value="">Select Barangay</option>
                         @foreach($barangays as $brgy)
-                            <option value="{{ $brgy->brgy_id }}" {{ Auth::user()->brgy_id == $brgy->brgy_id ? 'selected' : '' }}>
-                                {{ $brgy->brgy_name }}
-                            </option>
+                        <option value="{{ $brgy->brgy_id }}" {{ Auth::user()->brgy_id == $brgy->brgy_id ? 'selected' : '' }}>
+                            {{ $brgy->brgy_name }}
+                        </option>
                         @endforeach
                     </select>
                 </div>

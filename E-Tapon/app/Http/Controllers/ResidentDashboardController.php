@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\QueryException;
 
 
 class ResidentDashboardController extends Controller
@@ -25,6 +26,7 @@ class ResidentDashboardController extends Controller
             ->whereIn('status', ['Pending', 'Assigned'])
             ->count();
 
+        // Get valid day orders for the user's barangay
         $scheduledDayOrders = DB::table('brgysched_tbl')
             ->join('collectorsched_tbl', 'brgysched_tbl.sched_id', '=', 'collectorsched_tbl.sched_id')
             ->where('brgysched_tbl.brgy_id', $brgyId)
@@ -32,13 +34,15 @@ class ResidentDashboardController extends Controller
             ->unique()
             ->toArray();
 
+        // Start from TODAY (include today if it's a collection day)
         $nextScheduleDate = null;
-        $today = now()->startOfDay();
-        $current = clone $today;
+        $current = now()->startOfDay();
 
-        while ($nextScheduleDate === null && $current->lte($today->copy()->addMonths(3))) {
+        // Look up to 3 months ahead
+        for ($i = 0; $i < 90; $i++) {
             if (in_array($current->dayOfWeek, $scheduledDayOrders)) {
-                $nextScheduleDate = $current;
+                $nextScheduleDate = $current->copy();
+                break;
             }
             $current->addDay();
         }
@@ -53,20 +57,26 @@ class ResidentDashboardController extends Controller
         $start = now()->startOfDay();
         $end = now()->addDays(14);
         $current = clone $start;
+
         while ($current->lte($end)) {
-            if (in_array($current->dayOfWeek, $scheduledDayOrders)) {
+            $dayOrder = $current->dayOfWeek; // 1=Mon, 2=Tue, ..., 0=Sun
 
-                $truck = DB::table('brgysched_tbl')
-                    ->join('collectorsched_tbl', 'brgysched_tbl.sched_id', '=', 'collectorsched_tbl.sched_id')
-                    ->where('brgysched_tbl.brgy_id', $brgyId)
-                    ->whereIn('collectorsched_tbl.day_order', [$current->dayOfWeek])
-                    ->value('collectorsched_tbl.license_plate') ?? 'TR-003';
+            // Get ALL schedules for this barangay that match this day of week
+            $schedules = DB::table('brgysched_tbl')
+                ->join('collectorsched_tbl', 'brgysched_tbl.sched_id', '=', 'collectorsched_tbl.sched_id')
+                ->where('brgysched_tbl.brgy_id', $brgyId)
+                ->where('collectorsched_tbl.day_order', $dayOrder)
+                ->select('collectorsched_tbl.license_plate', 'brgysched_tbl.sched_id')
+                ->get();
 
+            foreach ($schedules as $schedule) {
                 $upcoming[] = [
                     'date' => $current->format('F d, Y'),
-                    'truck' => $truck,
+                    'truck' => $schedule->license_plate,
+                    'sched_id' => $schedule->sched_id, // optional, for debugging
                 ];
             }
+
             $current->addDay();
         }
 
@@ -218,6 +228,7 @@ class ResidentDashboardController extends Controller
         return view('resident.request_create');
     }
 
+
     public function create(Request $request)
     {
         $request->validate([
@@ -227,26 +238,44 @@ class ResidentDashboardController extends Controller
             'qty' => 'required|numeric|min:0.1',
         ]);
 
+        $user = Auth::user();
+
         $latest = UserRequest::orderBy('request_id', 'desc')->first();
         $number = $latest ? (int) substr($latest->request_id, 2) + 1 : 1;
         $requestId = 'RQ' . str_pad($number, 4, '0', STR_PAD_LEFT);
 
-        $user = Auth::user();
+        try {
+            UserRequest::create([
+                'request_id' => $requestId,
+                'user_id' => $user->user_id,
+                'quantity' => $request->qty,
+                'waste_type' => $request->waste_type,
+                'preferred_date' => $request->pref_date,
+                'preferred_time' => $request->pref_time,
+                'request_date' => now()->toDateString(),
+                'status' => 'Pending',
+                'completion_date' => null,
+            ]);
 
-        UserRequest::create([
-            'request_id' => $requestId,
-            'user_id' => $user->user_id,
-            'quantity' => $request->qty,
-            'waste_type' => $request->waste_type,
-            'preferred_date' => $request->pref_date,
-            'preferred_time' => $request->pref_time,
-            'request_date' => now()->toDateString(),
-            'status' => 'Pending',
-            'completion_date' => null,
-        ]);
+            return redirect()->route('resident.request')
+                ->with('popup_message', 'Request successful! Please wait for approval.');
+        } catch (QueryException $e) {
+            if (str_contains($e->getMessage(), 'A pending or active request already exists')) {
+                // Add error to the 'pref_date' and 'pref_time' fields (since conflict is on date+time)
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors([
+                        'pref_date' => 'You already have an active or pending request at this date and time. Please choose another slot.',
+                    ]);
+            }
 
-        return redirect()->route('resident.request')
-            ->with('popup_message', 'Request successful! Please wait for approval.');
+            Log::error('Request creation failed: ' . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->withErrors([
+                    'pref_date' => 'Unable to create request. Please try again later.',
+                ]);
+        }
     }
 
     // ==== PROFILE ====
@@ -375,6 +404,7 @@ class ResidentDashboardController extends Controller
         return view('resident.change_address', compact('barangays'));
     }
 
+
     public function updateAddress(Request $request)
     {
         $request->validate([
@@ -385,15 +415,34 @@ class ResidentDashboardController extends Controller
 
         $user = Auth::user();
 
-        DB::table('user_tbl')
-            ->where('user_id', $user->user_id)
-            ->update([
-                'street_address' => $request->updated_address,
-                'brgy_id' => $request->updated_area,
-                'zip_code' => $request->updated_zip,
-            ]);
+        try {
+            DB::table('user_tbl')
+                ->where('user_id', $user->user_id)
+                ->update([
+                    'street_address' => $request->updated_address,
+                    'brgy_id' => $request->updated_area,
+                    'zip_code' => $request->updated_zip,
+                ]);
 
-        return redirect()->route('resident.profile')->with('success', 'Address updated successfully!');
+            return redirect()->route('resident.profile')
+                ->with('success', 'Address updated successfully!');
+        } catch (QueryException $e) {
+            if (str_contains($e->getMessage(), 'Cannot update address')) {
+                // Show error on the form (e.g., under address fields)
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors([
+                        'updated_address' => 'You cannot change your address while you have an active or upcoming collection request.',
+                    ]);
+            }
+
+            Log::error('Address update failed: ' . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->withErrors([
+                    'updated_address' => 'Failed to update address. Please try again.',
+                ]);
+        }
     }
 
     public function deleteAccount(Request $request)

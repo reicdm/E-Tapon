@@ -9,6 +9,9 @@
 
     <div class="request-form-container">
 
+      @error('pref_date')
+      <div class="text-danger">{{ $message }}</div>
+      @enderror
       <form method="POST" action="{{ route('resident.request.submit') }}">
         @csrf
 
@@ -72,7 +75,7 @@
 
         <!-- QUANTITY -->
         <div class="mt-4 form-input-group">
-          <input id="qty" type="number" name="qty" placeholder="Quantity (kg)">
+          <input id="qty" type="number" name="qty" value="{{ old('qty') }}" step="0.01" min="0.01" required placeholder="Quantity (e.g., 2.5)">
         </div>
     </div>
 
@@ -82,9 +85,9 @@
 
 
       <!-- CANCEL BUTTON -->
-      <button type="button" onclick="window.history.back()" class="btn-white-border text-lg">
+      <a href="{{ route('resident.request') }}" class="btn-white-border text-lg" style="text-decoration: none; display: inline-block; text-align: center;">
         Cancel
-      </button>
+      </a>
 
       <!-- SUBMIT BUTTON -->
       <button type="submit" class="btn-orange-gradient text-lg">

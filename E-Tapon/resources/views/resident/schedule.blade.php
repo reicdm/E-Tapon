@@ -51,6 +51,7 @@
                                 </div>
                             </button>
 
+                            @if($task['status'] !== 'Completed') 
                             <div class="clicked-status-{{ $currentStatusSlug }} collapsible-content">
 
                                 <hr class="mb-2 opacity-20">
@@ -71,6 +72,7 @@
                                     <button class="btn-cancel push">Cancel</button>
                                 </div>
                             </div>
+                            @endif
                             @endforeach
                         </div>
                     </div>
