@@ -51,9 +51,9 @@ body {
     height: 150px;
     color: white;
     background: linear-gradient(
-        to bottom,
-        var(--color-mid-green),
-        var(--color-orange)
+        to top,
+        var(--color-dark-green),
+        var(--color-mid-green)
     );
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 }
