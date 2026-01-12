@@ -13,7 +13,7 @@
       <!-- RESIDENT BUTTON -->
       <a href="{{ url('/resident/greet') }}" class="resident-card">
         <div class="flex items-center gap-6">
-          <img src="https://cdn-icons-png.flaticon.com/512/522/522297.png" class="user-img">
+          <img src="{{ asset('icons/02_R.png') }}" class="user-img">
           <div class="flex flex-col items-center">
             <i class="fas fa-home text-6xl mb-4"></i>
             <h2 class="text-3xl font-bold mb-2">RESIDENT</h2>
@@ -25,7 +25,7 @@
       <!-- COLLECTOR BUTTON -->
       <a href="{{ url('/collector/greet') }}" class="collector-card">
         <div class="flex items-center gap-6">
-          <img src="https://cdn-icons-png.flaticon.com/512/522/522297.png" class="user-img">
+          <img src="{{ asset('icons/02_C.png') }}" class="user-img">
           <div class="flex flex-col items-center">
             <i class="fas fa-truck text-6xl mb-4"></i>
             <h2 class="text-3xl font-bold mb-2">COLLECTOR</h2>

@@ -99,3 +99,12 @@ body {
   transform: translateX(-50%);
   top: -130px;          
 }
+
+.greet-img{
+  height: 500px;
+
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);  
+}

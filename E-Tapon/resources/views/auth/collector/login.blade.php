@@ -6,8 +6,8 @@
   </div>
 
   <div class="bottom-card w-full flex-grow p-8">
-    <div class="circle">
-      <img src="{{ asset('icons/DBA Asset.png') }}" class="login-img">
+    <div class="collector">
+      <img src="{{ asset('icons/04_C.png') }}" class="login-img">
     </div>
     <div class="max-w-md mx-auto">
 

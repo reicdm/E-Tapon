@@ -84,3 +84,22 @@ body {
 .icons {
   color: var(--color-text-input);
 }
+
+.login-img{
+  width: 155px;
+  height: 155px;
+
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -130px;          
+}
+
+.greet-img{
+  height: 500px;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);          
+}
