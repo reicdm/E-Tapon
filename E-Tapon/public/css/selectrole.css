@@ -4,8 +4,8 @@ body {
 }
 
 .user-img {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
 }
 
 .resident-card,
@@ -13,28 +13,31 @@ body {
     flex: 1;
     transform: scale(1);
     transition: transform 0.5s;
-    padding: 2rem;
+    padding: 2rem 2rem 2rem 1rem;
     border-radius: 1rem;
-    color: #1F4B2C;  
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 
 .resident-card {
-    background-color: #D5ED9F;
+    color: white;
+    background-color: #4d7111;
 }
 .resident-card:hover {
+    color: black;
     background: linear-gradient(to top, #4d7111, #d5ed9f);
 }
 
 .collector-card  {
-    background-color: #FFD399;
+    color: white;
+    background-color: #ff9100;
 }
 .collector-card:hover {
+    color: black;
     background: linear-gradient(to top, #ff9100, #ffe9cc);
 }
 
 .resident-card:hover,
-.collector-card.hover {
+.collector-card:hover {
     transform: scale(1.03);
 }

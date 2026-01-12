@@ -12,6 +12,10 @@
     </h1>
   </div>
 
+  <div class="collector">
+    <img src="{{ asset('icons/03_C.png') }}" class="greet-img">
+  </div>
+
   <!-- Centered Bottom Actions -->
   <div class="w-full max-w-sm flex flex-col items-center mx-auto">
     <!-- Get Started -->

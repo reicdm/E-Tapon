@@ -13,6 +13,10 @@
     </h1>
   </div>
 
+  <div class="resident">
+    <img src="{{ asset('icons/03_R.png') }}" class="greet-img">
+  </div>
+
   <!-- Centered Bottom Actions -->
   <div class="w-full max-w-sm flex flex-col items-center mx-auto">
     <!-- Get Started -->
