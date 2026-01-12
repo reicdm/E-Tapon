@@ -38,6 +38,6 @@ body {
 }
 
 .resident-card:hover,
-.collector-card.hover {
+.collector-card:hover {
     transform: scale(1.03);
 }
