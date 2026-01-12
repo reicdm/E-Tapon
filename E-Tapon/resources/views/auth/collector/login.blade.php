@@ -6,7 +6,7 @@
   </div>
 
   <div class="bottom-card w-full flex-grow p-8">
-    <div class="collector">
+    <div class="collector-login">
       <img src="{{ asset('icons/04_C.png') }}" class="login-img">
     </div>
     <div class="max-w-md mx-auto">

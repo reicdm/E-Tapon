@@ -5,7 +5,7 @@
   <div class="top-bar w-full"></div>
 
   <div class="bottom-card w-full flex-grow p-8">
-    <div class="resident">
+    <div class="resident-signup">
       <img src="{{ asset('icons/04_R.png') }}" class="login-img">
     </div>
     <div class="max-w-md mx-auto">
