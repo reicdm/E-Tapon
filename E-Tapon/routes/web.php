@@ -16,15 +16,6 @@ use App\Http\Controllers\ResidentDashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/test', function () {
-    return "<h1>Successful!<h1>";
-});
-
-// SELECT ROLE
-Route::get('/select', function () {
     return view('select_role');
 });
 
@@ -49,11 +40,6 @@ Route::prefix('resident')->group(function () {
 
     // LOGOUT
     Route::post('/logout', [ResidentAuthController::class, 'logout'])->name('resident.logout');
-
-    // DASHBOARD WITH VERIFICATION
-    // Route::middleware('auth')->group(function () {
-    //     Route::get('/dashboard', [ResidentDashboardController::class, 'dashboard'])->name('resident.dashboard');
-    // });
 
     // PROTECTED routes (require login)
     Route::middleware('auth')->group(function () {

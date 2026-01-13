@@ -152,7 +152,8 @@ class CollectorScheduleController extends Controller
                     ->where('sched_id', $validated['sched_id'])
                     ->where('brgy_id', $validated['brgy_id'])
                     ->update([
-                        'status' => $validated['status']
+                        'status' => $validated['status'],
+                        'completion_date' => $validated['status'] === 'Completed' ? now() : null
                     ]);
 
                 if ($affected === 0) {

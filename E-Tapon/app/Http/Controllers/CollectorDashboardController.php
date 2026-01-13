@@ -35,7 +35,8 @@ class CollectorDashboardController extends Controller
                     'sched_id' => $schedule->sched_id,
                     'brgy_id' => $schedule->brgy_id,
                     'collection_date' => $todayDate,
-                    'status' => 'Assigned'
+                    'status' => 'Assigned',
+                    'completion_time' => NULL
                 ]);
             });
 
@@ -61,12 +62,11 @@ class CollectorDashboardController extends Controller
                 DB::raw('NULL as quantity')
             );
 
-        // TODAY'S ASSIGNED REQUESTS
+        // ALL ASSIGNED REQUESTS
         $assignedRequests = DB::table('request_tbl as req')
             ->join('user_tbl as u', 'req.user_id', '=', 'u.user_id')
             ->join('area_tbl as a', 'u.brgy_id', '=', 'a.brgy_id')
             ->where('req.collector_id', $collector->collector_id)
-            ->whereDate('req.preferred_date', $todayDate)
             ->whereIn('req.status', ['Assigned', 'In Progress'])
             ->select(
                 'a.brgy_name',
