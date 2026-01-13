@@ -108,11 +108,26 @@ class ResidentDashboardController extends Controller
     }
 
     // ==== SCHEDULE ====
-    public function schedule()
+    public function schedule(Request $request)
     {
         $user = Auth::user();
         $brgyId = $user->brgy_id;
 
+        // Month to view (format: YYYY-MM). Default: current month
+        $selectedMonth = $request->get('month', Carbon::now()->format('Y-m'));
+        $selected = Carbon::createFromFormat('Y-m', $selectedMonth)->startOfMonth();
+
+        // Hide previous months entirely
+        if ($selected->lt(Carbon::now()->startOfMonth())) {
+            $schedules = [];
+            $scheduleDates = [];
+            return view('resident.schedule', compact('schedules', 'scheduleDates'));
+        }
+
+        $start = $selected->copy();
+        $end = $selected->copy()->addDays(30);
+
+        // Get valid day orders for the user's barangay
         $scheduledDayOrders = DB::table('brgysched_tbl')
             ->join('collectorsched_tbl', 'brgysched_tbl.sched_id', '=', 'collectorsched_tbl.sched_id')
             ->where('brgysched_tbl.brgy_id', $brgyId)
@@ -120,10 +135,10 @@ class ResidentDashboardController extends Controller
             ->unique()
             ->toArray();
 
-        $start = Carbon::now()->startOfMonth();
-        $end = Carbon::now()->addMonths(2)->endOfMonth();
+        // Build schedule dates for calendar view
         $scheduleDates = [];
         $current = clone $start;
+
         while ($current->lte($end)) {
             if (in_array($current->dayOfWeek, $scheduledDayOrders)) {
                 $scheduleDates[] = $current->format('Y-m-d');
@@ -131,36 +146,52 @@ class ResidentDashboardController extends Controller
             $current->addDay();
         }
 
-        $records = DB::table('record_tbl')
-            ->join('collectorsched_tbl', 'record_tbl.sched_id', '=', 'collectorsched_tbl.sched_id')
-            ->join('area_tbl', 'record_tbl.brgy_id', '=', 'area_tbl.brgy_id')
-            ->where('record_tbl.brgy_id', $brgyId)
-            ->select(
-                'area_tbl.brgy_name as barangay',
-                'collectorsched_tbl.license_plate as truck',
-                'record_tbl.collection_date as date',
-                'record_tbl.status',
-            )
-            ->orderBy('record_tbl.collection_date', 'desc')
-            ->get()
-            ->map(function ($item) {
-                $truck = $item->license_plate ?? 'Not assigned';
+        // Build schedules array
+        $schedules = [];
+        $current = clone $start;
 
-                if (in_array($item->status, ['In Progress', 'Completed']) && $truck === 'Not assigned') {
-                    $truck = 'Assigned Truck';
+        while ($current->lte($end)) {
+            $dayOrder = $current->dayOfWeek;
+
+            $daySchedules = DB::table('brgysched_tbl')
+                ->join('collectorsched_tbl', 'brgysched_tbl.sched_id', '=', 'collectorsched_tbl.sched_id')
+                ->join('area_tbl', 'brgysched_tbl.brgy_id', '=', 'area_tbl.brgy_id')
+                ->where('brgysched_tbl.brgy_id', $brgyId)
+                ->where('collectorsched_tbl.day_order', $dayOrder)
+                ->select(
+                    'area_tbl.brgy_name as barangay',
+                    'collectorsched_tbl.license_plate as truck',
+                    'brgysched_tbl.sched_id'
+                )
+                ->get();
+
+            if ($daySchedules->isNotEmpty()) {
+                $dateKey = $current->format('Y-m-d');
+
+                foreach ($daySchedules as $schedule) {
+                    $record = DB::table('record_tbl')
+                        ->where('sched_id', $schedule->sched_id)
+                        ->where('brgy_id', $brgyId)
+                        ->where('collection_date', $dateKey)
+                        ->first();
+
+                    $status = $record ? $record->status : 'Scheduled';
+
+                    $schedules[$dateKey][] = [
+                        'barangay' => $schedule->barangay,
+                        'truck' => $schedule->truck,
+                        'date' => $dateKey,
+                        'status' => $status,
+                    ];
                 }
-                return [
-                    'barangay' => $item->barangay,
-                    'truck' => $item->license_plate ?? 'Not assigned',
-                    'date' => $item->date,
-                    'status' => $item->status,
-                ];
-            });
+            }
 
-        $schedules = $records->groupBy('date');
+            $current->addDay();
+        }
 
         return view('resident.schedule', compact('schedules', 'scheduleDates'));
     }
+
 
     // ==== REQUEST ====
     public function request()
