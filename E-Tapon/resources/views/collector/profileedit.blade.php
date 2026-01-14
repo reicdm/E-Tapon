@@ -71,31 +71,6 @@
     </div>
 </div>
 
-<!-- CONFIRMATION MODAL -->
-<div id="saveModal" class="confirm-overlay" style="display: none;">
-    <div class="popup-confirm">
-        <div class="circle-pop"></div>
-        <h2 class="my-2">Are you sure about your changes?</h2>
-
-        <div class="action-buttons mt-4">
-            <button class="btn-confirm" onclick="confirmSaveProfile()">Confirm</button>
-            <button class="btn-cancel" onclick="closeSaveModal()">Cancel</button>
-        </div>
-    </div>
-</div>
-
-<!-- SUCCESS MODAL -->
-<div id="saveSuccessModal" class="success-overlay" style="display: none;">
-    <div class="popup-success">
-        <div class="popup-box"></div>
-        <h2 class="text-4xl font-extrabold my-2">Profile Updated!</h2>
-
-        <div class="action-buttons mt-3">
-            <button class="btn-ok" onclick="closeSuccessSaveModal()">Confirm</button>
-        </div>
-    </div>
-</div>
-
 @if(session('show_success_modal'))
 <script>
     document.addEventListener('DOMContentLoaded', function() {
