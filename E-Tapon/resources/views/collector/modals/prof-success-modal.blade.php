@@ -1,6 +1,8 @@
 <div id="saveSuccessModal" class="success-overlay" style="display: none;">
     <div class="popup-success">
-        <div class="popup-box"></div>
+        <div class="align-center">
+            <img src="{{ asset('icons/success.png') }}" class="success-img">
+        </div>
         <h2 class="text-4xl font-extrabold my-2">Profile Updated!</h2>
 
         <div class="action-buttons mt-3">
@@ -55,11 +57,9 @@
         font-weight: bold;
     }
 
-    .popup-box {
-        width: 160px;
+    .success-img {
+        width: 100px;
         height: 100px;
-        background: var(--color-orange);
-        border-radius: 30px;
     }
 
     .status-actions {

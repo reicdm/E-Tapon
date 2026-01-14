@@ -5,10 +5,8 @@
 
         <form id="acceptRequestForm" method="POST" action="">
             @csrf
-
             <div class="row justify-content-center mb-4 mt-2">
-                <div class="modal-circle">
-                </div>
+                <img src="{{ asset('icons/truck.png') }}" class="truck-img">
                 <h2 class="font-extrabold" style="color: var(--color-dark-green)">Request Details</h2>
             </div>
 
@@ -132,17 +130,15 @@
     }
 
     /* CIRCLE IMAGE CONTAINER */
-    .modal-circle {
-        flex-shrink: 0;
-        width: 80px;
-        height: 80px;
-        background-color: var(--color-orange);
-        border-radius: 50%;
-        padding: 0.5rem;
+    .truck-img {
+        width: 100px;
+        height: 100px;
+
+        padding: 0.25rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.25rem;
     }
 
     /* FORM INPUT CONTAINER*/

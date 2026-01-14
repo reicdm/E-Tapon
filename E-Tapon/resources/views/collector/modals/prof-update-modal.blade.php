@@ -1,6 +1,8 @@
 <div id="saveModal" class="confirm-overlay" style="display: none;">
     <div class="popup-confirm">
-        <div class="circle-pop"></div>
+        <div class="align-center">
+            <img src="{{ asset('icons/profile.png') }}" class="profile-img">
+        </div>
         <h2 class="my-2">Are you sure about your changes?</h2>
 
         <div class="action-buttons mt-4">
@@ -62,13 +64,10 @@
         border-radius: 30px;
     }
 
-    .circle-pop {
-        flex-shrink: 0;
-        border-radius: 50%;
-        padding: 0.5rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    .profile-img {
+        width: 80px;
+        height: 80px;
+        padding: 0.25rem;
     }
 
     /* TOP ICON CONTAINER */

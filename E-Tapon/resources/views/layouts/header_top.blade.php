@@ -18,9 +18,8 @@
     /* ------------------------------------- */
 
     .navbar {
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-        padding-bottom: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     .navbar-etapon {
