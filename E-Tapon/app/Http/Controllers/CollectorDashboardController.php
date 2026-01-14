@@ -82,36 +82,6 @@ class CollectorDashboardController extends Controller
         $todaysSchedule = $scheduledCollections
             ->union($assignedRequests)
             ->orderByRaw("FIELD(status, 'In Progress', 'Assigned')")
-            ->get();
-
-        // RECENT ACTIVITY - Last 3 completed collections/requests
-        $recentActivity = DB::table('record_tbl as r')
-            ->join('collectorsched_tbl as cs', 'r.sched_id', '=', 'cs.sched_id')
-            ->join('area_tbl as a', 'r.brgy_id', '=', 'a.brgy_id')
-            ->where('cs.collector_id', $collector->collector_id)
-            ->where('r.status', 'Completed')
-            ->select(
-                'r.collection_date as date',
-                'r.status',
-                'a.brgy_name',
-                DB::raw('NULL as quantity'),
-                DB::raw('"Scheduled Collection" as type')
-            )
-            ->unionAll(
-                DB::table('request_tbl as req')
-                    ->join('user_tbl as u', 'req.user_id', '=', 'u.user_id')
-                    ->join('area_tbl as a', 'u.brgy_id', '=', 'a.brgy_id')
-                    ->where('req.collector_id', $collector->collector_id)
-                    ->where('req.status', 'Completed')
-                    ->select(
-                        'req.completion_date as date',
-                        'req.status',
-                        'a.brgy_name',
-                        'req.quantity',
-                        DB::raw('CONCAT("Request - ", req.waste_type) as type')
-                    )
-            )
-            ->orderBy('date', 'desc')
             ->limit(3)
             ->get();
 
@@ -183,7 +153,6 @@ class CollectorDashboardController extends Controller
         return view('collector.dashboard', compact(
             'collector',
             'todaysSchedule',
-            'recentActivity',
             'pendingRequests',
             'assignedTruck',
             'assignedAreas',
@@ -250,19 +219,14 @@ class CollectorDashboardController extends Controller
             return back()->with('error', 'Selected truck is not available');
         }
 
-        // Update the request with collector and truck info
-        $updated = DB::table('request_tbl')
-            ->where('request_id', $requestId)
-            ->update([
-                'collector_id' => $collector->collector_id,
-                'license_plate' => $validated['license_plate'],
-                'status' => 'Assigned'
-            ]);
+        DB::statement('CALL sp_accept_request(?, ?, ?)', [
+            $requestId,
+            $collector->collector_id,
+            $validated['license_plate']
+        ]);
 
-        if ($updated) {
-            return redirect()->route('collector.dashboard')
-                ->with('show_success_modal', true);
-        }
+        return redirect()->route('collector.dashboard')
+            ->with('show_success_modal', true);
 
         return redirect()->route('collector.dashboard')
             ->with('error', 'Failed to accept request. Please try again.');
