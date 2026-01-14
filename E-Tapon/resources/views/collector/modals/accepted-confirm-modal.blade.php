@@ -1,6 +1,8 @@
 <div id="updateModal" class="confirm-overlay" style="display: none;">
     <div class="popup-confirm">
-        <div class="circle-pop"></div>
+        <div class="align-center">
+            <img src="{{ asset('icons/schedule.png') }}" class="schedule-img">
+        </div>
         <h2 class="my-2">hui,, us2 mu buh talaga iupdate to?</h2>
 
         <div class="action-buttons mt-4">
@@ -56,11 +58,10 @@
         font-weight: bold;
     }
 
-    .popup-box {
-        width: 160px;
-        height: 100px;
-        background: var(--color-orange);
-        border-radius: 30px;
+    .schedule-img {
+        width: 80px;
+        height: 80px;
+        padding: 0.25rem;
     }
 
 
@@ -134,5 +135,4 @@
         document.getElementById('updateModal').style.display = 'none';
         document.getElementById('acceptedModal').style.display = 'flex';
     }
-
 </script>

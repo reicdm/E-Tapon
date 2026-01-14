@@ -1,7 +1,9 @@
 <div id="confirmSuccessModal" class="success-overlay" style="display: none;">
     <div class="popup-success">
-        <div class="popup-box"></div>
-        <h2 class="text-4xl font-extrabold my-2">Request Confirmed!</h2>
+        <div class="align-center">
+            <img src="{{ asset('icons/success.png') }}" class="success-img">
+        </div>
+        <h2 class="text-3xl font-extrabold my-2">Request Confirmed!</h2>
 
         <div class="action-buttons mt-3">
             <button class="btn-ok" onclick="closeSuccessUpdModal()">Confirm</button>
@@ -55,11 +57,9 @@
         font-weight: bold;
     }
 
-    .popup-box {
-        width: 160px;
+    .success-img {
+        width: 100px;
         height: 100px;
-        background: var(--color-orange);
-        border-radius: 30px;
     }
 
     .status-actions {
