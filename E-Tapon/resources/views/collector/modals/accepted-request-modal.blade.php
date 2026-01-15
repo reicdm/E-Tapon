@@ -76,31 +76,6 @@
     </div>
 </div>
 
-<!-- UPDATE CONFIRMATION MODAL -->
-<div id="updateModal" class="confirm-overlay" style="display: none;">
-    <div class="popup-confirm">
-        <div class="circle-pop"></div>
-        <h2 class="my-2">Are you sure you want to update the status?</h2>
-
-        <div class="action-buttons mt-4">
-            <button class="btn-confirm" onclick="confirmUpdateRequest()">Confirm</button>
-            <button class="btn-cancel" onclick="closeUpdateConfirmModal()">Cancel</button>
-        </div>
-    </div>
-</div>
-
-<!-- UPDATE SUCCESS MODAL -->
-<div id="updateSuccessModal" class="success-overlay" style="display: none;">
-    <div class="popup-success">
-        <div class="popup-box"></div>
-        <h2 class="text-4xl font-extrabold my-2">Status Updated!</h2>
-
-        <div class="action-buttons mt-3">
-            <button class="btn-ok" onclick="closeUpdateSuccessModal()">Confirm</button>
-        </div>
-    </div>
-</div>
-
 <style>
     :root {
         --color-dark-green: #1f4b2c;

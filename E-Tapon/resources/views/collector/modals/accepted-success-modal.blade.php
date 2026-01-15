@@ -3,7 +3,7 @@
         <div class="align-center">
             <img src="{{ asset('icons/success.png') }}" class="success-img">
         </div>
-        <h2 class="text-4xl font-extrabold my-2">Request Updated!</h2>
+        <h2 class="text-4xl font-extrabold my-2">Status Updated!</h2>
 
         <div class="action-buttons mt-3">
             <button class="btn-ok" onclick="closeSuccessModal()">Confirm</button>

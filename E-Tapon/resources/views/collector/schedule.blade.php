@@ -100,49 +100,6 @@
 
     </div>
 </div>
-
-<!-- CONFIRMATION MODAL -->
-<div id="updSchModal" class="confirm-overlay" style="display: none;">
-    <div class="popup-confirm">
-        <div class="circle-pop"></div>
-        <h2 class="my-2">Are you sure you want to update the status?</h2>
-
-        <div class="action-buttons mt-4">
-            <button class="btn-confirm" onclick="confirmPopSchRequest()">Confirm</button>
-            <button class="btn-cancel" onclick="closeConfirmSchModal()">Cancel</button>
-        </div>
-    </div>
-</div>
-
-<!-- SUCCESS MODAL -->
-<div id="updSuccessSchModal" class="success-overlay" style="display: none;">
-    <div class="popup-success">
-        <div class="popup-box"></div>
-        <h2 class="text-4xl font-extrabold my-2">Status Updated!</h2>
-
-        <div class="action-buttons mt-3">
-            <button class="btn-ok" onclick="closeSuccessSchModal()">Confirm</button>
-        </div>
-    </div>
-</div>
-
-@if(session('show_success_modal'))
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('updSchModal').style.display = 'none';
-        document.getElementById('updSuccessSchModal').style.display = 'flex';
-    });
-</script>
-@endif
-
-@if(session('error'))
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        alert('{{ session("error") }}');
-    });
-</script>
-@endif
-
 @endsection
 
 @push('scripts')

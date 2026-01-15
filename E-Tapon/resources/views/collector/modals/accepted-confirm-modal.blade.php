@@ -3,11 +3,11 @@
         <div class="align-center">
             <img src="{{ asset('icons/schedule.png') }}" class="schedule-img">
         </div>
-        <h2 class="my-2">hui,, us2 mu buh talaga iupdate to?</h2>
+        <h2 class="my-2">Are you sure you want to update the status?</h2>
 
         <div class="action-buttons mt-4">
-            <button class="btn-confirm" onclick="confirmRequest()">Confirm</button>
-            <button class="btn-cancel" onclick="closeConfirmModal()">Cancel</button>
+            <button class="btn-confirm" onclick="confirmUpdateRequest()">Confirm</button>
+            <button class="btn-cancel" onclick="closeUpdateConfirmModal()">Cancel</button>
         </div>
     </div>
 </div>
