@@ -57,7 +57,7 @@
                 <button type="button" id="acceptButton" class="btn-accept" onclick="showConfirmation()">
                     Accept
                 </button>
-                <button type="button" class="btn-decline" onclick="closeRequestModal()">Decline</button>
+                <button type="button" class="btn-decline" onclick="closeRequestModal()">Cancel</button>
             </div>
         </form>
     </div>
