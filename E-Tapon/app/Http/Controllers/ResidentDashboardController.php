@@ -100,6 +100,7 @@ class ResidentDashboardController extends Controller
         $upcoming = array_slice($upcoming, 0, 4);
 
         return view('resident.dashboard', compact(
+            'user',
             'requestsCount',
             'nextScheduleDate',
             'completedCount',

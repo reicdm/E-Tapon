@@ -5,7 +5,7 @@
   <div class="content-wrapper">
 
     <h2 class="title-heading">
-      Welcome, {{ auth()->user()->name ?? 'Resident' }}
+      Welcome, {{ $user->firstname }}!
     </h2>
 
     <!-- OVERVIEW CARDS -->

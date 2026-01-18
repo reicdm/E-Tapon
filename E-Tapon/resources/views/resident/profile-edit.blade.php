@@ -32,34 +32,34 @@
       <div class="requests-list-container mb-4">
         <!-- FIRST NAME -->
         <div class="mb-3 form-input-group">
-          <input type="text" name="first_name" placeholder="First Name">
+          <input type="text" name="first_name" value="{{ $userData->firstname }}" readonly>
 
         </div>
 
         <!-- MIDDLE NAME -->
         <div class="mb-3 form-input-group">
-          <input type="text" name="middle_name" placeholder="Middle Name">
+          <input type="text" name="middle_name" value="{{ $userData->middlename }}" readonly>
 
         </div>
 
         <!-- LAST NAME -->
         <div class="mb-3 form-input-group">
-          <input type="text" name="last_name" placeholder="Last Name">
+          <input type="text" name="last_name" value="{{ $userData->lastname }}" readonly>
         </div>
 
         <!-- DATE OF BIRTH -->
         <div class="mb-3 form-input-group">
-          <input type="date" name="date_of_birth">
+          <input type="date" name="date_of_birth" value="{{ $userData->date_of_birth }}" readonly>
         </div>
 
         <!-- PHONE NUMBER -->
         <div class="mb-3 form-input-group">
-          <input type="text" name="phone_number" placeholder="Phone Number">
+          <input type="text" name="phone_number" value="{{ $userData->contact_no }}" readonly>
         </div>
 
         <!-- EMAIL ADDRESS -->
         <div class="mb-3 form-input-group">
-          <input type="text" name="email" placeholder="Email Address">
+          <input type="text" name="email" value="{{ $userData->email }}" readonly>
         </div>
 
         <!-- ADDRESS -->
