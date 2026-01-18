@@ -131,6 +131,7 @@ class CollectorDashboardController extends Controller
             $preferredDay = Carbon::parse($preferredDate)->format('l');
 
             $availableTrucks = DB::table('truck_tbl as t')
+                ->where('t.capacity', '>=', $request->quantity)
                 ->whereNotExists(function ($query) use ($preferredDay) {
                     $query->select(DB::raw(1))
                         ->from('collectorsched_tbl as cs')
@@ -200,6 +201,7 @@ class CollectorDashboardController extends Controller
 
         $truckAvailable = DB::table('truck_tbl as t')
             ->where('t.license_plate', $validated['license_plate'])
+            ->where('t.capacity', '>=', $requestData->quantity)
             ->whereNotExists(function ($query) use ($preferredDay) {
                 $query->select(DB::raw(1))
                     ->from('collectorsched_tbl as cs')
@@ -227,8 +229,5 @@ class CollectorDashboardController extends Controller
 
         return redirect()->route('collector.dashboard')
             ->with('show_success_modal', true);
-
-        return redirect()->route('collector.dashboard')
-            ->with('error', 'Failed to accept request. Please try again.');
     }
 }
