@@ -481,14 +481,37 @@ class ResidentDashboardController extends Controller
     {
         $user = Auth::user();
 
-        // Delete user
-        DB::table('user_tbl')->where('user_id', $user->user_id)->delete();
+        // Check for pending requests
+        $pendingRequests = DB::table('request_tbl')
+            ->where('user_id', $user->user_id)
+            ->whereNotIn('status', ['Completed', 'Cancelled'])
+            ->count();
+
+        if ($pendingRequests > 0) {
+            return redirect()->back()->with(
+                'error',
+                'You cannot delete your account while you have pending requests. Please complete or cancel all requests first.'
+            );
+        }
+
+        // Delete completed/cancelled requests
+        DB::table('request_tbl')
+            ->where('user_id', $user->user_id)
+            ->delete();
+
+        // Delete the user
+        DB::table('user_tbl')
+            ->where('user_id', $user->user_id)
+            ->delete();
 
         // Log out
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('resident.login')->with('success', 'Account deleted successfully.');
+        return redirect()->route('resident.login')->with(
+            'success',
+            'Your account has been successfully deleted.'
+        );
     }
 }
